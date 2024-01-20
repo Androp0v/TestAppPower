@@ -54,6 +54,7 @@
 		C433FC662B54378F00BA3BEF /* sample_threads.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sample_threads.c; sourceTree = "<group>"; };
 		C433FC682B5BDA4900BA3BEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C433FC692B5BECA000BA3BEF /* SampleThreadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleThreadsManager.swift; sourceTree = "<group>"; };
+		C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libproc.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/usr/lib/libproc.tbd; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +89,7 @@
 				C433FC482B542FE200BA3BEF /* TestAppPowerTests */,
 				C433FC522B542FE200BA3BEF /* TestAppPowerUITests */,
 				C433FC352B542FE100BA3BEF /* Products */,
+				C433FC6B2B5C2CBB00BA3BEF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -142,6 +144,14 @@
 				C433FC552B542FE200BA3BEF /* TestAppPowerUITestsLaunchTests.swift */,
 			);
 			path = TestAppPowerUITests;
+			sourceTree = "<group>";
+		};
+		C433FC6B2B5C2CBB00BA3BEF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -7,12 +7,25 @@
 
 import Foundation
 
+struct SampleThreadsResult: Identifiable {
+    let id = UUID()
+    let time: Date
+    let combinedPower: Double
+}
+
 class SampleThreadsManager {
     
-    var previousCounters = [uint64: thread_counters_t]()
+    var currentThreadCount: Int = 1
+    var previousCounters = [UInt64: thread_counters_t]()
     
-    func sampleThreads(_ pid: Int32) -> String {
+    var historicPower = [SampleThreadsResult]()
+    
+    private init(){}
+    static let shared = SampleThreadsManager()
+    
+    func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
         let result = sample_threads(pid)
+        self.currentThreadCount = Int(result.thread_count)
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
         let countersArray = [thread_counters_t](counters)
         var combinedPower = 0.0
@@ -30,13 +43,18 @@ class SampleThreadsManager {
             }
             previousCounters[counter.thread_id] = counter
         }
-        return "\(combinedPower)"
+        free(result.cpu_counters)
+        let sampleResult = SampleThreadsResult(
+            time: .now,
+            combinedPower: combinedPower
+        )
+        historicPower.append(sampleResult)
+        return sampleResult
     }
     
     private func computePower(previous: cpu_counters_t, current: cpu_counters_t) -> Double {
         let elapsedTime = current.time - previous.time
         let energyChange = current.energy - previous.energy
-        let power: Double
         if !energyChange.isZero {
             return energyChange / elapsedTime
         } else {

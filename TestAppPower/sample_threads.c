@@ -7,7 +7,6 @@
 
 #include "sample_threads.h"
 #include <stdlib.h>
-#include <libproc.h>
 #include <mach/mach_init.h>
 #include <mach/mach_port.h>
 #include <mach/task_info.h>
@@ -32,6 +31,8 @@ struct proc_threadcounts {
     struct proc_threadcounts_data ptc_counts[20];
 };
 
+int proc_pidinfo(int pid, int flavor, uint64_t arg, void *buffer, int buffersize);
+
 static double convert_mach_time(uint64_t mach_time) {
     static mach_timebase_info_data_t base = { .numer = 0 };
     if (base.numer == 0) mach_timebase_info(&base);
@@ -43,7 +44,6 @@ static double convert_mach_time(uint64_t mach_time) {
 sample_threads_result sample_threads(int pid) {
  
     mach_port_t me = mach_task_self();
-    mach_port_t task;
     kern_return_t res;
     thread_array_t threads;
     mach_msg_type_number_t n_threads;

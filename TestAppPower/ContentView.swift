@@ -16,6 +16,7 @@ struct ContentView: View {
         HStack {
             PowerWidgetView()
                 .frame(maxWidth: 300)
+                .padding()
             VStack {
                 HStack(spacing: 12) {
                     if isRunning {
@@ -53,7 +54,7 @@ struct ContentView: View {
     func longRunningTaskMulticore() async -> Double {
         return await withTaskGroup(of: Double.self) { group in
             var result: Double = 0
-            for task in 0..<32 {
+            for task in 0..<16 {
                 group.addTask {
                     return longRunningTask()
                 }
