@@ -27,6 +27,7 @@ struct SampleThreadsResult: Identifiable {
     let combinedPower: CombinedPower
 }
 
+/// The main class interfacing with the C code that retrieves the energy data.
 class SampleThreadsManager {
     
     let samplingTime: TimeInterval = 0.5
@@ -39,11 +40,25 @@ class SampleThreadsManager {
     private init(){}
     static let shared = SampleThreadsManager()
     
+    /// Given the pid for a process, sample all the threads belonging to that process and
+    /// return the `CombinedPower` used for that process.
+    /// - Parameter pid: The pid of the process to inspect.
+    /// - Returns: The `CombinedPower` used by that process.
     func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
+        
+        // Invoke the C code in sample_threads.c that uses proc_pidinfo to retrieve
+        // performance counters including energy usage.
         let result = sample_threads(pid)
-        self.currentThreadCount = Int(result.thread_count)
+        // This points directly to the C array.
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
+        // This creates a Swift copy of the C array.
         let countersArray = [thread_counters_t](counters)
+        // Free the memory allocated with malloc in sample_threads.c, as we've created
+        // a copy for Swift code.
+        free(result.cpu_counters)
+        
+        self.currentThreadCount = Int(result.thread_count)
+        
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         for counter in countersArray {
@@ -63,7 +78,7 @@ class SampleThreadsManager {
             }
             previousCounters[counter.thread_id] = counter
         }
-        free(result.cpu_counters)
+        
         let sampleResult = SampleThreadsResult(
             time: .now,
             combinedPower: CombinedPower(
@@ -76,9 +91,6 @@ class SampleThreadsManager {
     }
     
     private func computePower(previous: thread_counters_t, current: thread_counters_t, type: CoreType) -> Double {
-        let elapsedPTime = current.performance.time - previous.performance.time
-        let elapsedETime = current.efficiency.time - previous.efficiency.time
-        
         let energyChange: Double
         switch type {
         case .performance:
@@ -87,7 +99,11 @@ class SampleThreadsManager {
             energyChange = current.efficiency.energy - previous.efficiency.energy
         }
         if !energyChange.isZero {
-            return energyChange / samplingTime // (elapsedPTime + elapsedETime)
+            // The *power* used during a time interval is the *total* energy consumed
+            // divided by the time between measurements. Using the counters' ptcd times
+            // instead would NOT yield the correct result, as that excludes times where
+            // the threads were not running.
+            return energyChange / samplingTime
         } else {
             return .zero
         }

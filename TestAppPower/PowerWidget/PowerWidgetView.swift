@@ -8,6 +8,7 @@
 import Charts
 import SwiftUI
 
+/// A `View` displaying the power consumption of the app.
 struct PowerWidgetView: View {
     
     let pid = ProcessInfo.processInfo.processIdentifier
@@ -47,7 +48,6 @@ struct PowerWidgetView: View {
                 }
                 .chartXAxisLabel("Time")
                 .chartYAxisLabel("Power (W)")
-                // .aspectRatio(2, contentMode: .fit)
             }
         }
         .padding()

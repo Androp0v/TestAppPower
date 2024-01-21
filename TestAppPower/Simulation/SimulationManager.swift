@@ -8,7 +8,10 @@
 import Foundation
 import simd
 
-/// Quick
+/// Quick simulation put together to be computationally intensive enough to significantly increase the CPU
+/// power consumption (being pretty is a nice bonus).
+///
+/// Based on Lorenz attractors, best described in Strogatz's _Nonlinear Dynamics and Chaos_, Part 3.
 class SimulationManager {
     
     var lastSavedIteration: Int = 0
@@ -37,6 +40,7 @@ class SimulationManager {
         initParticlePositions()
     }
     
+    /// Start the simulation.
     func simulate() async {
         let stepsPerSavedPosition: Int = 1000
         await withTaskGroup(of: Void.self) { group in
@@ -67,6 +71,7 @@ class SimulationManager {
         }
     }
     
+    /// A simplistic ODE solver.
     func eulerStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
         var newPosition = position
         newPosition.x += stepSize * xDerivative(position: position)
@@ -75,6 +80,7 @@ class SimulationManager {
         return newPosition
     }
     
+    /// An acceptable ODE solver.
     func rungeKuttaStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
         let k1 = stepSize * derivative(position: position)
         let k2 = stepSize * derivative(position: position + k1 / 2)
@@ -92,12 +98,15 @@ class SimulationManager {
         return derivative
     }
     
+    /// Derivative function of x using Lorentz's equations.
     func xDerivative(position: simd_double3) -> Double {
         return sigma * (position.y - position.x)
     }
+    /// Derivative function of y using Lorentz's equations.
     func yDerivative(position: simd_double3) -> Double {
         return r * position.x - position.y - position.x * position.z
     }
+    /// Derivative function of z using Lorentz's equations.
     func zDerivative(position: simd_double3) -> Double {
         return position.x * position.y - b * position.z
     }

@@ -16,6 +16,8 @@
 #include <mach/mach_time.h>
 #include <stdio.h>
 
+// Technically private structs, from:
+// https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L153
 struct proc_threadcounts_data {
     uint64_t ptcd_instructions;
     uint64_t ptcd_cycles;
@@ -31,7 +33,12 @@ struct proc_threadcounts {
     struct proc_threadcounts_data ptc_counts[20];
 };
 
+// PROC_PIDTHREADCOUNTS is also private, see:
+// https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L927
 #define PROC_PIDTHREADCOUNTS 34
+
+// On macOS, proc_pidinfo is available as part of the libproc headers. On iOS, those
+// headers are not available.
 int proc_pidinfo(int pid, int flavor, uint64_t arg, void *buffer, int buffersize);
 
 static double convert_mach_time(uint64_t mach_time) {
@@ -49,34 +56,86 @@ sample_threads_result sample_threads(int pid) {
     thread_array_t threads;
     mach_msg_type_number_t n_threads;
 
+    // Here we'd expect task_threads to always succeed as the process being inspected
+    // is the same process that is making the call. Attempting to inspect tasks for
+    // different processes raises KERN_FAILURE unless the caller has root privileges.
+    //
+    // task_threads(me, &threads, &n_threads) retrieves all the threads for the current
+    // process.
     res = task_threads(me, &threads, &n_threads);
     if (res != KERN_SUCCESS) {
-        // Handle error...
+        // TODO: Handle error...
     }
     
     thread_counters_t *counters_array = malloc(sizeof(thread_counters_t) * n_threads);
     
-    // double combined_power = 0;
+    // Loop over all the threads of the current process.
     for (int i = 0; i < n_threads; i++) {
         struct thread_identifier_info th_info;
         mach_msg_type_number_t th_info_count = THREAD_IDENTIFIER_INFO_COUNT;
         thread_t thread = threads[i];
-                
-        kern_return_t info_result = thread_info(thread, THREAD_IDENTIFIER_INFO, (thread_info_t)&th_info, &th_info_count);
+        
+        // We use thread_info to retrieve the Mach thread id of the thread we want to
+        // retrieve power counters from.
+        kern_return_t info_result = thread_info(thread,
+                                                THREAD_IDENTIFIER_INFO,
+                                                (thread_info_t)&th_info,
+                                                &th_info_count);
+        
+        // As before, we expect thread_info to succeed as the thread being inspected
+        // has the same parent process.
         if (info_result != KERN_SUCCESS) {
-            // Handle error...
+            // TODO: Handle error...
         }
         
         counters_array[i].thread_id = th_info.thread_id;
         
         struct proc_threadcounts current_counters;
-        // See: https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L898
-        proc_pidinfo(pid, PROC_PIDTHREADCOUNTS, th_info.thread_id, &current_counters, sizeof(struct proc_threadcounts));
         
+        // This flavor of proc_pidinfo using PROC_PIDTHREADCOUNTS is technically private, see:
+        // https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L898
+        // Reproduced below in case link is not available in the future:
+        //
+        // PROC_PIDTHREADCOUNTS returns a list of counters for the given thread,
+        // separated out by the "perf-level" it was running on (typically either
+        // "performance" or "efficiency").
+        //
+        // This interface works a bit differently from the other proc_info(3) flavors.
+        // It copies out a structure with a variable-length array at the end of it.
+        // The start of the `proc_threadcounts` structure contains a header indicating
+        // the length of the subsequent array of `proc_threadcounts_data` elements.
+        //
+        // To use this interface, first read the `hw.nperflevels` sysctl to find out how
+        // large to make the allocation that receives the counter data:
+        //
+        //     sizeof(proc_threadcounts) + nperflevels * sizeof(proc_threadcounts_data)
+        //
+        // Use the `hw.perflevel[0-9].name` sysctl to find out which perf-level maps to
+        // each entry in the array.
+        //
+        // The complete usage would be (omitting error reporting):
+        //
+        //     uint32_t len = 0;
+        //     int ret = sysctlbyname("hw.nperflevels", &len, &len_sz, NULL, 0);
+        //     size_t size = sizeof(struct proc_threadcounts) +
+        //             len * sizeof(struct proc_threadcounts_data);
+        //     struct proc_threadcounts *counts = malloc(size);
+        //     // Fill this in with a thread ID, like from `PROC_PIDLISTTHREADS`.
+        //     uint64_t tid = 0;
+        //     int size_copied = proc_info(getpid(), PROC_PIDTHREADCOUNTS, tid, counts,
+        //             size);
+        proc_pidinfo(pid, // pid of the process
+                     PROC_PIDTHREADCOUNTS, // The proc_pidinfo "flavor": different flavors have different return structures.
+                     th_info.thread_id, // The mach thread id of the thread we're retrieving the counters from.
+                     &current_counters, // The address of the result structure.
+                     sizeof(struct proc_threadcounts)); // The size of the result structure.
+        
+        // Thread counters when running on Performance cores
         uint64_t p_cycles = current_counters.ptc_counts[0].ptcd_cycles;
         double p_energy = current_counters.ptc_counts[0].ptcd_energy_nj / 1e9;
         double p_time = convert_mach_time(current_counters.ptc_counts[0].ptcd_user_time_mach + current_counters.ptc_counts[0].ptcd_system_time_mach);
         
+        // Thread counters when running on Efficiency cores
         uint64_t e_cycles = current_counters.ptc_counts[1].ptcd_cycles;
         double e_energy = current_counters.ptc_counts[1].ptcd_energy_nj / 1e9;
         double e_time = convert_mach_time(current_counters.ptc_counts[1].ptcd_user_time_mach + current_counters.ptc_counts[1].ptcd_system_time_mach);
