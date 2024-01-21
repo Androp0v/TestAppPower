@@ -24,24 +24,46 @@ struct PowerWidgetView: View {
         VStack {
             Text("PID: \(pid)")
                 .font(.largeTitle)
-                .padding(.bottom, 12)
-            TimelineView(.periodic(from: .now, by: 0.5)) { _ in
-                Text("CPU power: \(powerFormatter.string(from: NSNumber(value: sampleManager.sampleThreads(pid).combinedPower)) ?? "?") W")
+                .padding(.bottom, 120)
+            TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
+                Text("CPU power: \(formatPower(power: sampleManager.sampleThreads(pid).combinedPower.total))")
                     .monospaced()
-                Chart(sampleManager.historicPower) { measurement in
+                Chart(sampleManager.historicPower.suffix(60)) { measurement in
                     AreaMark(
                         x: .value("Time", measurement.time),
-                        y: .value("Power (W)", measurement.combinedPower)
+                        y: .value("Power (W)", measurement.combinedPower.efficiency)
+                    )
+                    .foregroundStyle(
+                        by: .value("Name", "Efficiency")
+                    )
+                    
+                    AreaMark(
+                        x: .value("Time", measurement.time),
+                        y: .value("Power (W)", measurement.combinedPower.performance)
+                    )
+                    .foregroundStyle(
+                        by: .value("Name", "Performance")
                     )
                 }
                 .chartXAxisLabel("Time")
                 .chartYAxisLabel("Power (W)")
+                .aspectRatio(2, contentMode: .fit)
             }
         }
         .padding()
         .background {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundStyle(.regularMaterial)
+        }
+    }
+    
+    func formatPower(power: Double) -> String {
+        if power < 0.01 {
+            let power = NSNumber(value: power * 1000)
+            return (powerFormatter.string(from: power) ?? "?") + " mW"
+        } else {
+            let power = NSNumber(value: power)
+            return (powerFormatter.string(from: power) ?? "?") + " W"
         }
     }
 }

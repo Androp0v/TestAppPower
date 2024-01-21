@@ -31,6 +31,7 @@ struct proc_threadcounts {
     struct proc_threadcounts_data ptc_counts[20];
 };
 
+#define PROC_PIDTHREADCOUNTS 34
 int proc_pidinfo(int pid, int flavor, uint64_t arg, void *buffer, int buffersize);
 
 static double convert_mach_time(uint64_t mach_time) {
@@ -69,7 +70,8 @@ sample_threads_result sample_threads(int pid) {
         counters_array[i].thread_id = th_info.thread_id;
         
         struct proc_threadcounts current_counters;
-        proc_pidinfo(pid, 34, th_info.thread_id, &current_counters, sizeof(struct proc_threadcounts));
+        // See: https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L898
+        proc_pidinfo(pid, PROC_PIDTHREADCOUNTS, th_info.thread_id, &current_counters, sizeof(struct proc_threadcounts));
         
         uint64_t p_cycles = current_counters.ptc_counts[0].ptcd_cycles;
         double p_energy = current_counters.ptc_counts[0].ptcd_energy_nj / 1e9;

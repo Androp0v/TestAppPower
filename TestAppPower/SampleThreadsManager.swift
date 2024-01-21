@@ -7,13 +7,29 @@
 
 import Foundation
 
+enum CoreType {
+    case performance
+    case efficiency
+}
+
+struct CombinedPower {
+    let performance: Double
+    let efficiency: Double
+    
+    var total: Double {
+        return performance + efficiency
+    }
+}
+
 struct SampleThreadsResult: Identifiable {
     let id = UUID()
     let time: Date
-    let combinedPower: Double
+    let combinedPower: CombinedPower
 }
 
 class SampleThreadsManager {
+    
+    let samplingTime: TimeInterval = 0.5
     
     var currentThreadCount: Int = 1
     var previousCounters = [UInt64: thread_counters_t]()
@@ -28,35 +44,50 @@ class SampleThreadsManager {
         self.currentThreadCount = Int(result.thread_count)
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
         let countersArray = [thread_counters_t](counters)
-        var combinedPower = 0.0
+        var combinedPPower = 0.0
+        var combinedEPower = 0.0
         for counter in countersArray {
             if let previousCounter = previousCounters[counter.thread_id] {
                 let performancePower = computePower(
-                    previous: previousCounter.performance,
-                    current: counter.performance
+                    previous: previousCounter,
+                    current: counter,
+                    type: .performance
                 )
                 let efficiencyPower = computePower(
-                    previous: previousCounter.efficiency,
-                    current: counter.efficiency
+                    previous: previousCounter,
+                    current: counter,
+                    type: .efficiency
                 )
-                combinedPower += performancePower + efficiencyPower
+                combinedPPower += performancePower
+                combinedEPower += efficiencyPower
             }
             previousCounters[counter.thread_id] = counter
         }
         free(result.cpu_counters)
         let sampleResult = SampleThreadsResult(
             time: .now,
-            combinedPower: combinedPower
+            combinedPower: CombinedPower(
+                performance: combinedPPower,
+                efficiency: combinedEPower
+            )
         )
         historicPower.append(sampleResult)
         return sampleResult
     }
     
-    private func computePower(previous: cpu_counters_t, current: cpu_counters_t) -> Double {
-        let elapsedTime = current.time - previous.time
-        let energyChange = current.energy - previous.energy
+    private func computePower(previous: thread_counters_t, current: thread_counters_t, type: CoreType) -> Double {
+        let elapsedPTime = current.performance.time - previous.performance.time
+        let elapsedETime = current.efficiency.time - previous.efficiency.time
+        
+        let energyChange: Double
+        switch type {
+        case .performance:
+            energyChange = current.performance.energy - previous.performance.energy
+        case .efficiency:
+            energyChange = current.efficiency.energy - previous.efficiency.energy
+        }
         if !energyChange.isZero {
-            return energyChange / elapsedTime
+            return energyChange / samplingTime // (elapsedPTime + elapsedETime)
         } else {
             return .zero
         }

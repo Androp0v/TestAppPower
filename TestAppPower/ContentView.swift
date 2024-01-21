@@ -13,7 +13,7 @@ struct ContentView: View {
     @State var result: Double?
     
     var body: some View {
-        HStack {
+        VStack {
             PowerWidgetView()
                 .frame(maxWidth: 300)
                 .padding()
@@ -69,7 +69,7 @@ struct ContentView: View {
     func longRunningTask() -> Double {
         var x: Double = 0
         var y: Double = 0
-        for _ in 0..<1_000_000 {
+        for _ in 0..<10_000_000 {
             x += Double.random(in: 0..<1) - 0.5
             y += Double.random(in: 0..<1) - 0.5
         }

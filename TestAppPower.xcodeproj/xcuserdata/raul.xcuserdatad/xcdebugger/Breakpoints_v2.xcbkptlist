@@ -77,8 +77,8 @@
             filePath = "TestAppPower/sample_threads.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
             landmarkName = "sample_threads(pid)"
             landmarkType = "9">
          </BreakpointContent>
@@ -93,8 +93,8 @@
             filePath = "TestAppPower/sample_threads.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "sample_threads(pid)"
             landmarkType = "9">
          </BreakpointContent>
@@ -109,8 +109,8 @@
             filePath = "TestAppPower/sample_threads.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "78"
+            endingLineNumber = "78"
             landmarkName = "sample_threads(pid)"
             landmarkType = "9">
          </BreakpointContent>
@@ -125,8 +125,8 @@
             filePath = "TestAppPower/sample_threads.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
             landmarkName = "sample_threads(pid)"
             landmarkType = "9">
          </BreakpointContent>
@@ -141,8 +141,8 @@
             filePath = "TestAppPower/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "33"
-            endingLineNumber = "33"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>
@@ -220,8 +220,8 @@
             filePath = "TestAppPower/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
+            startingLineNumber = "67"
+            endingLineNumber = "67"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>
@@ -284,8 +284,8 @@
             filePath = "TestAppPower/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>
@@ -320,6 +320,70 @@
                   offsetFromSymbolStart = "1788">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "97EF4ED2-7328-4F90-9BA5-F280F0F42078"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestAppPower/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
+            landmarkName = "sample_threads(pid)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "97EF4ED2-7328-4F90-9BA5-F280F0F42078 - bf3081bc097c3231"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "sample_threads"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/sample_threads.c"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "83"
+                  endingLineNumber = "83"
+                  offsetFromSymbolStart = "444">
+               </Location>
+               <Location
+                  uuid = "97EF4ED2-7328-4F90-9BA5-F280F0F42078 - bf3081bc097c3252"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "sample_threads"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/sample_threads.c"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "84"
+                  endingLineNumber = "84"
+                  offsetFromSymbolStart = "444">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A8ABECF3-61F4-4F11-87ED-7D9B476EFD62"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestAppPower/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "convert_mach_time(mach_time)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
