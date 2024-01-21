@@ -24,7 +24,7 @@ struct PowerWidgetView: View {
         VStack {
             Text("PID: \(pid)")
                 .font(.largeTitle)
-                .padding(.bottom, 120)
+                .padding(.bottom)
             TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
                 Text("CPU power: \(formatPower(power: sampleManager.sampleThreads(pid).combinedPower.total))")
                     .monospaced()
@@ -47,7 +47,7 @@ struct PowerWidgetView: View {
                 }
                 .chartXAxisLabel("Time")
                 .chartYAxisLabel("Power (W)")
-                .aspectRatio(2, contentMode: .fit)
+                // .aspectRatio(2, contentMode: .fit)
             }
         }
         .padding()

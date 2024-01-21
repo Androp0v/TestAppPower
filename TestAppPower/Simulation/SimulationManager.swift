@@ -8,6 +8,7 @@
 import Foundation
 import simd
 
+/// Quick
 class SimulationManager {
     
     var lastSavedIteration: Int = 0
