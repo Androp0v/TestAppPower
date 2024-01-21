@@ -112,11 +112,11 @@ struct SimulationView: View {
         var remainingPositions = simulationManager.plottablePositions
         var opacity = 1.0
         while !remainingPositions.isEmpty {
-            let current = remainingPositions.suffix(100)
+            let current = remainingPositions.suffix(10)
             pathData.append(PathData(positions: current, opacity: opacity))
             
-            remainingPositions = remainingPositions.dropLast(99)
-            opacity -= 0.1
+            remainingPositions = remainingPositions.dropLast(9)
+            opacity -= 0.01
         }
         return pathData
     }
