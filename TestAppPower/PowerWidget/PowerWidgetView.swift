@@ -14,6 +14,12 @@ struct PowerWidgetView: View {
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
     
+    var pidFormatter: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.usesGroupingSeparator = false
+        return numberFormatter
+    }()
+    
     var powerFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
         numberFormatter.maximumFractionDigits = 2
@@ -23,11 +29,13 @@ struct PowerWidgetView: View {
     
     var body: some View {
         VStack {
-            Text("PID: \(pid)")
+            Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
                 .padding(.bottom)
             TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
                 Text("CPU power: \(formatPower(power: sampleManager.sampleThreads(pid).combinedPower.total))")
+                    .monospaced()
+                Text("Total energy used: \(formatEnergy(energy: sampleManager.totalEnergyUsage))")
                     .monospaced()
                 Chart(sampleManager.historicPower.suffix(60)) { measurement in
                     AreaMark(
@@ -64,6 +72,16 @@ struct PowerWidgetView: View {
         } else {
             let power = NSNumber(value: power)
             return (powerFormatter.string(from: power) ?? "?") + " W"
+        }
+    }
+    
+    func formatEnergy(energy: Double) -> String {
+        if energy < 0.01 {
+            let energy = NSNumber(value: energy * 1000)
+            return (powerFormatter.string(from: energy) ?? "?") + " mWh"
+        } else {
+            let energy = NSNumber(value: energy)
+            return (powerFormatter.string(from: energy) ?? "?") + " Wh"
         }
     }
 }

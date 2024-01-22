@@ -17,8 +17,9 @@ struct ContentView: View {
         let layout = horizontalSizeClass == .compact ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
         layout {
             PowerWidgetView()
-                .frame(maxWidth: 300)
+                .frame(maxWidth: 500, maxHeight: 800)
                 .padding()
+                .padding(.leading, horizontalSizeClass != .compact ? 48 : 0)
             VStack {
                 SimulationView()
             }

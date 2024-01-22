@@ -35,6 +35,9 @@ class SampleThreadsManager {
     var currentThreadCount: Int = 1
     var previousCounters = [UInt64: thread_counters_t]()
     
+    /// Total energy used by the app since launch, in Watts-hour.
+    var totalEnergyUsage: Double = 0
+    /// Historic power figures for the app.
     var historicPower = [SampleThreadsResult]()
     
     private init(){}
@@ -87,6 +90,7 @@ class SampleThreadsManager {
             )
         )
         historicPower.append(sampleResult)
+        totalEnergyUsage += sampleResult.combinedPower.total * samplingTime / 3600
         return sampleResult
     }
     

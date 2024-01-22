@@ -62,6 +62,13 @@ sample_threads_result sample_threads(int pid) {
     //
     // task_threads(me, &threads, &n_threads) retrieves all the threads for the current
     // process.
+    //
+    // TODO/Note: I believe that with very few extra steps just before this code (using
+    // proc_listpids to get the pids of all running processes on the system and using
+    // task_for_pid to get the task from the pid), one could easily build macOS's
+    // powermetrics utility.
+    // Of course, the same limitations would apply (needing to run as root) as both
+    // proc_listpids and task_for_pid return KERN_FAILURE if not running as root.
     res = task_threads(me, &threads, &n_threads);
     if (res != KERN_SUCCESS) {
         // TODO: Handle error...

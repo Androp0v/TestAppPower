@@ -14,6 +14,8 @@ import simd
 /// Based on Lorenz attractors, best described in Strogatz's _Nonlinear Dynamics and Chaos_, Part 3.
 class SimulationManager {
     
+    var runningTaskGroup: TaskGroup<Void>?
+    
     var lastSavedIteration: Int = 0
     var plottablePositions: Array<simd_double3>.SubSequence {
         if lastSavedIteration < 1_000 {
@@ -42,18 +44,35 @@ class SimulationManager {
     
     /// Start the simulation.
     func simulate() async {
+        
+        self.lastSavedIteration = 0
+        self.savedPositions = [simd_double3](repeating: .zero, count: 100_000)
+        
+        #if DEBUG
         let stepsPerSavedPosition: Int = 1000
+        #else
+        // Release builds are too fast otherwise (I bet the code is being auto-vectorized
+        // by the compiler).
+        let stepsPerSavedPosition: Int = 100_000
+        #endif
         await withTaskGroup(of: Void.self) { group in
+            runningTaskGroup = group
             for particleIndex in 0..<particleCount {
                 let initialPosition = self.particlePositions[particleIndex]
                 group.addTask {
                     var nextPosition = initialPosition
                     for iteration in 0..<(self.savedPositions.count * stepsPerSavedPosition) {
+                        if Task.isCancelled {
+                            return
+                        }
                         nextPosition = self.rungeKuttaStep(
                             nextPosition,
                             stepSize: 0.01 / Double(stepsPerSavedPosition)
                         )
                         if particleIndex == 0, iteration % stepsPerSavedPosition == 0 {
+                            if Task.isCancelled {
+                                return
+                            }
                             self.savedPositions[self.lastSavedIteration] = nextPosition
                             self.lastSavedIteration += 1
                         }
@@ -61,7 +80,15 @@ class SimulationManager {
                     print("Final position for particle \(particleIndex): \(self.particlePositions[particleIndex])")
                 }
             }
+            
+            await group.waitForAll()
+            runningTaskGroup = nil
         }
+    }
+    
+    func stopSimulation() {
+        runningTaskGroup?.cancelAll()
+        runningTaskGroup = nil
     }
     
     func initParticlePositions() {

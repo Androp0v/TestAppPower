@@ -14,11 +14,19 @@ struct SimulationView: View {
     let simulationManager = SimulationManager(sigma: 10, r: 28, b: 8.0/3.0, particleCount: 10)
     @State var isRunning: Bool = false
     
+    var updateFrequency: PeriodicTimelineSchedule {
+        if isRunning {
+            return .periodic(from: .now, by: 1/60)
+        } else {
+            return .periodic(from: .now, by: .infinity)
+        }
+    }
+    
     var body: some View {
         GeometryReader { geometry in
             let size = min(geometry.size.width, geometry.size.height)
             let scaleFactor = (size / 2) / 25
-            TimelineView(.periodic(from: .now, by: 1/60)) { _ in
+            TimelineView(updateFrequency) { _ in
                 ZStack(alignment: .topLeading) {
                     
                     ForEach(plottablePathData()) { pathData in
@@ -36,22 +44,6 @@ struct SimulationView: View {
                         }
                         .stroke(.blue.opacity(pathData.opacity), lineWidth: 1)
                     }
-                    
-                    /*
-                    Path { path in
-                        path.move(to: CGPoint(
-                            x: (simulationManager.plottablePositions.first?.x ?? .zero) * scaleFactor + size / 2,
-                            y: (simulationManager.plottablePositions.first?.z ?? .zero) * scaleFactor
-                        ))
-                        for position in simulationManager.plottablePositions {
-                            path.addLine(to: CGPoint(
-                                x: position.x * scaleFactor + size / 2,
-                                y: position.z * scaleFactor
-                            ))
-                        }
-                    }
-                    .stroke(.blue.opacity(0.5), lineWidth: 1)
-                     */
                     
                     if let lastPosition = simulationManager.plottablePositions.last {
                         Circle()
@@ -76,27 +68,41 @@ struct SimulationView: View {
             }
             Button(
                 action: {
-                    withAnimation {
-                        isRunning = true
-                    }
-                    Task.detached(priority: .userInitiated) {
-                        await simulationManager.simulate()
-                        Task { @MainActor in
-                            withAnimation {
-                                isRunning = false
+                    if !isRunning {
+                        withAnimation {
+                            isRunning = true
+                        }
+                        Task.detached(priority: .userInitiated) {
+                            await simulationManager.simulate()
+                            Task { @MainActor in
+                                withAnimation {
+                                    isRunning = false
+                                }
                             }
+                        }
+                    } else {
+                        simulationManager.stopSimulation()
+                        withAnimation {
+                            isRunning = false
                         }
                     }
                 },
                 label: {
-                    HStack {
-                        Image(systemName: "gauge.with.dots.needle.100percent")
-                            .imageScale(.large)
-                        Text("Start simulation")
+                    if !isRunning {
+                        HStack {
+                            Image(systemName: "gauge.with.dots.needle.100percent")
+                                .imageScale(.large)
+                            Text("Start simulation")
+                        }
+                    } else {
+                        HStack {
+                            Image(systemName: "stop.circle")
+                                .imageScale(.large)
+                            Text("Stop simulation")
+                        }
                     }
                 }
             )
-            .disabled(isRunning)
             .buttonStyle(.borderedProminent)
         }
     }
