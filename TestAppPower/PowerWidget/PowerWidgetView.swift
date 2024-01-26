@@ -66,7 +66,7 @@ struct PowerWidgetView: View {
     }
     
     func formatPower(power: Double) -> String {
-        if power < 0.01 {
+        if power < 0.1 {
             let power = NSNumber(value: power * 1000)
             return (powerFormatter.string(from: power) ?? "?") + " mW"
         } else {
@@ -76,7 +76,7 @@ struct PowerWidgetView: View {
     }
     
     func formatEnergy(energy: Double) -> String {
-        if energy < 0.01 {
+        if energy < 0.1 {
             let energy = NSNumber(value: energy * 1000)
             return (powerFormatter.string(from: energy) ?? "?") + " mWh"
         } else {

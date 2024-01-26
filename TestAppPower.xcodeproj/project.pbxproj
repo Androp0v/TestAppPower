@@ -115,8 +115,6 @@
 				C433FC392B542FE100BA3BEF /* ContentView.swift */,
 				C433FC6F2B5D361800BA3BEF /* Simulation */,
 				C433FC702B5D362500BA3BEF /* PowerWidget */,
-				C433FC652B54378F00BA3BEF /* sample_threads.h */,
-				C433FC662B54378F00BA3BEF /* sample_threads.c */,
 				C433FC3B2B542FE200BA3BEF /* Assets.xcassets */,
 				C433FC3D2B542FE200BA3BEF /* TestAppPower.entitlements */,
 				C433FC3E2B542FE200BA3BEF /* Preview Content */,
@@ -172,6 +170,8 @@
 			children = (
 				C433FC622B54366200BA3BEF /* PowerWidgetView.swift */,
 				C433FC692B5BECA000BA3BEF /* SampleThreadsManager.swift */,
+				C433FC652B54378F00BA3BEF /* sample_threads.h */,
+				C433FC662B54378F00BA3BEF /* sample_threads.c */,
 			);
 			path = PowerWidget;
 			sourceTree = "<group>";

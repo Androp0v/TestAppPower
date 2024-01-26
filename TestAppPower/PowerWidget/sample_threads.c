@@ -41,10 +41,12 @@ struct proc_threadcounts {
 // headers are not available.
 int proc_pidinfo(int pid, int flavor, uint64_t arg, void *buffer, int buffersize);
 
+// Convert mach_time (monotonous clock ticks) to seconds.
 static double convert_mach_time(uint64_t mach_time) {
     static mach_timebase_info_data_t base = { .numer = 0 };
-    if (base.numer == 0) mach_timebase_info(&base);
-  
+    if (base.numer == 0) {
+        mach_timebase_info(&base);
+    }
     double elapsed = (mach_time * base.numer) / base.denom;
     return elapsed / 1e9;
 }
