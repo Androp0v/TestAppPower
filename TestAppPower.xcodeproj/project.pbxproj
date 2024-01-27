@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C402F6C22B652C7500724FB5 /* SampleGPUManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C402F6C12B652C7500724FB5 /* SampleGPUManager.swift */; };
+		C402F6CC2B65314300724FB5 /* sample_gpu.m in Sources */ = {isa = PBXBuildFile; fileRef = C402F6CB2B65314300724FB5 /* sample_gpu.m */; };
 		C433FC382B542FE100BA3BEF /* TestAppPowerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC372B542FE100BA3BEF /* TestAppPowerApp.swift */; };
 		C433FC3A2B542FE100BA3BEF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC392B542FE100BA3BEF /* ContentView.swift */; };
 		C433FC3C2B542FE200BA3BEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C433FC3B2B542FE200BA3BEF /* Assets.xcassets */; };
@@ -19,6 +21,7 @@
 		C433FC6A2B5BECA000BA3BEF /* SampleThreadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC692B5BECA000BA3BEF /* SampleThreadsManager.swift */; };
 		C433FC6E2B5D34BE00BA3BEF /* SimulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */; };
 		C433FC722B5D364100BA3BEF /* SimulationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC712B5D364100BA3BEF /* SimulationManager.swift */; };
+		C4517E3A2B6546E300E90198 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4517E362B65371C00E90198 /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +43,10 @@
 
 /* Begin PBXFileReference section */
 		C402F6C02B647E9200724FB5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C402F6C12B652C7500724FB5 /* SampleGPUManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleGPUManager.swift; sourceTree = "<group>"; };
+		C402F6C62B6530A100724FB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		C402F6CB2B65314300724FB5 /* sample_gpu.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sample_gpu.m; sourceTree = "<group>"; };
+		C402F6CE2B65321300724FB5 /* sample_gpu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sample_gpu.h; sourceTree = "<group>"; };
 		C433FC342B542FE100BA3BEF /* TestAppPower.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestAppPower.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C433FC372B542FE100BA3BEF /* TestAppPowerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAppPowerApp.swift; sourceTree = "<group>"; };
 		C433FC392B542FE100BA3BEF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -60,6 +67,9 @@
 		C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libproc.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/usr/lib/libproc.tbd; sourceTree = DEVELOPER_DIR; };
 		C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationView.swift; sourceTree = "<group>"; };
 		C433FC712B5D364100BA3BEF /* SimulationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationManager.swift; sourceTree = "<group>"; };
+		C4517E362B65371C00E90198 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = DEVELOPER_DIR; };
+		C4517E382B65372C00E90198 /* libswiftIOKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftIOKit.tbd; path = usr/lib/swift/libswiftIOKit.tbd; sourceTree = SDKROOT; };
+		C4517E392B65373E00E90198 /* libTelephonyIOKitDynamic.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libTelephonyIOKitDynamic.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/usr/lib/libTelephonyIOKitDynamic.tbd; sourceTree = DEVELOPER_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +77,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4517E3A2B6546E300E90198 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +164,10 @@
 		C433FC6B2B5C2CBB00BA3BEF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C4517E392B65373E00E90198 /* libTelephonyIOKitDynamic.tbd */,
+				C4517E382B65372C00E90198 /* libswiftIOKit.tbd */,
+				C4517E362B65371C00E90198 /* IOKit.framework */,
+				C402F6C62B6530A100724FB5 /* Foundation.framework */,
 				C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */,
 			);
 			name = Frameworks;
@@ -172,6 +187,9 @@
 			children = (
 				C433FC622B54366200BA3BEF /* PowerWidgetView.swift */,
 				C433FC692B5BECA000BA3BEF /* SampleThreadsManager.swift */,
+				C402F6C12B652C7500724FB5 /* SampleGPUManager.swift */,
+				C402F6CE2B65321300724FB5 /* sample_gpu.h */,
+				C402F6CB2B65314300724FB5 /* sample_gpu.m */,
 				C433FC652B54378F00BA3BEF /* sample_threads.h */,
 				C433FC662B54378F00BA3BEF /* sample_threads.c */,
 			);
@@ -311,6 +329,8 @@
 			files = (
 				C433FC3A2B542FE100BA3BEF /* ContentView.swift in Sources */,
 				C433FC672B54378F00BA3BEF /* sample_threads.c in Sources */,
+				C402F6CC2B65314300724FB5 /* sample_gpu.m in Sources */,
+				C402F6C22B652C7500724FB5 /* SampleGPUManager.swift in Sources */,
 				C433FC632B54366200BA3BEF /* PowerWidgetView.swift in Sources */,
 				C433FC722B5D364100BA3BEF /* SimulationManager.swift in Sources */,
 				C433FC6E2B5D34BE00BA3BEF /* SimulationView.swift in Sources */,
@@ -496,6 +516,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lIOReport";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raulmonton.TestAppPower;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -538,6 +559,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.2;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-lIOReport";
 				PRODUCT_BUNDLE_IDENTIFIER = com.raulmonton.TestAppPower;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

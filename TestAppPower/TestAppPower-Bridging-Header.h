@@ -3,3 +3,4 @@
 //
 
 #include "sample_threads.h"
+#include "sample_gpu.h"

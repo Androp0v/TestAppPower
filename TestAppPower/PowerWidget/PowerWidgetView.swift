@@ -13,6 +13,7 @@ struct PowerWidgetView: View {
     
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
+    let gpuManager = SampleGPUManager.shared
     
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
@@ -36,6 +37,8 @@ struct PowerWidgetView: View {
                 Text("CPU power: \(formatPower(power: sampleManager.sampleThreads(pid).combinedPower.total))")
                     .monospaced()
                 Text("Total energy used: \(formatEnergy(energy: sampleManager.totalEnergyUsage))")
+                    .monospaced()
+                Text("GPU power: \(formatPower(power: gpuManager.sampleGPUPower()))")
                     .monospaced()
                 Chart(sampleManager.historicPower.suffix(60)) { measurement in
                     AreaMark(
@@ -65,7 +68,10 @@ struct PowerWidgetView: View {
         }
     }
     
-    func formatPower(power: Double) -> String {
+    func formatPower(power: Double?) -> String {
+        guard let power else {
+            return "Unavailable"
+        }
         if power < 0.1 {
             let power = NSNumber(value: power * 1000)
             return (powerFormatter.string(from: power) ?? "?") + " mW"
