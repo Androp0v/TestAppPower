@@ -12,7 +12,7 @@ The `libproc.h` headers can't be imported on iOS, so they're reproduced at the b
 
 ## Limitations
 
-Since without root privileges only the energy of the threads from the same process can be measured, APIs that trigger work on a kernel thread (ie system calls) won't be accounted for in the power metrics.
+Since without root privileges only the energy of the threads from the same process can be measured, APIs that trigger work on a kernel thread (ie system calls) won't be accounted for in the power metrics of the app.
 
 ## Compatibility
 
