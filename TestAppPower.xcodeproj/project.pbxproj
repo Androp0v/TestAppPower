@@ -21,7 +21,6 @@
 		C433FC6A2B5BECA000BA3BEF /* SampleThreadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC692B5BECA000BA3BEF /* SampleThreadsManager.swift */; };
 		C433FC6E2B5D34BE00BA3BEF /* SimulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */; };
 		C433FC722B5D364100BA3BEF /* SimulationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC712B5D364100BA3BEF /* SimulationManager.swift */; };
-		C4517E3A2B6546E300E90198 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4517E362B65371C00E90198 /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +76,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4517E3A2B6546E300E90198 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

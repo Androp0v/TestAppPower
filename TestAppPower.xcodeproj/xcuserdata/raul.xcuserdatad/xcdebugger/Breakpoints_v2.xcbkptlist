@@ -820,8 +820,8 @@
             filePath = "TestAppPower/PowerWidget/sample_gpu.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "75"
-            endingLineNumber = "75"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "sample_gpu()"
             landmarkType = "9">
             <Locations>
@@ -913,8 +913,8 @@
             filePath = "TestAppPower/PowerWidget/sample_gpu.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "183"
+            endingLineNumber = "183"
             landmarkName = "sample_gpu()"
             landmarkType = "9">
             <Locations>
@@ -976,8 +976,8 @@
             filePath = "TestAppPower/PowerWidget/sample_gpu.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "77"
-            endingLineNumber = "77"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "sample_gpu()"
             landmarkType = "9">
             <Locations>
@@ -1048,96 +1048,48 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "3B02E38E-0C71-442D-9807-5A637E99EFB8"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestAppPower/PowerWidget/sample_gpu.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "sample_gpu()"
             landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "3B02E38E-0C71-442D-9807-5A637E99EFB8 - 1b12dfaa496a26d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "sample_gpu"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/PowerWidget/sample_gpu.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "79"
-                  endingLineNumber = "79"
-                  offsetFromSymbolStart = "152">
-               </Location>
-               <Location
-                  uuid = "3B02E38E-0C71-442D-9807-5A637E99EFB8 - 1b12dfaa496a24c"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "sample_gpu"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/PowerWidget/sample_gpu.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "80"
-                  endingLineNumber = "80"
-                  offsetFromSymbolStart = "152">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "EC1C6AE2-B4A3-4E4D-BDEE-C7D4DF4D4EBE"
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "TestAppPower/PowerWidget/sample_gpu.m"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "188"
+            endingLineNumber = "188"
             landmarkName = "sample_gpu()"
             landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "EC1C6AE2-B4A3-4E4D-BDEE-C7D4DF4D4EBE - 87b665918c4e3e87"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__sample_gpu_block_invoke"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/PowerWidget/sample_gpu.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "83"
-                  endingLineNumber = "83"
-                  offsetFromSymbolStart = "152">
-               </Location>
-               <Location
-                  uuid = "EC1C6AE2-B4A3-4E4D-BDEE-C7D4DF4D4EBE - 87b665918c4e3e87"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__sample_gpu_block_invoke"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/TestAppPower/PowerWidget/sample_gpu.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "83"
-                  endingLineNumber = "83"
-                  offsetFromSymbolStart = "64">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AAF27D9E-55A9-427D-B9D9-6D6CD947DE2E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TestAppPower/PowerWidget/sample_gpu.m"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "_copy_chann(group)"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
