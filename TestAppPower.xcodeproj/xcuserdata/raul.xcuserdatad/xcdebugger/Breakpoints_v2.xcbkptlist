@@ -826,53 +826,5 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0DB82133-9E93-439E-8387-D0C38BD78B28"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
-            landmarkName = "body"
-            landmarkType = "24">
-            <Locations>
-               <Location
-                  uuid = "0DB82133-9E93-439E-8387-D0C38BD78B28 - fa83a4c6a858985d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; Charts.BuilderConditional&lt;Charts.AxisMarks&lt;Swift.Never&gt;, Charts.AxisMarks&lt;Swift.Never&gt;&gt; in closure #1 (SwiftUI.TimelineView&lt;SwiftUI.EveryMinuteTimelineSchedule, Swift.Never&gt;.Context) -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.chartYAxis&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Charts.AxisContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.TimelineView&lt;SwiftUI.PeriodicTimelineSchedule, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.chartYAxis&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Charts.AxisContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt; in PowerMetricsKit.PowerWidgetView.body.getter : some"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "1060">
-               </Location>
-               <Location
-                  uuid = "0DB82133-9E93-439E-8387-D0C38BD78B28 - fa83a4c6a858985d"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #2 () -&gt; Charts.BuilderConditional&lt;Charts.AxisMarks&lt;Swift.Never&gt;, Charts.AxisMarks&lt;Swift.Never&gt;&gt; in closure #1 (SwiftUI.TimelineView&lt;SwiftUI.EveryMinuteTimelineSchedule, Swift.Never&gt;.Context) -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.chartYAxis&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Charts.AxisContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt; in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0, SwiftUI.TimelineView&lt;SwiftUI.PeriodicTimelineSchedule, SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.monospaced(Swift.Bool) -&gt; some&gt;&gt;.0, &lt;&lt;opaque return type of SwiftUI.View.chartYAxis&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Charts.AxisContent&gt;(content: () -&gt; &#x3c4;_1_0) -&gt; some&gt;&gt;.0)&gt;&gt;)&gt; in PowerMetricsKit.PowerWidgetView.body.getter : some"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "64"
-                  endingLineNumber = "64"
-                  offsetFromSymbolStart = "1072">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

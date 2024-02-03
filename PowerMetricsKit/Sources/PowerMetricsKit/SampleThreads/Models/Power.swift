@@ -37,7 +37,7 @@ struct ChartPowerFormatStyle {
         
         func format(_ value: Power) -> String {
             let power = NSNumber(value: value)
-            return (Self.formatter.string(from: power) ?? "?") + " W"
+            return Self.formatter.string(from: power) ?? "??"
         }
     }
     
@@ -51,7 +51,7 @@ struct ChartPowerFormatStyle {
         
         func format(_ value: Power) -> String {
             let power = NSNumber(value: value * 1000)
-            return (Self.formatter.string(from: power) ?? "?") + " mW"
+            return Self.formatter.string(from: power) ?? "??"
         }
     }
 }

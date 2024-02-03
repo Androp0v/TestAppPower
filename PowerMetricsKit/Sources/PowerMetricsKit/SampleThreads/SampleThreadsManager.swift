@@ -9,7 +9,7 @@ import Foundation
 import SampleThreads
 
 /// The main class interfacing with the C code that retrieves the energy data.
-class SampleThreadsManager {
+actor SampleThreadsManager {
     
     let samplingTime: TimeInterval = 0.5
     
@@ -19,16 +19,16 @@ class SampleThreadsManager {
     /// Total energy used by the app since launch, in Watts-hour.
     var totalEnergyUsage: Double = 0
     /// Historic power figures for the app.
-    var historicPower = [SampleThreadsResult]()
+    var history = SampledResultsHistory()
     
     private init(){}
-    static let shared = SampleThreadsManager()
+    public static let shared = SampleThreadsManager()
     
     /// Given the pid for a process, sample all the threads belonging to that process and
     /// return the `CombinedPower` used for that process.
     /// - Parameter pid: The pid of the process to inspect.
     /// - Returns: The `CombinedPower` used by that process.
-    func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
+    public func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
         
         // Invoke the C code in sample_threads.c that uses proc_pidinfo to retrieve
         // performance counters including energy usage.
@@ -40,9 +40,7 @@ class SampleThreadsManager {
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
-        
-        self.currentThreadCount = Int(result.thread_count)
-        
+                
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         for counter in countersArray {
@@ -63,6 +61,7 @@ class SampleThreadsManager {
             previousCounters[counter.thread_id] = counter
         }
         
+        self.currentThreadCount = Int(result.thread_count)
         let sampleResult = SampleThreadsResult(
             time: .now,
             combinedPower: CombinedPower(
@@ -70,7 +69,10 @@ class SampleThreadsManager {
                 efficiency: combinedEPower
             )
         )
-        historicPower.append(sampleResult)
+        
+        Task {
+            await history.addSample(sampleResult)
+        }
         totalEnergyUsage += sampleResult.combinedPower.total * samplingTime / 3600
         return sampleResult
     }
