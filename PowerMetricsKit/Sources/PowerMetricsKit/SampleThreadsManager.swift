@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SampleThreads
 
 enum CoreType {
     case performance

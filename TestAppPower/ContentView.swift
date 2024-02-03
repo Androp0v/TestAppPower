@@ -5,6 +5,7 @@
 //  Created by Raúl Montón Pinillos on 14/1/24.
 //
 
+import PowerMetricsKit
 import SwiftUI
 
 struct ContentView: View {

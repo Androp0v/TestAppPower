@@ -9,7 +9,7 @@ import Charts
 import SwiftUI
 
 /// A `View` displaying the power consumption of the app.
-struct PowerWidgetView: View {
+public struct PowerWidgetView: View {
     
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
@@ -27,7 +27,9 @@ struct PowerWidgetView: View {
         return numberFormatter
     }()
     
-    var body: some View {
+    public init() {}
+    
+    public var body: some View {
         VStack {
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
