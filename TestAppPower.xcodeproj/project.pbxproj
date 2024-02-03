@@ -60,6 +60,7 @@
 		C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libproc.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/usr/lib/libproc.tbd; sourceTree = DEVELOPER_DIR; };
 		C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationView.swift; sourceTree = "<group>"; };
 		C433FC712B5D364100BA3BEF /* SimulationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationManager.swift; sourceTree = "<group>"; };
+		C4A3B6FD2B6B924B00FE3562 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				C402F6C02B647E9200724FB5 /* README.md */,
+				C4A3B6FD2B6B924B00FE3562 /* Images */,
 				C433FC362B542FE100BA3BEF /* TestAppPower */,
 				C433FC482B542FE200BA3BEF /* TestAppPowerTests */,
 				C433FC522B542FE200BA3BEF /* TestAppPowerUITests */,
