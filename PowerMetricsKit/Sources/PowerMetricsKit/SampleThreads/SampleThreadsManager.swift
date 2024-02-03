@@ -8,26 +8,6 @@
 import Foundation
 import SampleThreads
 
-enum CoreType {
-    case performance
-    case efficiency
-}
-
-struct CombinedPower {
-    let performance: Double
-    let efficiency: Double
-    
-    var total: Double {
-        return performance + efficiency
-    }
-}
-
-struct SampleThreadsResult: Identifiable {
-    let id = UUID()
-    let time: Date
-    let combinedPower: CombinedPower
-}
-
 /// The main class interfacing with the C code that retrieves the energy data.
 class SampleThreadsManager {
     

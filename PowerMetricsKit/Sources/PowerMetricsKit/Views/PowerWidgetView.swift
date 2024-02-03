@@ -42,7 +42,7 @@ public struct PowerWidgetView: View {
                 Chart(sampleManager.historicPower.suffix(60)) { measurement in
                     AreaMark(
                         x: .value("Time", measurement.time),
-                        y: .value("Power (W)", measurement.combinedPower.efficiency)
+                        y: .value("Power", measurement.combinedPower.efficiency)
                     )
                     .foregroundStyle(
                         by: .value("Name", "Efficiency")
@@ -57,7 +57,16 @@ public struct PowerWidgetView: View {
                     )
                 }
                 .chartXAxisLabel("Time")
-                .chartYAxisLabel("Power (W)")
+                .chartYAxisLabel("Power")
+                .chartXAxis(.hidden)
+                .chartYAxis {
+                    let maxPower = sampleManager.historicPower.suffix(60).map({$0.combinedPower.total}).max()
+                    if (maxPower ?? 0.0) < 0.1 {
+                        AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
+                    } else {
+                        AxisMarks(format: ChartPowerFormatStyle.Watts())
+                    }
+                }
             }
         }
         .padding()
