@@ -24,11 +24,11 @@ import SampleThreads
     public static let numberOfStoredSamples: Int = 60
     
     /// The total count of threads spawned by the app.
-    public var currentThreadCount: Int = 1
+    public private(set) var currentThreadCount: Int = 1
     /// Total energy used by the app since launch, in Watts-hour.
-    public var totalEnergyUsage: Double = 0
+    public private(set) var totalEnergyUsage: Energy = 0
     /// Historic power figures for the app.
-    public var history = SampledResultsHistory(numerOfStoredSamples: SampleThreadsManager.numberOfStoredSamples)
+    public private(set) var history = SampledResultsHistory(numerOfStoredSamples: SampleThreadsManager.numberOfStoredSamples)
     
     // MARK: - Private properties
     
@@ -107,6 +107,11 @@ import SampleThreads
                 combinedPPower += performancePower
                 combinedEPower += efficiencyPower
             }
+        }
+        
+        // Reset previous counters with the latest samples
+        self.previousCounters = [UInt64: thread_counters_t]()
+        for counter in countersArray {
             self.previousCounters[counter.thread_id] = counter
         }
         
@@ -123,6 +128,12 @@ import SampleThreads
         self.history.addSample(sampleResult)
         self.totalEnergyUsage += sampleResult.combinedPower.total * Self.samplingTime / 3600
         return sampleResult
+    }
+    
+    // MARK: - Energy
+    
+    public func resetEnergyUsed() {
+        self.totalEnergyUsage = .zero
     }
     
     // MARK: - Private

@@ -14,6 +14,8 @@ import SwiftUI
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
     let viewModel = PowerWidgetViewModel()
+    
+    @State var isResettingEnergy: Bool = false
         
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
@@ -30,6 +32,8 @@ import SwiftUI
     
     public init() {}
     
+    // MARK: - View body
+    
     public var body: some View {
         VStack {
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
@@ -38,11 +42,15 @@ import SwiftUI
             TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
                 let info = viewModel.getLatest(sampleManager: sampleManager)
+                let latestSampleTime = info.cpuPowerHistory.last?.time ?? Date.now
                 
                 Text("CPU power: \(formatPower(power: info.cpuPower))")
                     .monospaced()
-                Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
-                    .monospaced()
+                HStack(spacing: 4) {
+                    Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
+                        .monospaced()
+                    resetEnergyButton
+                }
                 Chart(info.cpuPowerHistory) { measurement in
                     AreaMark(
                         x: .value("Time", measurement.time),
@@ -71,9 +79,10 @@ import SwiftUI
                     }
                 }
                 .chartXScale(domain: [
-                    Date.now - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
-                    Date.now
+                    latestSampleTime - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
+                    latestSampleTime
                 ])
+                .drawingGroup()
             }
         }
         .padding()
@@ -84,6 +93,32 @@ import SwiftUI
         .task {
             await sampleManager.startSampling(pid: pid)
         }
+    }
+    
+    // MARK: - Subviews
+    
+    @ViewBuilder var resetEnergyButton: some View {
+        Button(
+            action: {
+                withAnimation {
+                    isResettingEnergy = true
+                }
+                Task { @MainActor in
+                    await sampleManager.resetEnergyUsed()
+                    withAnimation {
+                        isResettingEnergy = false
+                    }
+                }
+            },
+            label: {
+                Image(systemName: "arrow.uturn.left.circle")
+            }
+        )
+        .foregroundStyle(.secondary)
+        #if os(macOS)
+        .buttonStyle(.plain)
+        #endif
+        .disabled(isResettingEnergy)
     }
     
     func formatPower(power: Double) -> String {
