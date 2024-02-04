@@ -9,15 +9,11 @@ import Charts
 import SwiftUI
 
 /// A `View` displaying the power consumption of the app.
-public struct PowerWidgetView: View {
+@MainActor public struct PowerWidgetView: View {
     
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
-    
-    @State var cpuPower: Power = .zero
-    @State var cpuEnergy: Double = .zero
-    @State var cpuMaxPower: Power = .zero
-    @State var cpuPowerHistory = [SampleThreadsResult]()
+    let viewModel = PowerWidgetViewModel()
         
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
@@ -40,11 +36,14 @@ public struct PowerWidgetView: View {
                 .font(.largeTitle)
                 .padding(.bottom)
             TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
-                Text("CPU power: \(formatPower(power: refreshState(for: pid)))")
+                
+                let info = viewModel.getCurrentAndUpdate(pid: pid, sampleManager: sampleManager)
+                
+                Text("CPU power: \(formatPower(power: info.cpuPower))")
                     .monospaced()
-                Text("Total energy used: \(formatEnergy(energy: cpuEnergy))")
+                Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
                     .monospaced()
-                Chart(cpuPowerHistory) { measurement in
+                Chart(info.cpuPowerHistory) { measurement in
                     AreaMark(
                         x: .value("Time", measurement.time),
                         y: .value("Power", measurement.combinedPower.efficiency)
@@ -62,10 +61,10 @@ public struct PowerWidgetView: View {
                     )
                 }
                 .chartXAxisLabel("Time")
-                .chartYAxisLabel(cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
+                .chartYAxisLabel(info.cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
                 .chartXAxis(.hidden)
                 .chartYAxis {
-                    if cpuMaxPower < 0.1 {
+                    if info.cpuMaxPower < 0.1 {
                         AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
                     } else {
                         AxisMarks(format: ChartPowerFormatStyle.Watts())
@@ -78,21 +77,6 @@ public struct PowerWidgetView: View {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundStyle(.regularMaterial)
         }
-    }
-    
-    func refreshState(for pid: Int32) -> Power {
-        Task { @MainActor in
-            let cpuPower = await sampleManager.sampleThreads(pid).combinedPower.total
-            let cpuEnergy = await sampleManager.totalEnergyUsage
-            let cpuPowerHistory = await sampleManager.history.samples
-            let cpuMaxPower = await sampleManager.history.maxPower
-            
-            self.cpuPower = cpuPower
-            self.cpuEnergy = cpuEnergy
-            self.cpuPowerHistory = cpuPowerHistory
-            self.cpuMaxPower = cpuMaxPower
-        }
-        return self.cpuPower
     }
     
     func formatPower(power: Double) -> String {

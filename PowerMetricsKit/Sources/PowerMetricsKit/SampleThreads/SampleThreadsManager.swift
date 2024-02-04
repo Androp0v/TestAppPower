@@ -8,8 +8,12 @@
 import Foundation
 import SampleThreads
 
+@globalActor actor SampleThreadsActor {
+    public static let shared = SampleThreadsActor()
+}
+
 /// The main class interfacing with the C code that retrieves the energy data.
-actor SampleThreadsManager {
+@SampleThreadsActor class SampleThreadsManager {
     
     let samplingTime: TimeInterval = 0.5
     
@@ -70,9 +74,7 @@ actor SampleThreadsManager {
             )
         )
         
-        Task {
-            await history.addSample(sampleResult)
-        }
+        history.addSample(sampleResult)
         totalEnergyUsage += sampleResult.combinedPower.total * samplingTime / 3600
         return sampleResult
     }

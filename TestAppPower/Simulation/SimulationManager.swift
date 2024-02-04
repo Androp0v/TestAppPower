@@ -59,7 +59,7 @@ class SimulationManager {
             runningTaskGroup = group
             for particleIndex in 0..<particleCount {
                 let initialPosition = self.particlePositions[particleIndex]
-                group.addTask {
+                group.addTask(priority: .medium) {
                     var nextPosition = initialPosition
                     for iteration in 0..<(self.savedPositions.count * stepsPerSavedPosition) {
                         if Task.isCancelled {
@@ -76,6 +76,10 @@ class SimulationManager {
                             self.savedPositions[self.lastSavedIteration] = nextPosition
                             self.lastSavedIteration += 1
                         }
+                        // Avoid this TaskGroup exhausting Swift Concurrency's thread pool with
+                        // long running synchronous tasks by adding a yield() so other tasks have
+                        // the opportunity to execute as well.
+                        await Task.yield()
                     }
                     print("Final position for particle \(particleIndex): \(self.particlePositions[particleIndex])")
                 }

@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// A power measurement, always in watts.
 typealias Power = Double
+/// An energy measurement, always in watts-hour.
+typealias Energy = Double
 
 struct CombinedPower {
     
