@@ -8,28 +8,44 @@
 import Foundation
 import SampleThreads
 
+/// The global actor used to access the `SampleThreadsManager` in a thread-safe way.
+@globalActor public actor SampleThreadsActor {
+    public static let shared = SampleThreadsActor()
+}
+
 /// The main class interfacing with the C code that retrieves the energy data.
-class SampleThreadsManager {
+@SampleThreadsActor public class SampleThreadsManager {
     
-    let samplingTime: TimeInterval = 0.5
+    // MARK: - Public properties
     
-    var currentThreadCount: Int = 1
-    var previousCounters = [UInt64: thread_counters_t]()
+    /// The timespan between each sample.
+    public static let samplingTime: TimeInterval = 0.5
+    /// The number of samples kept in the history.
+    public static let numberOfStoredSamples: Int = 60
     
+    /// The total count of threads spawned by the app.
+    public var currentThreadCount: Int = 1
     /// Total energy used by the app since launch, in Watts-hour.
-    var totalEnergyUsage: Double = 0
+    public var totalEnergyUsage: Double = 0
     /// Historic power figures for the app.
-    var historicPower = [SampleThreadsResult]()
+    public var history = SampledResultsHistory(numerOfStoredSamples: SampleThreadsManager.numberOfStoredSamples)
+    
+    // MARK: - Private properties
+    
+    private var previousCounters = [UInt64: thread_counters_t]()
+
+    // MARK: - Init
     
     private init(){}
-    static let shared = SampleThreadsManager()
+    public static let shared = SampleThreadsManager()
+    
+    // MARK: - Sampling
     
     /// Given the pid for a process, sample all the threads belonging to that process and
     /// return the `CombinedPower` used for that process.
     /// - Parameter pid: The pid of the process to inspect.
     /// - Returns: The `CombinedPower` used by that process.
-    func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
-        
+    public func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
         // Invoke the C code in sample_threads.c that uses proc_pidinfo to retrieve
         // performance counters including energy usage.
         let result = sample_threads(pid)
@@ -40,9 +56,7 @@ class SampleThreadsManager {
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
-        
-        self.currentThreadCount = Int(result.thread_count)
-        
+                
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         for counter in countersArray {
@@ -63,6 +77,7 @@ class SampleThreadsManager {
             previousCounters[counter.thread_id] = counter
         }
         
+        self.currentThreadCount = Int(result.thread_count)
         let sampleResult = SampleThreadsResult(
             time: .now,
             combinedPower: CombinedPower(
@@ -70,10 +85,13 @@ class SampleThreadsManager {
                 efficiency: combinedEPower
             )
         )
-        historicPower.append(sampleResult)
-        totalEnergyUsage += sampleResult.combinedPower.total * samplingTime / 3600
+        
+        history.addSample(sampleResult)
+        totalEnergyUsage += sampleResult.combinedPower.total * Self.samplingTime / 3600
         return sampleResult
     }
+    
+    // MARK: - Private
     
     private func computePower(previous: thread_counters_t, current: thread_counters_t, type: CoreType) -> Double {
         let energyChange: Double
@@ -88,7 +106,7 @@ class SampleThreadsManager {
             // divided by the time between measurements. Using the counters' ptcd times
             // instead would NOT yield the correct result, as that excludes times where
             // the threads were not running.
-            return energyChange / samplingTime
+            return energyChange / Self.samplingTime
         } else {
             return .zero
         }

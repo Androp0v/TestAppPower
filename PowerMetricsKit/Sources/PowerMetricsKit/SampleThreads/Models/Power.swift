@@ -7,19 +7,25 @@
 
 import Foundation
 
-typealias Power = Double
+/// A power measurement, always in watts.
+public typealias Power = Double
+/// An energy measurement, always in watts-hour.
+public typealias Energy = Double
 
-struct CombinedPower {
-    
-    static var zero: CombinedPower {
-        return CombinedPower(performance: .zero, efficiency: .zero)
-    }
-    
-    let performance: Power
-    let efficiency: Power
-    
+/// A combined power measurement composed of measurements for different core types.
+public struct CombinedPower {
+    /// Power used by the performance cores.
+    public let performance: Power
+    /// Power used by the efficiency cores.
+    public let efficiency: Power
+    /// Power used by all cores.
     var total: Power {
         return performance + efficiency
+    }
+    
+    /// Zero power.
+    public static var zero: CombinedPower {
+        return CombinedPower(performance: .zero, efficiency: .zero)
     }
 }
 
@@ -37,7 +43,7 @@ struct ChartPowerFormatStyle {
         
         func format(_ value: Power) -> String {
             let power = NSNumber(value: value)
-            return (Self.formatter.string(from: power) ?? "?") + " W"
+            return Self.formatter.string(from: power) ?? "??"
         }
     }
     
@@ -51,7 +57,7 @@ struct ChartPowerFormatStyle {
         
         func format(_ value: Power) -> String {
             let power = NSNumber(value: value * 1000)
-            return (Self.formatter.string(from: power) ?? "?") + " mW"
+            return Self.formatter.string(from: power) ?? "??"
         }
     }
 }

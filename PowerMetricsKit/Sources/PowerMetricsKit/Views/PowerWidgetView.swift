@@ -9,11 +9,12 @@ import Charts
 import SwiftUI
 
 /// A `View` displaying the power consumption of the app.
-public struct PowerWidgetView: View {
+@MainActor public struct PowerWidgetView: View {
     
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
-    
+    let viewModel = PowerWidgetViewModel()
+        
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
         numberFormatter.usesGroupingSeparator = false
@@ -34,12 +35,15 @@ public struct PowerWidgetView: View {
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
                 .padding(.bottom)
-            TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
-                Text("CPU power: \(formatPower(power: sampleManager.sampleThreads(pid).combinedPower.total))")
+            TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
+                
+                let info = viewModel.getCurrentAndUpdate(pid: pid, sampleManager: sampleManager)
+                
+                Text("CPU power: \(formatPower(power: info.cpuPower))")
                     .monospaced()
-                Text("Total energy used: \(formatEnergy(energy: sampleManager.totalEnergyUsage))")
+                Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
                     .monospaced()
-                Chart(sampleManager.historicPower.suffix(60)) { measurement in
+                Chart(info.cpuPowerHistory) { measurement in
                     AreaMark(
                         x: .value("Time", measurement.time),
                         y: .value("Power", measurement.combinedPower.efficiency)
@@ -57,16 +61,19 @@ public struct PowerWidgetView: View {
                     )
                 }
                 .chartXAxisLabel("Time")
-                .chartYAxisLabel("Power")
+                .chartYAxisLabel(info.cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
                 .chartXAxis(.hidden)
                 .chartYAxis {
-                    let maxPower = sampleManager.historicPower.suffix(60).map({$0.combinedPower.total}).max()
-                    if (maxPower ?? 0.0) < 0.1 {
+                    if info.cpuMaxPower < 0.1 {
                         AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
                     } else {
                         AxisMarks(format: ChartPowerFormatStyle.Watts())
                     }
                 }
+                .chartXScale(domain: [
+                    Date.now - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
+                    Date.now
+                ])
             }
         }
         .padding()
