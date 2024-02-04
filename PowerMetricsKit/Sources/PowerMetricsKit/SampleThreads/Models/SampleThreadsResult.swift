@@ -7,12 +7,17 @@
 
 import Foundation
 
-struct SampleThreadsResult: Identifiable {
-    let id = UUID()
-    let time: Date
-    let combinedPower: CombinedPower
+/// The processed results from sampling the threads.
+public struct SampleThreadsResult: Identifiable {
+    /// Unique identifier for the sample.
+    public let id = UUID()
+    /// The time at which the measurement was performed.
+    public let time: Date
+    /// The combined power used by all threads.
+    public let combinedPower: CombinedPower
     
-    static var zero: SampleThreadsResult {
+    /// Empty sample with zero power.
+    public static var zero: SampleThreadsResult {
         return SampleThreadsResult(time: .now, combinedPower: .zero)
     }
 }

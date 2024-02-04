@@ -35,7 +35,7 @@ import SwiftUI
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
                 .padding(.bottom)
-            TimelineView(.periodic(from: .now, by: sampleManager.samplingTime)) { _ in
+            TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
                 let info = viewModel.getCurrentAndUpdate(pid: pid, sampleManager: sampleManager)
                 
@@ -70,6 +70,10 @@ import SwiftUI
                         AxisMarks(format: ChartPowerFormatStyle.Watts())
                     }
                 }
+                .chartXScale(domain: [
+                    Date.now - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
+                    Date.now
+                ])
             }
         }
         .padding()

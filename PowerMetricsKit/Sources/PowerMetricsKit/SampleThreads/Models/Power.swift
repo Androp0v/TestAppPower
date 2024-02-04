@@ -8,21 +8,24 @@
 import Foundation
 
 /// A power measurement, always in watts.
-typealias Power = Double
+public typealias Power = Double
 /// An energy measurement, always in watts-hour.
-typealias Energy = Double
+public typealias Energy = Double
 
-struct CombinedPower {
-    
-    static var zero: CombinedPower {
-        return CombinedPower(performance: .zero, efficiency: .zero)
-    }
-    
-    let performance: Power
-    let efficiency: Power
-    
+/// A combined power measurement composed of measurements for different core types.
+public struct CombinedPower {
+    /// Power used by the performance cores.
+    public let performance: Power
+    /// Power used by the efficiency cores.
+    public let efficiency: Power
+    /// Power used by all cores.
     var total: Power {
         return performance + efficiency
+    }
+    
+    /// Zero power.
+    public static var zero: CombinedPower {
+        return CombinedPower(performance: .zero, efficiency: .zero)
     }
 }
 
