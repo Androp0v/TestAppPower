@@ -32,6 +32,9 @@ import SampleThreads
     
     // MARK: - Private properties
     
+    private var samplingTask: Task<Void, Never>?
+    private var continuousClock = ContinuousClock()
+    private var lastSampleTime: ContinuousClock.Instant?
     private var previousCounters = [UInt64: thread_counters_t]()
 
     // MARK: - Init
@@ -41,11 +44,37 @@ import SampleThreads
     
     // MARK: - Sampling
     
+    /// Starts sampling CPU power used for the given PID.
+    /// - Parameter pid: PID of the process to sample.
+    public func startSampling(pid: Int32) {
+        guard self.samplingTask == nil else {
+            return
+        }
+        self.samplingTask = Task(priority: .high) { [weak self] in
+            while !Task.isCancelled {
+                guard let self else {
+                    return
+                }
+                self.sampleThreads(pid)
+                try? await Task.sleep(
+                    for: .seconds(Self.samplingTime),
+                    tolerance: .seconds(Self.samplingTime * 0.01)
+                )
+            }
+        }
+    }
+    
+    /// Stop sampling threads.
+    public func stopSampling() {
+        self.samplingTask?.cancel()
+    }
+    
     /// Given the pid for a process, sample all the threads belonging to that process and
     /// return the `CombinedPower` used for that process.
     /// - Parameter pid: The pid of the process to inspect.
     /// - Returns: The `CombinedPower` used by that process.
-    public func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
+    @discardableResult public func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
+        let currentSampleTime = continuousClock.now
         // Invoke the C code in sample_threads.c that uses proc_pidinfo to retrieve
         // performance counters including energy usage.
         let result = sample_threads(pid)
@@ -60,23 +89,28 @@ import SampleThreads
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         for counter in countersArray {
-            if let previousCounter = previousCounters[counter.thread_id] {
+            if let previousCounter = previousCounters[counter.thread_id], let lastSampleTime {
                 let performancePower = computePower(
-                    previous: previousCounter,
-                    current: counter,
+                    previousTime: lastSampleTime,
+                    currentTime: currentSampleTime,
+                    previousCounters: previousCounter,
+                    currentCounter: counter,
                     type: .performance
                 )
                 let efficiencyPower = computePower(
-                    previous: previousCounter,
-                    current: counter,
+                    previousTime: lastSampleTime,
+                    currentTime: currentSampleTime,
+                    previousCounters: previousCounter,
+                    currentCounter: counter,
                     type: .efficiency
                 )
                 combinedPPower += performancePower
                 combinedEPower += efficiencyPower
             }
-            previousCounters[counter.thread_id] = counter
+            self.previousCounters[counter.thread_id] = counter
         }
         
+        self.lastSampleTime = currentSampleTime
         self.currentThreadCount = Int(result.thread_count)
         let sampleResult = SampleThreadsResult(
             time: .now,
@@ -86,27 +120,41 @@ import SampleThreads
             )
         )
         
-        history.addSample(sampleResult)
-        totalEnergyUsage += sampleResult.combinedPower.total * Self.samplingTime / 3600
+        self.history.addSample(sampleResult)
+        self.totalEnergyUsage += sampleResult.combinedPower.total * Self.samplingTime / 3600
         return sampleResult
     }
     
     // MARK: - Private
     
-    private func computePower(previous: thread_counters_t, current: thread_counters_t, type: CoreType) -> Double {
+    private func computePower(
+        previousTime: ContinuousClock.Instant,
+        currentTime: ContinuousClock.Instant,
+        previousCounters: thread_counters_t,
+        currentCounter: thread_counters_t,
+        type: CoreType
+    ) -> Double {
         let energyChange: Double
         switch type {
         case .performance:
-            energyChange = current.performance.energy - previous.performance.energy
+            energyChange = currentCounter.performance.energy - previousCounters.performance.energy
         case .efficiency:
-            energyChange = current.efficiency.energy - previous.efficiency.energy
+            energyChange = currentCounter.efficiency.energy - previousCounters.efficiency.energy
         }
         if !energyChange.isZero {
             // The *power* used during a time interval is the *total* energy consumed
             // divided by the time between measurements. Using the counters' ptcd times
             // instead would NOT yield the correct result, as that excludes times where
             // the threads were not running.
-            return energyChange / Self.samplingTime
+            //
+            // If the sampling could be guaranteed to be done with precise timing, one
+            // could also divide by SampleThreadsManager.samplingTime, but anything that
+            // messes with the schedule at which sampleThreads() is called is going to
+            // give wrong results (ie: suspending the app, stopping at a breakpoint
+            // while debugging...).
+            let elapsedTime = currentTime - previousTime
+            let elapsedSeconds = Double(elapsedTime.components.seconds) + Double(elapsedTime.components.attoseconds) * 1e-18
+            return energyChange / elapsedSeconds
         } else {
             return .zero
         }

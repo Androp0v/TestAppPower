@@ -37,7 +37,7 @@ import SwiftUI
                 .padding(.bottom)
             TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
-                let info = viewModel.getCurrentAndUpdate(pid: pid, sampleManager: sampleManager)
+                let info = viewModel.getLatest(sampleManager: sampleManager)
                 
                 Text("CPU power: \(formatPower(power: info.cpuPower))")
                     .monospaced()
@@ -80,6 +80,9 @@ import SwiftUI
         .background {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundStyle(.regularMaterial)
+        }
+        .task {
+            await sampleManager.startSampling(pid: pid)
         }
     }
     
