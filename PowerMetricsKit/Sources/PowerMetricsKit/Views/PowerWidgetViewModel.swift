@@ -30,7 +30,7 @@ struct PowerWidgetInfo {
     
     func getLatest(sampleManager: SampleThreadsManager) -> PowerWidgetInfo {
         Task(priority: .high) { @SampleThreadsActor in
-            let cpuPower = sampleManager.history.samples.last?.combinedPower.total ?? .zero
+            let cpuPower = sampleManager.history.samples.last?.allThreadsPower.total ?? .zero
             let cpuEnergy = sampleManager.totalEnergyUsage
             let cpuPowerHistory = sampleManager.history.samples
             let cpuMaxPower = sampleManager.history.maxPower

@@ -88,6 +88,7 @@ import SampleThreads
                 
         var combinedPPower = 0.0
         var combinedEPower = 0.0
+        var threadsPower = [ThreadPower]()
         for counter in countersArray {
             if let previousCounter = previousCounters[counter.thread_id], let lastSampleTime {
                 let performancePower = computePower(
@@ -106,6 +107,14 @@ import SampleThreads
                 )
                 combinedPPower += performancePower
                 combinedEPower += efficiencyPower
+                
+                threadsPower.append(ThreadPower(
+                    threadID: counter.thread_id,
+                    power: CombinedPower(
+                        performance: performancePower,
+                        efficiency: efficiencyPower
+                    )
+                ))
             }
         }
         
@@ -119,14 +128,15 @@ import SampleThreads
         self.currentThreadCount = Int(result.thread_count)
         let sampleResult = SampleThreadsResult(
             time: .now,
-            combinedPower: CombinedPower(
+            allThreadsPower: CombinedPower(
                 performance: combinedPPower,
                 efficiency: combinedEPower
-            )
+            ), 
+            threadsPower: threadsPower
         )
         
         self.history.addSample(sampleResult)
-        self.totalEnergyUsage += sampleResult.combinedPower.total * Self.samplingTime / 3600
+        self.totalEnergyUsage += sampleResult.allThreadsPower.total * Self.samplingTime / 3600
         return sampleResult
     }
     

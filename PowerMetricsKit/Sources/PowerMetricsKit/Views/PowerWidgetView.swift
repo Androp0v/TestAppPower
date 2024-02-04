@@ -15,7 +15,9 @@ import SwiftUI
     let sampleManager = SampleThreadsManager.shared
     let viewModel = PowerWidgetViewModel()
     
+    @State var chartType: ChartType = .coreType
     @State var isResettingEnergy: Bool = false
+    @State var showOptions: Bool = false
         
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()
@@ -51,38 +53,15 @@ import SwiftUI
                         .monospaced()
                     resetEnergyButton
                 }
-                Chart(info.cpuPowerHistory) { measurement in
-                    AreaMark(
-                        x: .value("Time", measurement.time),
-                        y: .value("Power", measurement.combinedPower.efficiency)
-                    )
-                    .foregroundStyle(
-                        by: .value("Name", "Efficiency")
-                    )
-                    
-                    AreaMark(
-                        x: .value("Time", measurement.time),
-                        y: .value("Power (W)", measurement.combinedPower.performance)
-                    )
-                    .foregroundStyle(
-                        by: .value("Name", "Performance")
-                    )
+                
+                switch chartType {
+                case .coreType:
+                    CoreTypePowerChart(info: info, latestSampleTime: latestSampleTime)
+                        .drawingGroup()
+                case .thread:
+                    ThreadPowerChart(info: info, latestSampleTime: latestSampleTime)
+                        .drawingGroup()
                 }
-                .chartXAxisLabel("Time")
-                .chartYAxisLabel(info.cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
-                .chartXAxis(.hidden)
-                .chartYAxis {
-                    if info.cpuMaxPower < 0.1 {
-                        AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
-                    } else {
-                        AxisMarks(format: ChartPowerFormatStyle.Watts())
-                    }
-                }
-                .chartXScale(domain: [
-                    latestSampleTime - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
-                    latestSampleTime
-                ])
-                .drawingGroup()
             }
         }
         .padding()
@@ -90,9 +69,16 @@ import SwiftUI
             RoundedRectangle(cornerRadius: 24)
                 .foregroundStyle(.regularMaterial)
         }
+        .overlay(alignment: .topTrailing) {
+            infoButton
+        }
         .task {
             await sampleManager.startSampling(pid: pid)
         }
+        .sheet(isPresented: $showOptions) {
+            PowerWidgetOptionsView(chartType: $chartType)
+        }
+
     }
     
     // MARK: - Subviews
@@ -120,6 +106,24 @@ import SwiftUI
         #endif
         .disabled(isResettingEnergy)
     }
+    
+    @ViewBuilder var infoButton: some View {
+        Button(
+            action: {
+                showOptions.toggle()
+            },
+            label: {
+                Image(systemName: "info.circle")
+            }
+        )
+        #if os(macOS)
+        .buttonStyle(.plain)
+        .foregroundStyle(.blue)
+        #endif
+        .padding()
+    }
+    
+    // MARK: - Formatters
     
     func formatPower(power: Double) -> String {
         if power < 0.1 {

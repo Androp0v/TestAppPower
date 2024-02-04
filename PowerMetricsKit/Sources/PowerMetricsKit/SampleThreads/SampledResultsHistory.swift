@@ -39,14 +39,14 @@ import Foundation
         writeIndex = writeIndex % numberOfStoredSamples
                 
         // Update max power used in the history
-        if overwrittenSample.combinedPower.total == maxPower {
+        if overwrittenSample.allThreadsPower.total == maxPower {
             recomputeMaxPower()
-        } else if sample.combinedPower.total > maxPower {
-            maxPower = sample.combinedPower.total
+        } else if sample.allThreadsPower.total > maxPower {
+            maxPower = sample.allThreadsPower.total
         }
     }
     
     private func recomputeMaxPower() {
-        maxPower = ringBuffer.map({$0.combinedPower.total}).max() ?? .zero
+        maxPower = ringBuffer.map({$0.allThreadsPower.total}).max() ?? .zero
     }
 }
