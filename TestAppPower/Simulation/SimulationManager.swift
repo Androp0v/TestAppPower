@@ -49,7 +49,7 @@ class SimulationManager {
         self.savedPositions = [simd_double3](repeating: .zero, count: 100_000)
         
         #if DEBUG
-        let stepsPerSavedPosition: Int = 1000
+        let stepsPerSavedPosition: Int = 1_000
         #else
         // Release builds are too fast otherwise (I bet the code is being auto-vectorized
         // by the compiler).
@@ -76,10 +76,13 @@ class SimulationManager {
                             self.savedPositions[self.lastSavedIteration] = nextPosition
                             self.lastSavedIteration += 1
                         }
-                        // Avoid this TaskGroup exhausting Swift Concurrency's thread pool with
-                        // long running synchronous tasks by adding a yield() so other tasks have
-                        // the opportunity to execute as well.
-                        await Task.yield()
+                        
+                        if iteration % 1_000 == 0 {
+                            // Avoid this TaskGroup exhausting Swift Concurrency's thread pool with
+                            // long running synchronous tasks by adding a yield() so other tasks have
+                            // the opportunity to execute as well.
+                            await Task.yield()
+                        }
                     }
                     print("Final position for particle \(particleIndex): \(self.particlePositions[particleIndex])")
                 }
