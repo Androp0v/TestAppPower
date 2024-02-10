@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum ChartType: CaseIterable {
+enum ChartType: String, CaseIterable {
     case coreType
     case thread
     

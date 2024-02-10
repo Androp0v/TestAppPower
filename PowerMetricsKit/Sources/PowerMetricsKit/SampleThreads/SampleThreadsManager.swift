@@ -35,7 +35,7 @@ import SampleThreads
     private var samplingTask: Task<Void, Never>?
     private var continuousClock = ContinuousClock()
     private var lastSampleTime: ContinuousClock.Instant?
-    private var previousCounters = [UInt64: thread_counters_t]()
+    private var previousCounters = [UInt64: sampled_thread_info_t]()
 
     // MARK: - Init
     
@@ -81,7 +81,7 @@ import SampleThreads
         // This points directly to the C array.
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
         // This creates a Swift copy of the C array.
-        let countersArray = [thread_counters_t](counters)
+        let countersArray = [sampled_thread_info_t](counters)
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
@@ -90,6 +90,10 @@ import SampleThreads
         var combinedEPower = 0.0
         var threadsPower = [ThreadPower]()
         for counter in countersArray {
+            let pthreadName = withUnsafePointer(to: counter.pthread_name) { ptr in
+                let start = ptr.pointer(to: \.0)!
+                return String(cString: start)
+            }
             if let previousCounter = previousCounters[counter.thread_id], let lastSampleTime {
                 let performancePower = computePower(
                     previousTime: lastSampleTime,
@@ -110,6 +114,7 @@ import SampleThreads
                 
                 threadsPower.append(ThreadPower(
                     threadID: counter.thread_id,
+                    pthreadName: pthreadName,
                     power: CombinedPower(
                         performance: performancePower,
                         efficiency: efficiencyPower
@@ -119,7 +124,7 @@ import SampleThreads
         }
         
         // Reset previous counters with the latest samples
-        self.previousCounters = [UInt64: thread_counters_t]()
+        self.previousCounters = [UInt64: sampled_thread_info_t]()
         for counter in countersArray {
             self.previousCounters[counter.thread_id] = counter
         }
@@ -151,8 +156,8 @@ import SampleThreads
     private func computePower(
         previousTime: ContinuousClock.Instant,
         currentTime: ContinuousClock.Instant,
-        previousCounters: thread_counters_t,
-        currentCounter: thread_counters_t,
+        previousCounters: sampled_thread_info_t,
+        currentCounter: sampled_thread_info_t,
         type: CoreType
     ) -> Double {
         let energyChange: Double

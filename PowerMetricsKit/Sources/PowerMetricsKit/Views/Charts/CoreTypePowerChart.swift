@@ -45,5 +45,6 @@ struct CoreTypePowerChart: View {
             latestSampleTime - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
             latestSampleTime
         ])
+        .drawingGroup()
     }
 }

@@ -23,15 +23,17 @@ typedef struct {
 typedef struct {
     /// Thread ID.
     uint64_t thread_id;
+    /// Name of the pthread, if any
+    char pthread_name[64];
     /// Performance core counters.
     cpu_counters_t performance;
     /// Efficiency core counters.
     cpu_counters_t efficiency;
-} thread_counters_t;
+} sampled_thread_info_t;
 
 typedef struct {
     uint64_t thread_count;
-    thread_counters_t *cpu_counters;
+    sampled_thread_info_t *cpu_counters;
 } sample_threads_result;
 
 sample_threads_result sample_threads(int pid);

@@ -6,12 +6,22 @@
 //
 
 import Foundation
+import SwiftUI
 
 struct PowerWidgetInfo {
     var cpuPower: Power
     var cpuEnergy: Energy
     var cpuMaxPower: Power
     var cpuPowerHistory: [SampleThreadsResult]
+    var uniqueDisplayNames: [String] {
+        var set = Set<String>()
+        for measurement in cpuPowerHistory {
+            for threadPower in measurement.threadsPower {
+                set.insert(threadPower.displayName)
+            }
+        }
+        return set.sorted()
+    }
     
     static let empty = PowerWidgetInfo(
         cpuPower: .zero,
@@ -25,6 +35,7 @@ struct PowerWidgetInfo {
 @MainActor class PowerWidgetViewModel {
     
     var powerWidgetInfo: PowerWidgetInfo = .empty
+    var threadColors = [String: Color]()
     
     init() {}
     

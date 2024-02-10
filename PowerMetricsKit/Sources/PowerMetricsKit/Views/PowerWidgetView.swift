@@ -15,7 +15,7 @@ import SwiftUI
     let sampleManager = SampleThreadsManager.shared
     let viewModel = PowerWidgetViewModel()
     
-    @State var chartType: ChartType = .coreType
+    @AppStorage("chartType") var chartType: ChartType = .coreType
     @State var isResettingEnergy: Bool = false
     @State var showOptions: Bool = false
         
@@ -57,10 +57,8 @@ import SwiftUI
                 switch chartType {
                 case .coreType:
                     CoreTypePowerChart(info: info, latestSampleTime: latestSampleTime)
-                        .drawingGroup()
                 case .thread:
                     ThreadPowerChart(info: info, latestSampleTime: latestSampleTime)
-                        .drawingGroup()
                 }
             }
         }

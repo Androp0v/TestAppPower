@@ -11,8 +11,28 @@ import Foundation
 public struct ThreadPower {
     /// The Mach thread ID.
     let threadID: UInt64
+    /// The pthread name of the thread.
+    let pthreadName: String?
     /// The combined power used by this thread in the interval across all core types.
     let power: CombinedPower
+    /// The name of this thread when displayed in the UI. Matched the `pthreadName` (if available),
+    /// defaults to the `threadID` otherwise.
+    var displayName: String {
+        if let pthreadName {
+            return pthreadName
+        }
+        return String("\(threadID)")
+    }
+    
+    init(threadID: UInt64, pthreadName: String?, power: CombinedPower) {
+        self.threadID = threadID
+        if let pthreadName, !pthreadName.isEmpty {
+            self.pthreadName = pthreadName
+        } else {
+            self.pthreadName = nil
+        }
+        self.power = power
+    }
 }
 
 /// The processed results from sampling the threads.

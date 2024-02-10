@@ -6,6 +6,7 @@
 //
 
 #include "sample_threads.h"
+#include <dispatch/dispatch.h>
 #include <stdlib.h>
 #include <mach/mach_init.h>
 #include <mach/mach_port.h>
@@ -76,7 +77,7 @@ sample_threads_result sample_threads(int pid) {
         // TODO: Handle error...
     }
     
-    thread_counters_t *counters_array = malloc(sizeof(thread_counters_t) * n_threads);
+    sampled_thread_info_t *counters_array = malloc(sizeof(sampled_thread_info_t) * n_threads);
     
     // Loop over all the threads of the current process.
     for (int i = 0; i < n_threads; i++) {
@@ -98,6 +99,18 @@ sample_threads_result sample_threads(int pid) {
         }
         
         counters_array[i].thread_id = th_info.thread_id;
+        
+        // Attempt to retrieve the thread name
+        struct thread_extended_info th_extended_info;
+        mach_msg_type_number_t th_extended_info_count = THREAD_EXTENDED_INFO_COUNT;
+        kern_return_t extended_info_result = thread_info(thread,
+                                                         THREAD_EXTENDED_INFO,
+                                                         (thread_info_t)&th_extended_info,
+                                                         &th_extended_info_count);
+        
+        strcpy(counters_array[i].pthread_name, th_extended_info.pth_name);
+        
+        
         
         struct proc_threadcounts current_counters;
         
