@@ -14,8 +14,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "computePower(previousTime:currentTime:previousCounters:currentCounter:type:)"
             landmarkType = "7">
             <Locations>
@@ -158,9 +158,9 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/Views/Charts/ThreadPowerChart/ThreadPowerChartModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "colorForDisplayName(_:environment:)"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "colorForDisplayName(_:allDisplayNames:environment:)"
             landmarkType = "7">
             <Locations>
                <Location
@@ -241,6 +241,21 @@
                   endingLineNumber = "57"
                   offsetFromSymbolStart = "2180">
                </Location>
+               <Location
+                  uuid = "0670E43E-126A-40C4-BCAF-1C32FB7B6EE6 - ad97b8d229e5355f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static SwiftUI.Color.newChartColor(existing: Swift.Array&lt;SwiftUI.Color&gt;, environment: SwiftUI.EnvironmentValues) -&gt; SwiftUI.Color"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/Charts/Color+Extensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "2236">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -318,8 +333,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "97"
-            endingLineNumber = "97"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>

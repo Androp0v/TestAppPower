@@ -85,10 +85,11 @@ import SampleThreads
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
-                
+        
+        let sampleTime = Date.now
         var combinedPPower = 0.0
         var combinedEPower = 0.0
-        var threadsPower = [ThreadPower]()
+        var threadSamples = [ThreadSample]()
         for counter in countersArray {
             let pthreadName = withUnsafePointer(to: counter.pthread_name) { ptr in
                 let start = ptr.pointer(to: \.0)!
@@ -112,8 +113,9 @@ import SampleThreads
                 combinedPPower += performancePower
                 combinedEPower += efficiencyPower
                 
-                threadsPower.append(ThreadPower(
-                    threadID: counter.thread_id,
+                threadSamples.append(ThreadSample(
+                    threadID: counter.thread_id, 
+                    sampleTime: sampleTime,
                     pthreadName: pthreadName,
                     power: CombinedPower(
                         performance: performancePower,
@@ -132,12 +134,12 @@ import SampleThreads
         self.lastSampleTime = currentSampleTime
         self.currentThreadCount = Int(result.thread_count)
         let sampleResult = SampleThreadsResult(
-            time: .now,
+            time: sampleTime,
             allThreadsPower: CombinedPower(
                 performance: combinedPPower,
                 efficiency: combinedEPower
             ), 
-            threadsPower: threadsPower
+            threadSamples: threadSamples
         )
         
         self.history.addSample(sampleResult)

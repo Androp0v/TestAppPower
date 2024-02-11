@@ -17,50 +17,61 @@ import SwiftUI
     @Environment(\.self) var environment
         
     var body: some View {
-        Chart(info.cpuPowerHistory) { measurement in
+        VStack(spacing: .zero) {
+            Chart(info.cpuPowerHistory) { measurement in
+                
+                ForEach(measurement.threadSamples, id: \.threadID) { threadSample in
+                    AreaMark(
+                        x: .value("Time", measurement.time),
+                        y: .value("Power", threadSample.power.total)
+                    )
+                    .foregroundStyle(
+                        by: .value("Thread name", "\(threadSample.displayName)")
+                    )
+                }
+            }
+            .chartXAxisLabel("Time")
+            .chartYAxisLabel(info.cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
+            .chartXAxis(.hidden)
+            .chartYAxis {
+                if info.cpuMaxPower < 0.1 {
+                    AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
+                } else {
+                    AxisMarks(format: ChartPowerFormatStyle.Watts())
+                }
+            }
+            .chartXScale(domain: [
+                latestSampleTime - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
+                latestSampleTime
+            ])
+            .chartForegroundStyleScale(mapping: { (displayName: String) in
+                return model.colorForDisplayName(
+                    displayName,
+                    allDisplayNames: info.uniqueThreads.map({ $0.displayName }),
+                    environment: environment
+                )
+            })
+            .chartLegend(.hidden)
+            .drawingGroup()
             
-            ForEach(measurement.threadsPower, id: \.threadID) { threadPower in
-                AreaMark(
-                    x: .value("Time", measurement.time),
-                    y: .value("Power", threadPower.power.total)
-                )
-                .foregroundStyle(
-                    by: .value("Thread name", "\(threadPower.displayName)")
-                )
-            }
-        }
-        .chartXAxisLabel("Time")
-        .chartYAxisLabel(info.cpuMaxPower < 0.1 ? "Power (mW)" : "Power (W)")
-        .chartXAxis(.hidden)
-        .chartYAxis {
-            if info.cpuMaxPower < 0.1 {
-                AxisMarks(format: ChartPowerFormatStyle.Miliwatts())
-            } else {
-                AxisMarks(format: ChartPowerFormatStyle.Watts())
-            }
-        }
-        .chartXScale(domain: [
-            latestSampleTime - SampleThreadsManager.samplingTime * Double(SampleThreadsManager.numberOfStoredSamples),
-            latestSampleTime
-        ])
-        .chartForegroundStyleScale(mapping: { (displayName: String) in
-            return model.colorForDisplayName(displayName, environment: environment)
-        })
-        .chartLegend(.hidden)
-        .drawingGroup()
-        
-        ScrollView {
-            VStack(alignment: .leading) {
-                ForEach(info.uniqueDisplayNames, id: \.self) { displayName in
-                    HStack {
-                        Circle()
-                            .frame(width: 8, height: 8)
-                            .foregroundStyle(model.colorForDisplayName(displayName, environment: environment))
-                        Text(displayName)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .foregroundStyle(model.colorForDisplayName(displayName, environment: environment))
+            Divider()
+                .padding(.top, 12)
+            
+            ScrollView {
+                VStack(alignment: .leading) {
+                    ForEach(info.uniqueThreads, id: \.id) { thread in
+                        ThreadPowerRow(
+                            thread: thread,
+                            threadColor: model.colorForDisplayName(
+                                thread.displayName,
+                                allDisplayNames: info.uniqueThreads.map({ $0.displayName }),
+                                environment: environment
+                            ),
+                            hasUpToDatePower: thread.sampleTime == info.latestSampleTime
+                        )
                     }
                 }
+                .padding(.top, 12)
             }
         }
     }

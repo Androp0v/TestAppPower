@@ -14,7 +14,12 @@ import SwiftUI
     
     init(){}
     
-    func colorForDisplayName(_ displayName: String, environment: EnvironmentValues) -> Color {
+    func colorForDisplayName(_ displayName: String, allDisplayNames: [String], environment: EnvironmentValues) -> Color {
+        for name in threadColors.keys {
+            if !allDisplayNames.contains(name) {
+                threadColors.removeValue(forKey: name)
+            }
+        }
         if let existingColor = threadColors[displayName] {
             return existingColor
         }

@@ -31,6 +31,15 @@ public struct CombinedPower {
 
 // MARK: - Formatting
 
+extension NumberFormatter {
+    static var power: NumberFormatter = {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.maximumFractionDigits = 2
+        numberFormatter.minimumFractionDigits = 2
+        return numberFormatter
+    }()
+}
+
 struct ChartPowerFormatStyle {
     
     struct Watts: FormatStyle {

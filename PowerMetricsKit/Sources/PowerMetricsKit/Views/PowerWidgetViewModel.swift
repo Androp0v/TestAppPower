@@ -13,14 +13,17 @@ struct PowerWidgetInfo {
     var cpuEnergy: Energy
     var cpuMaxPower: Power
     var cpuPowerHistory: [SampleThreadsResult]
-    var uniqueDisplayNames: [String] {
-        var set = Set<String>()
-        for measurement in cpuPowerHistory {
-            for threadPower in measurement.threadsPower {
-                set.insert(threadPower.displayName)
+    var latestSampleTime: Date? {
+        return cpuPowerHistory.last?.time
+    }
+    var uniqueThreads: [ThreadSample] {
+        var set = Set<ThreadSample>()
+        for measurement in cpuPowerHistory.reversed() {
+            for threadSample in measurement.threadSamples {
+                set.insert(threadSample)
             }
         }
-        return set.sorted()
+        return set.sorted(by: { $0.displayName < $1.displayName })
     }
     
     static let empty = PowerWidgetInfo(
