@@ -41,6 +41,7 @@ import SwiftUI
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
                 .padding(.bottom)
+                .padding(.horizontal)
             TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
                 let info = viewModel.getLatest(sampleManager: sampleManager)
@@ -48,21 +49,25 @@ import SwiftUI
                 
                 Text("CPU power: \(formatPower(power: info.cpuPower))")
                     .monospaced()
+                    .padding(.horizontal)
                 HStack(spacing: 4) {
                     Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
                         .monospaced()
                     resetEnergyButton
                 }
+                .padding(.horizontal)
                 
                 switch chartType {
                 case .coreType:
                     CoreTypePowerChart(info: info, latestSampleTime: latestSampleTime)
+                        .padding(.horizontal)
+                        .padding(.bottom)
                 case .thread:
                     ThreadPowerChart(info: info, latestSampleTime: latestSampleTime)
                 }
             }
         }
-        .padding()
+        .padding(.top)
         .background {
             RoundedRectangle(cornerRadius: 24)
                 .foregroundStyle(.regularMaterial)

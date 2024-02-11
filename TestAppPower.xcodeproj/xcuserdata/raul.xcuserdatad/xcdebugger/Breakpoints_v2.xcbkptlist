@@ -273,6 +273,38 @@
             endingLineNumber = "72"
             landmarkName = "newChartColor(existing:environment:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "38E51A2C-0AAE-4ACF-9E92-62133DBD6C6C - 4e9a7f91757ded5c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static SwiftUI.Color.rgbToHue(r: Swift.Float, g: Swift.Float, b: Swift.Float) -&gt; Swift.Float"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/Charts/Color+Extensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "140">
+               </Location>
+               <Location
+                  uuid = "38E51A2C-0AAE-4ACF-9E92-62133DBD6C6C - ad97b8d229e537b2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static SwiftUI.Color.newChartColor(existing: Swift.Array&lt;SwiftUI.Color&gt;, environment: SwiftUI.EnvironmentValues) -&gt; SwiftUI.Color"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/Charts/Color+Extensions.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "73"
+                  endingLineNumber = "73"
+                  offsetFromSymbolStart = "2532">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

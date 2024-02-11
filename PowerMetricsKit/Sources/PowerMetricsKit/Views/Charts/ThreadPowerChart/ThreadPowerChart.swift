@@ -14,6 +14,8 @@ import SwiftUI
     let latestSampleTime: Date
     
     @State var model = ThreadPowerChartModel()
+    @State var selectedThread: UInt64?
+    
     @Environment(\.self) var environment
         
     var body: some View {
@@ -52,10 +54,12 @@ import SwiftUI
                 )
             })
             .chartLegend(.hidden)
+            .padding(.horizontal)
             .drawingGroup()
             
             Divider()
                 .padding(.top, 12)
+                .padding(.horizontal)
             
             ScrollView {
                 VStack(alignment: .leading) {
@@ -67,11 +71,14 @@ import SwiftUI
                                 allDisplayNames: info.uniqueThreads.map({ $0.displayName }),
                                 environment: environment
                             ),
-                            hasUpToDatePower: thread.sampleTime == info.latestSampleTime
+                            hasUpToDatePower: thread.sampleTime == info.latestSampleTime, 
+                            selectedThread: $selectedThread
                         )
                     }
                 }
                 .padding(.top, 12)
+                .padding(.horizontal)
+                .padding(.bottom)
             }
         }
     }
