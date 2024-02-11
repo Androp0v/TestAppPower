@@ -121,9 +121,10 @@ sample_threads_result sample_threads(int pid) {
                                                    (thread_info_t)&th_id_info,
                                                    &th_id_count);
         
-        _Nullable dispatch_queue_t *thread_queue = th_id_info.dispatch_qaddr;
+        dispatch_queue_t * _Nullable thread_queue = th_id_info.dispatch_qaddr;
         if (id_info_result == KERN_SUCCESS && thread_queue != NULL) {
-            strcpy(counters_array[i].dispatch_queue_name, dispatch_queue_get_label(*thread_queue));
+            const char  * _Nullable queue_label = dispatch_queue_get_label(*thread_queue);
+            strcpy(counters_array[i].dispatch_queue_name, queue_label);
         } else {
             strcpy(counters_array[i].dispatch_queue_name, "");
         }
