@@ -35,7 +35,11 @@ import SampleThreads
     private var samplingTask: Task<Void, Never>?
     private var continuousClock = ContinuousClock()
     private var lastSampleTime: ContinuousClock.Instant?
-    private var previousCounters = [UInt64: sampled_thread_info_t]()
+    private var previousRawSamples = [UInt64: sampled_thread_info_t]()
+    /// Maps a unique thread ID with a counter that increases by `1` every time a new thread appears.
+    private var threadIDToCounter = [UInt64: Int]()
+    /// The last value of the counter used to map thread IDs to a monotonously increasing counter.
+    private var lastCounter: Int = 0
 
     // MARK: - Init
     
@@ -72,7 +76,7 @@ import SampleThreads
     /// Given the pid for a process, sample all the threads belonging to that process and
     /// return the `CombinedPower` used for that process.
     /// - Parameter pid: The pid of the process to inspect.
-    /// - Returns: The `CombinedPower` used by that process.
+    /// - Returns: A `SampleThreadsResult` object.
     @discardableResult public func sampleThreads(_ pid: Int32) -> SampleThreadsResult {
         let currentSampleTime = continuousClock.now
         // Invoke the C code in sample_threads.c that uses proc_pidinfo to retrieve
@@ -81,7 +85,7 @@ import SampleThreads
         // This points directly to the C array.
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
         // This creates a Swift copy of the C array.
-        let countersArray = [sampled_thread_info_t](counters)
+        let rawThreadSamples = [sampled_thread_info_t](counters)
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
@@ -90,50 +94,59 @@ import SampleThreads
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         var threadSamples = [ThreadSample]()
-        for counter in countersArray {
-            let pthreadName = withUnsafePointer(to: counter.pthread_name) { ptr in
+        for rawThreadSample in rawThreadSamples.sorted(by: { $0.thread_id < $1.thread_id }) {
+            var threadCounter: Int
+            if let counter = threadIDToCounter[rawThreadSample.thread_id] {
+                threadCounter = counter
+            } else {
+                lastCounter += 1
+                threadIDToCounter[rawThreadSample.thread_id] = lastCounter
+                threadCounter = lastCounter
+            }
+            let pthreadName = withUnsafePointer(to: rawThreadSample.pthread_name) { ptr in
                 let start = ptr.pointer(to: \.0)!
                 return String(cString: start)
             }
-            let dispatchQueueName: String? = withUnsafePointer(to: counter.dispatch_queue_name) { ptr in
+            let dispatchQueueName: String? = withUnsafePointer(to: rawThreadSample.dispatch_queue_name) { ptr in
                 let start = ptr.pointer(to: \.0)!
                 return String(cString: start)
             }
-            if let previousCounter = previousCounters[counter.thread_id], let lastSampleTime {
+            if let previousCounter = previousRawSamples[rawThreadSample.thread_id], let lastSampleTime {
                 let performancePower = computePower(
                     previousTime: lastSampleTime,
                     currentTime: currentSampleTime,
                     previousCounters: previousCounter,
-                    currentCounter: counter,
+                    currentCounter: rawThreadSample,
                     type: .performance
                 )
                 let efficiencyPower = computePower(
                     previousTime: lastSampleTime,
                     currentTime: currentSampleTime,
                     previousCounters: previousCounter,
-                    currentCounter: counter,
+                    currentCounter: rawThreadSample,
                     type: .efficiency
                 )
                 combinedPPower += performancePower
                 combinedEPower += efficiencyPower
                 
                 threadSamples.append(ThreadSample(
-                    threadID: counter.thread_id, 
+                    threadID: rawThreadSample.thread_id, 
                     sampleTime: sampleTime,
                     pthreadName: pthreadName,
                     dispatchQueueName: dispatchQueueName,
                     power: CombinedPower(
                         performance: performancePower,
                         efficiency: efficiencyPower
-                    )
+                    ),
+                    threadCounter: threadCounter
                 ))
             }
         }
         
         // Reset previous counters with the latest samples
-        self.previousCounters = [UInt64: sampled_thread_info_t]()
-        for counter in countersArray {
-            self.previousCounters[counter.thread_id] = counter
+        self.previousRawSamples = [UInt64: sampled_thread_info_t]()
+        for counter in rawThreadSamples {
+            self.previousRawSamples[counter.thread_id] = counter
         }
         
         self.lastSampleTime = currentSampleTime

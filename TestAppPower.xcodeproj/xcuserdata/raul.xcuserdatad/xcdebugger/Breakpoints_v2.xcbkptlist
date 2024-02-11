@@ -14,8 +14,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "190"
-            endingLineNumber = "190"
+            startingLineNumber = "203"
+            endingLineNumber = "203"
             landmarkName = "computePower(previousTime:currentTime:previousCounters:currentCounter:type:)"
             landmarkType = "7">
             <Locations>
@@ -317,8 +317,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>
@@ -554,8 +554,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "120"
-            endingLineNumber = "120"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -574,6 +574,54 @@
             endingLineNumber = "126"
             landmarkName = "sample_threads(pid)"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "62D1AD89-B1EF-4E6C-AAE3-9B32B16AEBC4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "30"
+            endingLineNumber = "30"
+            landmarkName = "uniqueThreads"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "62D1AD89-B1EF-4E6C-AAE3-9B32B16AEBC4 - 3e9e06a5257982b3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.PowerWidgetInfo.uniqueThreads.getter : Swift.Array&lt;PowerMetricsKit.ThreadSample&gt;"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "1692">
+               </Location>
+               <Location
+                  uuid = "62D1AD89-B1EF-4E6C-AAE3-9B32B16AEBC4 - ed4fce893d6a8535"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (PowerMetricsKit.ThreadSample, PowerMetricsKit.ThreadSample) -&gt; Swift.Bool in PowerMetricsKit.PowerWidgetInfo.uniqueThreads.getter : Swift.Array&lt;PowerMetricsKit.ThreadSample&gt;"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "176">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

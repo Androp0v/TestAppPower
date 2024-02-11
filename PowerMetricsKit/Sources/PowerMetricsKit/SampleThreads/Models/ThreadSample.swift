@@ -25,10 +25,19 @@ public struct ThreadSample {
         if let pthreadName {
             return pthreadName
         }
-        return String("\(threadID)")
+        return String("Thread \(threadCounter)")
     }
     
-    init(threadID: UInt64, sampleTime: Date, pthreadName: String?, dispatchQueueName: String?, power: CombinedPower) {
+    private var threadCounter: Int
+    
+    init(
+        threadID: UInt64,
+        sampleTime: Date,
+        pthreadName: String?,
+        dispatchQueueName: String?,
+        power: CombinedPower,
+        threadCounter: Int
+    ) {
         self.threadID = threadID
         self.sampleTime = sampleTime
         if let pthreadName, !pthreadName.isEmpty {
@@ -42,5 +51,6 @@ public struct ThreadSample {
             self.dispatchQueueName = nil
         }
         self.power = power
+        self.threadCounter = threadCounter
     }
 }
