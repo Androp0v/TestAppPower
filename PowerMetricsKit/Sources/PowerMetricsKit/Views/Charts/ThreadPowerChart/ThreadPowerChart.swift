@@ -63,7 +63,7 @@ import SwiftUI
             
             ScrollView {
                 VStack(alignment: .leading) {
-                    ForEach(info.uniqueThreads, id: \.id) { thread in
+                    ForEach(info.uniqueThreads, id: \.threadID) { thread in
                         ThreadPowerRow(
                             thread: thread,
                             threadColor: model.colorForDisplayName(

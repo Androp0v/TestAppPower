@@ -17,13 +17,17 @@ struct PowerWidgetInfo {
         return cpuPowerHistory.last?.time
     }
     var uniqueThreads: [ThreadSample] {
-        var set = Set<ThreadSample>()
+        var threadSamples = [ThreadSample]()
+        var threadIDs = Set<String>()
         for measurement in cpuPowerHistory.reversed() {
             for threadSample in measurement.threadSamples {
-                set.insert(threadSample)
+                if !threadIDs.contains(threadSample.displayName) {
+                    threadIDs.insert(threadSample.displayName)
+                    threadSamples.append(threadSample)
+                }
             }
         }
-        return set.sorted(by: { $0.displayName < $1.displayName })
+        return threadSamples.sorted(by: { $0.displayName < $1.displayName })
     }
     
     static let empty = PowerWidgetInfo(

@@ -107,10 +107,28 @@ sample_threads_result sample_threads(int pid) {
                                                          THREAD_EXTENDED_INFO,
                                                          (thread_info_t)&th_extended_info,
                                                          &th_extended_info_count);
+        if (extended_info_result == KERN_SUCCESS) {
+            strcpy(counters_array[i].pthread_name, th_extended_info.pth_name);
+        } else {
+            strcpy(counters_array[i].pthread_name, "");
+        }
         
-        strcpy(counters_array[i].pthread_name, th_extended_info.pth_name);
+        // Attempt to retrieve the libdispatch queue
+        struct thread_identifier_info th_id_info;
+        mach_msg_type_number_t th_id_count = THREAD_IDENTIFIER_INFO_COUNT;
+        kern_return_t id_info_result = thread_info(thread,
+                                                   THREAD_IDENTIFIER_INFO,
+                                                   (thread_info_t)&th_id_info,
+                                                   &th_id_count);
         
+        _Nullable dispatch_queue_t *thread_queue = th_id_info.dispatch_qaddr;
+        if (id_info_result == KERN_SUCCESS && thread_queue != NULL) {
+            strcpy(counters_array[i].dispatch_queue_name, dispatch_queue_get_label(*thread_queue));
+        } else {
+            strcpy(counters_array[i].dispatch_queue_name, "");
+        }
         
+        // Retrieve power counters info
         
         struct proc_threadcounts current_counters;
         

@@ -24,13 +24,21 @@ struct ThreadPowerRow: View {
                 Circle()
                     .frame(width: 8, height: 8)
                     .foregroundStyle(threadColor)
-                Text(thread.displayName)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundStyle(threadColor)
-                Text(formatPower(thread.power.total))
-                    .foregroundStyle(.secondary)
-                    .font(.caption)
-                    .monospaced()
+                VStack {
+                    HStack {
+                        Text(thread.displayName)
+                            .foregroundStyle(threadColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Text(formatPower(thread.power.total))
+                            .foregroundStyle(.secondary)
+                            .font(.caption)
+                            .monospaced()
+                    }
+                    Text(thread.dispatchQueueName ?? "Unknown")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
             }
             .contentShape(Rectangle())
             .onTapGesture {

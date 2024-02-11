@@ -25,6 +25,8 @@ typedef struct {
     uint64_t thread_id;
     /// Name of the pthread, if any
     char pthread_name[64];
+    /// Name of the thread's Dispatch Queue, if any
+    char dispatch_queue_name[128];
     /// Performance core counters.
     cpu_counters_t performance;
     /// Efficiency core counters.

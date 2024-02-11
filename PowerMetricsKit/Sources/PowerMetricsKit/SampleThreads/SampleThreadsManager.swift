@@ -95,6 +95,10 @@ import SampleThreads
                 let start = ptr.pointer(to: \.0)!
                 return String(cString: start)
             }
+            let dispatchQueueName: String? = withUnsafePointer(to: counter.dispatch_queue_name) { ptr in
+                let start = ptr.pointer(to: \.0)!
+                return String(cString: start)
+            }
             if let previousCounter = previousCounters[counter.thread_id], let lastSampleTime {
                 let performancePower = computePower(
                     previousTime: lastSampleTime,
@@ -117,6 +121,7 @@ import SampleThreads
                     threadID: counter.thread_id, 
                     sampleTime: sampleTime,
                     pthreadName: pthreadName,
+                    dispatchQueueName: dispatchQueueName,
                     power: CombinedPower(
                         performance: performancePower,
                         efficiency: efficiencyPower
