@@ -15,7 +15,7 @@ struct ContentView: View {
     @State var result: Double?
     
     var body: some View {
-        let layout = horizontalSizeClass == .compact ? AnyLayout(VStackLayout()) : AnyLayout(HStackLayout())
+        let layout = horizontalSizeClass == .compact ? AnyLayout(VStackLayout(spacing: .zero)) : AnyLayout(HStackLayout())
         layout {
             PowerWidgetView()
                 .frame(maxWidth: 500, maxHeight: 800)

@@ -40,7 +40,7 @@ import SwiftUI
         VStack {
             Text("PID: \(pidFormatter.string(from: NSNumber(value: pid)) ?? "??")")
                 .font(.largeTitle)
-                .padding(.bottom)
+                .padding(.bottom, 4)
                 .padding(.horizontal)
             TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
