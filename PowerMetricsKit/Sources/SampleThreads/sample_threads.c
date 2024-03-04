@@ -16,6 +16,12 @@
 #include <mach/task.h>
 #include <mach/mach_time.h>
 #include <stdio.h>
+#include <execinfo.h>
+
+// Bitmask to strip pointer authentication (PAC).
+#define PAC_STRIPPING_BITMASK 0x0000000FFFFFFFFF
+// Max number of frames in stack trace
+#define MAX_FRAME_DEPTH 16
 
 // Technically private structs, from:
 // https://github.com/apple-oss-distributions/xnu/blob/aca3beaa3dfbd42498b42c5e5ce20a938e6554e5/bsd/sys/proc_info.h#L153
@@ -50,6 +56,80 @@ static double convert_mach_time(uint64_t mach_time) {
     }
     double elapsed = (mach_time * base.numer) / base.denom;
     return elapsed / 1e9;
+}
+
+bool apply_offset(mach_vm_address_t base_address, int64_t offset, mach_vm_address_t *result) {
+    /* Check for overflow */
+    if (offset > 0 && UINT64_MAX - offset < base_address) {
+        return false;
+    } else if (offset < 0 && (offset * -1) > base_address) {
+        return false;
+    }
+    
+    if (result != NULL)
+        *result = base_address + offset;
+    
+    return true;
+}
+
+kern_return_t task_memcpy(mach_port_t task, mach_vm_address_t address, int64_t offset, void *dest, mach_vm_size_t length) {
+    mach_vm_address_t target;
+    kern_return_t kt;
+
+    /* Compute the target address and check for overflow */
+    if (!apply_offset(address, offset, &target)) {
+        // TODO: Handle error...
+    }
+    
+    vm_size_t read_size = length;
+    return vm_read_overwrite(task, target, length, (pointer_t) dest, &read_size);
+}
+
+void frame_walk(mach_port_t task, arm_thread_state64_t thread_state) {
+    int depth = 0;
+    uint64_t stack_trace[MAX_FRAME_DEPTH] = { 0 };
+    
+    uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
+    uint64_t initial_program_counter = (thread_state.__pc & PAC_STRIPPING_BITMASK);
+    
+    uint64_t current_frame_pointer;
+    uint64_t next_frame_pointer;
+    kern_return_t result = task_memcpy(task,
+                                       initial_frame_pointer,
+                                       0,
+                                       &current_frame_pointer,
+                                       2 * sizeof(int64_t));
+    current_frame_pointer = current_frame_pointer & PAC_STRIPPING_BITMASK;
+        
+    while (true) {
+        if (current_frame_pointer == 0x0) {
+            // TODO: Terminated frame
+            printf("Final frame\n");
+            break;
+        }
+        
+        kern_return_t result = task_memcpy(task,
+                                           current_frame_pointer,
+                                           0,
+                                           &next_frame_pointer,
+                                           2 * sizeof(int64_t));
+        next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
+        
+        if (next_frame_pointer < current_frame_pointer) {
+            // Wrong direction, bad frame
+            printf("WARNING: Wrong stack direction\n");
+            break;
+        }
+        printf("Moving to previous frame\n");
+        current_frame_pointer = next_frame_pointer;
+        stack_trace[depth] = current_frame_pointer;
+        depth += 1;
+        
+        if (depth >= MAX_FRAME_DEPTH) {
+            printf("Reached max frame depth\n");
+            break;
+        }
+    }
 }
 
 sample_threads_result sample_threads(int pid) {
@@ -188,6 +268,34 @@ sample_threads_result sample_threads(int pid) {
         counters_array[i].efficiency.cycles = e_cycles;
         counters_array[i].efficiency.energy = e_energy;
         counters_array[i].efficiency.time = e_time;
+        
+        /* Fetch the thread state */
+        #if defined(__aarch64__)
+        
+        void *array[10];
+        int size;
+        char **strings;
+        size = backtrace(array, 10);
+        strings = backtrace_symbols(array, size);
+        for (i = 0; i < size; i++) {
+            printf ("%s\n", strings[i]);
+        }
+        
+        /*
+        mach_msg_type_number_t state_count = ARM_UNIFIED_THREAD_STATE_COUNT;
+        arm_thread_state64_t thread_state;
+        kern_return_t thread_state_result = thread_get_state(thread,
+                                                             ARM_THREAD_STATE64,
+                                                             (thread_state_t) &thread_state,
+                                                             &state_count);
+        
+        frame_walk(me, thread_state);
+        
+        if (thread_state_result != KERN_SUCCESS) {
+            // TODO: Handle error...
+        }
+         */
+        #endif
     }
     
     sample_threads_result result;
