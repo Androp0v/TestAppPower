@@ -6,6 +6,7 @@
 //
 
 #include "sample_threads.h"
+#include "get_backtrace.h"
 #include <dispatch/dispatch.h>
 #include <stdlib.h>
 #include <mach/mach_init.h>
@@ -58,7 +59,7 @@ sample_threads_result sample_threads(int pid) {
     kern_return_t res;
     thread_array_t threads;
     mach_msg_type_number_t n_threads;
-
+    
     // Here we'd expect task_threads to always succeed as the process being inspected
     // is the same process that is making the call. Attempting to inspect tasks for
     // different processes raises KERN_FAILURE unless the caller has root privileges.
@@ -188,6 +189,9 @@ sample_threads_result sample_threads(int pid) {
         counters_array[i].efficiency.cycles = e_cycles;
         counters_array[i].efficiency.energy = e_energy;
         counters_array[i].efficiency.time = e_time;
+        
+        // Backtrace
+        get_backtrace(thread);
     }
     
     sample_threads_result result;
