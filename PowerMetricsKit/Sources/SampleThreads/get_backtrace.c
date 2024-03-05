@@ -88,84 +88,80 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
     uint64_t next_frame_pointer;
     
     Dl_info info;
+    printf("[Thread]\n");
     if (dladdr(thread_state.__lr, &info) != 0) {
-        const char *p = strrchr(info.dli_fname, '/');
-        if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
-            printf("[TestAppPower]\n");
+        // Let's walk the stack only for TestAppPower frames...
+        while (true) {
             
-            // Let's walk the stack only for TestAppPower frames...
-            while (true) {
-                
-                if (depth == 0) {
-                    uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
-                    current_frame_pointer = (initial_frame_pointer & PAC_STRIPPING_BITMASK);
-                }
-                
-                if (current_frame_pointer == 0x0) {
-                    // TODO: Terminated frame
-                    break;
-                }
-                
-                kern_return_t result = task_memcpy(task,
-                                                   current_frame_pointer,
-                                                   0,
-                                                   &next_frame_pointer,
-                                                   sizeof(int64_t));
-                if (result != KERN_SUCCESS) {
-                    break;
-                }
-                next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
-                
-                // Get the caller address (Link Register, lr) knowing it's a 8-byte offset from the
-                // frame pointer (fp).
-                uint64_t caller_address;
-                uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) + 8;
-                kern_return_t caller_retrieval_result = task_memcpy(task,
-                                                                    caller_address_pointer,
-                                                                    0,
-                                                                    &caller_address,
-                                                                    sizeof(void *));
-                // TODO:
-                // Investigate why this doesn't always match the lr register of the thread_state
-                // at depth 0, accessed via thread_state.__lr.
-                caller_address = caller_address & PAC_STRIPPING_BITMASK;
-                
-                // Save info for this frame
-                frame_pointer_addresses[depth] = current_frame_pointer;
-                if (caller_retrieval_result == KERN_SUCCESS) {
-                    caller_addresses[depth] = caller_address;
-                }
-                
-                // Update depth and exit if max depth reached
-                depth += 1;
-                if (depth >= MAX_FRAME_DEPTH) {
-                    break;
-                }
-                current_frame_pointer = next_frame_pointer;
+            if (depth == 0) {
+                uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
+                current_frame_pointer = (initial_frame_pointer & PAC_STRIPPING_BITMASK);
             }
             
-            for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
-                if (frame_pointer_addresses[i] == 0x0) {
-                    break;
-                }
-                Dl_info info;
-                if (dladdr(caller_addresses[i], &info) != 0) {
-                    const char *p = strrchr(info.dli_fname, '/');
-                    printf("%d %s %p\n",
-                           i,
-                           p + 1,
-                           (void *)(caller_addresses[i] - aslr_slide));
-                } else if (caller_addresses[i] == 0x0) {
-                    printf("%d Unable to retrieve caller address. \n", i);
-                } else {
-                    // Address doesn't point into a Mach-O memory section.
-                    printf("%d Unable to retrieve Mach-O image from address. \n", i);
-                }
+            if (current_frame_pointer == 0x0) {
+                // TODO: Terminated frame
+                break;
             }
-            printf("\n");
-        } else {
-            // printf("%s \n", info.dli_fname);
+            
+            kern_return_t result = task_memcpy(task,
+                                               current_frame_pointer,
+                                               0,
+                                               &next_frame_pointer,
+                                               sizeof(int64_t));
+            if (result != KERN_SUCCESS) {
+                break;
+            }
+            next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
+            
+            // Get the caller address (Link Register, lr) knowing it's a 8-byte offset from the
+            // frame pointer (fp).
+            uint64_t caller_address;
+            uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) + 8;
+            kern_return_t caller_retrieval_result = task_memcpy(task,
+                                                                caller_address_pointer,
+                                                                0,
+                                                                &caller_address,
+                                                                sizeof(void *));
+            // TODO:
+            // Investigate why this doesn't always match the lr register of the thread_state
+            // at depth 0, accessed via thread_state.__lr.
+            caller_address = caller_address & PAC_STRIPPING_BITMASK;
+            
+            // Save info for this frame
+            frame_pointer_addresses[depth] = current_frame_pointer;
+            if (caller_retrieval_result == KERN_SUCCESS) {
+                caller_addresses[depth] = caller_address;
+            }
+            
+            // Update depth and exit if max depth reached
+            depth += 1;
+            if (depth >= MAX_FRAME_DEPTH) {
+                break;
+            }
+            current_frame_pointer = next_frame_pointer;
         }
+        
+        for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
+            if (frame_pointer_addresses[i] == 0x0) {
+                break;
+            }
+            Dl_info info;
+            if (dladdr(caller_addresses[i], &info) != 0) {
+                const char *p = strrchr(info.dli_fname, '/');
+                printf("%d %s %p\n",
+                       i,
+                       p + 1,
+                       (void *)(caller_addresses[i] - aslr_slide));
+            } else if (caller_addresses[i] == 0x0) {
+                printf("%d Unable to retrieve caller address. \n", i);
+            } else {
+                // Address doesn't point into a Mach-O memory section.
+                printf("%d Unable to retrieve Mach-O image from address. \n", i);
+            }
+        }
+        printf("\n");
+    } else {
+        printf("Image unknown");
     }
 }
 
