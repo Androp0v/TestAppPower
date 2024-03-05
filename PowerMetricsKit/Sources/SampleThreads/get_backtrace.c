@@ -95,48 +95,80 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
                                        &current_frame_pointer,
                                        2 * sizeof(int64_t));
     current_frame_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK);
-        
-    while (true) {
-        if (thread_state.__fp == 0x0 || current_frame_pointer == 0x0) {
-            // TODO: Terminated frame
-            break;
-        }
-        
-        kern_return_t result = task_memcpy(task,
-                                           current_frame_pointer,
-                                           0,
-                                           &next_frame_pointer,
-                                           2 * sizeof(int64_t));
-        if (result != KERN_SUCCESS) {
-            break;
-        }
-        next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
-        
-        // Get the caller address.
-        uint64_t caller_address;
-        uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) - sizeof(void *);
-        kern_return_t caller_retrieval_result = task_memcpy(task,
-                                                            caller_address_pointer,
-                                                            0,
-                                                            &caller_address,
-                                                            sizeof(void *));
-        caller_address = caller_address & PAC_STRIPPING_BITMASK;
+    
+    Dl_info info;
+    if (dladdr(thread_state.__lr, &info) != 0) {
+        const char *p = strrchr(info.dli_fname, '/');
+        if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
+            printf("[TestAppPower] %p\n", (void *)thread_state.__lr - aslr_slide);
+            
+            // Let's walk the stack only for TestAppPower frames...
+            while (true) {
+                if (thread_state.__fp == 0x0 || current_frame_pointer == 0x0) {
+                    // TODO: Terminated frame
+                    break;
+                }
+                
+                kern_return_t result = task_memcpy(task,
+                                                   current_frame_pointer,
+                                                   0,
+                                                   &next_frame_pointer,
+                                                   sizeof(int64_t));
+                if (result != KERN_SUCCESS) {
+                    break;
+                }
+                next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
+                
+                // Get the caller address.
+                uint64_t caller_address;
+                uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) + 8;
+                kern_return_t caller_retrieval_result = task_memcpy(task,
+                                                                    caller_address_pointer,
+                                                                    0,
+                                                                    &caller_address,
+                                                                    sizeof(void *));
+                caller_address = caller_address & PAC_STRIPPING_BITMASK;
 
-        // Update current frame pointer
-        current_frame_pointer = next_frame_pointer;
-        
-        // Save info for this frame
-        frame_pointer_addresses[depth] = current_frame_pointer;
-        if (caller_retrieval_result == KERN_SUCCESS) {
-            caller_addresses[depth] = caller_address;
-        }
-        
-        // Update depth and exit if max depth reached
-        depth += 1;
-        if (depth >= MAX_FRAME_DEPTH) {
-            break;
+                // Update current frame pointer
+                current_frame_pointer = next_frame_pointer;
+                
+                // Save info for this frame
+                frame_pointer_addresses[depth] = current_frame_pointer;
+                if (caller_retrieval_result == KERN_SUCCESS) {
+                    caller_addresses[depth] = caller_address;
+                }
+                
+                // Update depth and exit if max depth reached
+                depth += 1;
+                if (depth >= MAX_FRAME_DEPTH) {
+                    break;
+                }
+            }
+            
+            for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
+                if (frame_pointer_addresses[i] == 0x0) {
+                    break;
+                }
+                Dl_info info;
+                if (dladdr(caller_addresses[i], &info) != 0) {
+                    const char *p = strrchr(info.dli_fname, '/');
+                    printf("%d %s %p\n",
+                           i,
+                           p + 1,
+                           (void *)(caller_addresses[i] - aslr_slide));
+                } else if (caller_addresses[i] == 0x0) {
+                    printf("%d Unable to retrieve caller address. \n", i);
+                } else {
+                    // Address doesn't point into a Mach-O memory section.
+                    printf("%d Unable to retrieve Mach-O image from address. \n", i);
+                }
+            }
+            printf("\n");
+        } else {
+            // printf("%s \n", info.dli_fname);
         }
     }
+    /*
     Dl_info info;
     if (dladdr(thread_state.__lr, &info) != 0) {
         const char *p = strrchr(info.dli_fname, '/');
@@ -146,8 +178,9 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
             // printf("%s \n", info.dli_fname);
         }
     }
+     */
+    /*
     for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
-        /*
         Dl_info info;
         if (dladdr(caller_addresses[i], &info) != 0) {
             printf("%s \n", info.dli_fname);
@@ -158,8 +191,8 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
             printf("Unable to retrieve Mach-O image from address. \n");
         }
         // printf("%p ", (void *) caller_addresses[i] - aslr_slide);
-         */
     }
+     */
     // printf("\n");
 }
 
