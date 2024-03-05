@@ -21,7 +21,7 @@
 // Bitmask to strip pointer authentication (PAC).
 #define PAC_STRIPPING_BITMASK 0x0000000FFFFFFFFF
 // Max number of frames in stack trace
-#define MAX_FRAME_DEPTH 10
+#define MAX_FRAME_DEPTH 128
 
 static void backtracer() {
     void *array[10];
@@ -84,27 +84,24 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
     uint64_t frame_pointer_addresses[MAX_FRAME_DEPTH] = { 0 };
     uint64_t caller_addresses[MAX_FRAME_DEPTH] = { 0 };
     
-    uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
-    uint64_t initial_program_counter = (thread_state.__pc & PAC_STRIPPING_BITMASK);
-    
     uint64_t current_frame_pointer;
     uint64_t next_frame_pointer;
-    kern_return_t result = task_memcpy(task,
-                                       initial_frame_pointer,
-                                       0,
-                                       &current_frame_pointer,
-                                       2 * sizeof(int64_t));
-    current_frame_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK);
     
     Dl_info info;
     if (dladdr(thread_state.__lr, &info) != 0) {
         const char *p = strrchr(info.dli_fname, '/');
         if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
-            printf("[TestAppPower] %p\n", (void *)thread_state.__lr - aslr_slide);
+            printf("[TestAppPower]\n");
             
             // Let's walk the stack only for TestAppPower frames...
             while (true) {
-                if (thread_state.__fp == 0x0 || current_frame_pointer == 0x0) {
+                
+                if (depth == 0) {
+                    uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
+                    current_frame_pointer = (initial_frame_pointer & PAC_STRIPPING_BITMASK);
+                }
+                
+                if (current_frame_pointer == 0x0) {
                     // TODO: Terminated frame
                     break;
                 }
@@ -119,7 +116,8 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
                 }
                 next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
                 
-                // Get the caller address.
+                // Get the caller address (Link Register, lr) knowing it's a 8-byte offset from the
+                // frame pointer (fp).
                 uint64_t caller_address;
                 uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) + 8;
                 kern_return_t caller_retrieval_result = task_memcpy(task,
@@ -127,10 +125,10 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
                                                                     0,
                                                                     &caller_address,
                                                                     sizeof(void *));
+                // TODO:
+                // Investigate why this doesn't always match the lr register of the thread_state
+                // at depth 0, accessed via thread_state.__lr.
                 caller_address = caller_address & PAC_STRIPPING_BITMASK;
-
-                // Update current frame pointer
-                current_frame_pointer = next_frame_pointer;
                 
                 // Save info for this frame
                 frame_pointer_addresses[depth] = current_frame_pointer;
@@ -143,6 +141,7 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
                 if (depth >= MAX_FRAME_DEPTH) {
                     break;
                 }
+                current_frame_pointer = next_frame_pointer;
             }
             
             for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
@@ -168,32 +167,6 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
             // printf("%s \n", info.dli_fname);
         }
     }
-    /*
-    Dl_info info;
-    if (dladdr(thread_state.__lr, &info) != 0) {
-        const char *p = strrchr(info.dli_fname, '/');
-        if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
-            printf("[TestAppPower] %p\n", (void *)thread_state.__lr - aslr_slide);
-        } else {
-            // printf("%s \n", info.dli_fname);
-        }
-    }
-     */
-    /*
-    for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
-        Dl_info info;
-        if (dladdr(caller_addresses[i], &info) != 0) {
-            printf("%s \n", info.dli_fname);
-        } else if (caller_addresses[i] == 0x0) {
-            printf("Unable to retrieve caller address. \n");
-        } else {
-            // Address doesn't point into a Mach-O memory section.
-            printf("Unable to retrieve Mach-O image from address. \n");
-        }
-        // printf("%p ", (void *) caller_addresses[i] - aslr_slide);
-    }
-     */
-    // printf("\n");
 }
 
 void get_backtrace(thread_t thread) {
