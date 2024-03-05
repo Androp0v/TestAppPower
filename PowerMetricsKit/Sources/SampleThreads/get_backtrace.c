@@ -23,12 +23,29 @@
 // Max number of frames in stack trace
 #define MAX_FRAME_DEPTH 128
 
-static void backtracer() {
-    void *array[10];
+static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
+    Dl_info info;
+    if (dladdr(address, &info) != 0) {
+        const char *p = strrchr(info.dli_fname, '/');
+        printf("%d %s %p\n",
+               line,
+               p + 1,
+               (void *)(address - aslr_slide));
+    } else if (address == 0x0) {
+        printf("%d Unable to retrieve caller address. \n", line);
+    } else {
+        // Address doesn't point into a Mach-O memory section.
+        printf("%d Unable to retrieve Mach-O image from address. \n", line);
+    }
+}
+
+static void backtracer(intptr_t aslr_slide) {
+    printf("[Thread]\n");
+    void *array[MAX_FRAME_DEPTH];
     int size;
-    size = backtrace(array, 10);
+    size = backtrace(array, MAX_FRAME_DEPTH);
     for (int i = 0; i < size; i++) {
-        printf ("%p ", array[i]);
+        print_backtrace(i, array[i], aslr_slide);
     }
     printf("\n");
 }
@@ -90,7 +107,7 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
     Dl_info info;
     printf("[Thread]\n");
     if (dladdr(thread_state.__lr, &info) != 0) {
-        // Let's walk the stack only for TestAppPower frames...
+        // Let's walk the stack only for known images...
         while (true) {
             
             if (depth == 0) {
@@ -145,42 +162,29 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
             if (frame_pointer_addresses[i] == 0x0) {
                 break;
             }
-            Dl_info info;
-            if (dladdr(caller_addresses[i], &info) != 0) {
-                const char *p = strrchr(info.dli_fname, '/');
-                printf("%d %s %p\n",
-                       i,
-                       p + 1,
-                       (void *)(caller_addresses[i] - aslr_slide));
-            } else if (caller_addresses[i] == 0x0) {
-                printf("%d Unable to retrieve caller address. \n", i);
-            } else {
-                // Address doesn't point into a Mach-O memory section.
-                printf("%d Unable to retrieve Mach-O image from address. \n", i);
-            }
+            print_backtrace(i, caller_addresses[i], aslr_slide);
         }
         printf("\n");
     } else {
-        printf("Image unknown");
+        printf("Image unknown \n");
     }
 }
 
 void get_backtrace(thread_t thread) {
     
     thread_t current_thread = mach_thread_self();
+    vm_address_t aslr_slide;
+    if (cached_aslr_slide != 0) {
+        aslr_slide = cached_aslr_slide;
+    } else {
+        aslr_slide = get_aslr_slide();
+    }
     
     if (current_thread == thread) {
-        // backtracer();
+        backtracer(aslr_slide);
     } else {
         thread_suspend(thread);
-        
-        vm_address_t aslr_slide;
-        if (cached_aslr_slide != 0) {
-            aslr_slide = cached_aslr_slide;
-        } else {
-            aslr_slide = get_aslr_slide();
-        }
-        
+
         mach_msg_type_number_t state_count = ARM_UNIFIED_THREAD_STATE_COUNT;
         arm_thread_state64_t thread_state;
         kern_return_t thread_state_result = thread_get_state(thread,
