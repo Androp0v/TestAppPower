@@ -15,6 +15,7 @@
 #include <mach/thread_act.h>
 #include <mach/vm_map.h>
 #include <mach-o/loader.h>
+#include <dlfcn.h>
 #import <mach-o/dyld.h>
 
 // Bitmask to strip pointer authentication (PAC).
@@ -32,6 +33,8 @@ static void backtracer() {
     printf("\n");
 }
 
+static intptr_t cached_aslr_slide = 0x0;
+
 intptr_t get_aslr_slide() {
     uint32_t numImages = _dyld_image_count();
     for (uint32_t i = 0; i < numImages; i++) {
@@ -41,25 +44,11 @@ intptr_t get_aslr_slide() {
         if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
             const struct mach_header *header = _dyld_get_image_header(i);
             intptr_t slide = _dyld_get_image_vmaddr_slide(i);
-            return slide;
+            printf("ASLR Slide: %p \n", (void *)slide);
+            cached_aslr_slide = slide;
         }
     }
     return 0;
-    /*
-    vm_address_t address = 0;
-    vm_size_t size = 0;
-    vm_region_basic_info_data_64_t info;
-    mach_msg_type_number_t info_count = VM_REGION_BASIC_INFO_COUNT_64;
-    mach_port_t object = 0;
-    kern_return_t result = vm_region_64(mach_task_self(),
-                 &address,
-                 &size,
-                 VM_REGION_BASIC_INFO_64,
-                 (vm_region_info_64_t) &info,
-                 &info_count,
-                 &object);
-    return address;
-     */
 }
 
 bool apply_offset(mach_vm_address_t base_address, int64_t offset, mach_vm_address_t *result) {
@@ -70,8 +59,9 @@ bool apply_offset(mach_vm_address_t base_address, int64_t offset, mach_vm_addres
         return false;
     }
     
-    if (result != NULL)
+    if (result != NULL) {
         *result = base_address + offset;
+    }
     
     return true;
 }
@@ -91,7 +81,8 @@ kern_return_t task_memcpy(mach_port_t task, mach_vm_address_t address, int64_t o
 
 void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_t aslr_slide) {
     int depth = 0;
-    uint64_t stack_trace[MAX_FRAME_DEPTH] = { 0 };
+    uint64_t frame_pointer_addresses[MAX_FRAME_DEPTH] = { 0 };
+    uint64_t caller_addresses[MAX_FRAME_DEPTH] = { 0 };
     
     uint64_t initial_frame_pointer = (thread_state.__fp & PAC_STRIPPING_BITMASK);
     uint64_t initial_program_counter = (thread_state.__pc & PAC_STRIPPING_BITMASK);
@@ -121,19 +112,55 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
         }
         next_frame_pointer = (next_frame_pointer & PAC_STRIPPING_BITMASK);
         
+        // Get the caller address.
+        uint64_t caller_address;
+        uint64_t caller_address_pointer = (current_frame_pointer & PAC_STRIPPING_BITMASK) - sizeof(void *);
+        kern_return_t caller_retrieval_result = task_memcpy(task,
+                                                            caller_address_pointer,
+                                                            0,
+                                                            &caller_address,
+                                                            sizeof(void *));
+        caller_address = caller_address & PAC_STRIPPING_BITMASK;
+
+        // Update current frame pointer
         current_frame_pointer = next_frame_pointer;
-        stack_trace[depth] = current_frame_pointer;
-        depth += 1;
         
+        // Save info for this frame
+        frame_pointer_addresses[depth] = current_frame_pointer;
+        if (caller_retrieval_result == KERN_SUCCESS) {
+            caller_addresses[depth] = caller_address;
+        }
+        
+        // Update depth and exit if max depth reached
+        depth += 1;
         if (depth >= MAX_FRAME_DEPTH) {
             break;
         }
     }
-    
-    for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
-        printf("%p ", (void *) stack_trace[i] - aslr_slide);
+    Dl_info info;
+    if (dladdr(thread_state.__lr, &info) != 0) {
+        const char *p = strrchr(info.dli_fname, '/');
+        if (p && (strcmp(p + 1, "TestAppPower") == 0)) {
+            printf("[TestAppPower] %p\n", (void *)thread_state.__lr - aslr_slide);
+        } else {
+            // printf("%s \n", info.dli_fname);
+        }
     }
-    printf("\n");
+    for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
+        /*
+        Dl_info info;
+        if (dladdr(caller_addresses[i], &info) != 0) {
+            printf("%s \n", info.dli_fname);
+        } else if (caller_addresses[i] == 0x0) {
+            printf("Unable to retrieve caller address. \n");
+        } else {
+            // Address doesn't point into a Mach-O memory section.
+            printf("Unable to retrieve Mach-O image from address. \n");
+        }
+        // printf("%p ", (void *) caller_addresses[i] - aslr_slide);
+         */
+    }
+    // printf("\n");
 }
 
 void get_backtrace(thread_t thread) {
@@ -145,8 +172,12 @@ void get_backtrace(thread_t thread) {
     } else {
         thread_suspend(thread);
         
-        /*
-        vm_address_t aslr_slide = get_aslr_slide();
+        vm_address_t aslr_slide;
+        if (cached_aslr_slide != 0) {
+            aslr_slide = cached_aslr_slide;
+        } else {
+            aslr_slide = get_aslr_slide();
+        }
         
         mach_msg_type_number_t state_count = ARM_UNIFIED_THREAD_STATE_COUNT;
         arm_thread_state64_t thread_state;
@@ -155,7 +186,6 @@ void get_backtrace(thread_t thread) {
                                                              (thread_state_t) &thread_state,
                                                              &state_count);
         frame_walk(mach_task_self(), thread_state, aslr_slide);
-         */
         
         thread_resume(thread);
     }
