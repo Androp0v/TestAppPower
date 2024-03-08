@@ -29,6 +29,8 @@ import SampleThreads
     public private(set) var totalEnergyUsage: Energy = 0
     /// Historic power figures for the app.
     public private(set) var history = SampledResultsHistory(numerOfStoredSamples: SampleThreadsManager.numberOfStoredSamples)
+    /// All the collected backtraces.
+    public private(set) var backtraces = [Backtrace]()
     
     // MARK: - Private properties
     
@@ -93,7 +95,10 @@ import SampleThreads
                 start: counter.backtrace.addresses,
                 count: Int(backtraceLength)
             )
-            let backtrace = Backtrace(addresses: [UInt64](rawBacktrace.map({ $0.address })))
+            let backtrace = Backtrace(
+                addresses: [UInt64](rawBacktrace.map({ $0.address & UInt64(PAC_STRIPPING_BITMASK) })),
+                energy: nil
+            )
             if counter.backtrace.length != 0 {
                 // Free the memory allocated with malloc in get_backtrace.c, as we've
                 // created a copy for Swift code.
@@ -109,6 +114,7 @@ import SampleThreads
         var combinedPPower = 0.0
         var combinedEPower = 0.0
         var threadSamples = [ThreadSample]()
+        var threadEnergyChanges = [Energy]()
         for rawThreadSample in rawThreadSamples.sorted(by: { $0.thread_id < $1.thread_id }) {
             var threadCounter: Int
             if let counter = threadIDToCounter[rawThreadSample.thread_id] {
@@ -141,8 +147,8 @@ import SampleThreads
                     currentCounter: rawThreadSample,
                     type: .efficiency
                 )
-                combinedPPower += performancePower
-                combinedEPower += efficiencyPower
+                combinedPPower += performancePower.power
+                combinedEPower += efficiencyPower.power
                 
                 threadSamples.append(ThreadSample(
                     threadID: rawThreadSample.thread_id, 
@@ -150,11 +156,12 @@ import SampleThreads
                     pthreadName: pthreadName,
                     dispatchQueueName: dispatchQueueName,
                     power: CombinedPower(
-                        performance: performancePower,
-                        efficiency: efficiencyPower
+                        performance: performancePower.power,
+                        efficiency: efficiencyPower.power
                     ),
                     threadCounter: threadCounter
                 ))
+                threadEnergyChanges.append(performancePower.energy + efficiencyPower.energy)
             }
         }
         
@@ -177,6 +184,12 @@ import SampleThreads
         
         self.history.addSample(sampleResult)
         self.totalEnergyUsage += sampleResult.allThreadsPower.total * Self.samplingTime / 3600
+        
+        // Add power info to existing backtraces
+        self.backtraces.append(contentsOf: zip(backtraces, threadEnergyChanges).map { (backtrace, energy) in
+            return Backtrace(addresses: backtrace.addresses, energy: energy)
+        })
+        
         return sampleResult
     }
     
@@ -188,13 +201,18 @@ import SampleThreads
     
     // MARK: - Private
     
+    private struct ComputePowerResult {
+        let energy: Energy
+        let power: Power
+    }
+    
     private func computePower(
         previousTime: ContinuousClock.Instant,
         currentTime: ContinuousClock.Instant,
         previousCounters: sampled_thread_info_t,
         currentCounter: sampled_thread_info_t,
         type: CoreType
-    ) -> Double {
+    ) -> ComputePowerResult {
         let energyChange: Double
         switch type {
         case .performance:
@@ -215,9 +233,10 @@ import SampleThreads
             // while debugging...).
             let elapsedTime = currentTime - previousTime
             let elapsedSeconds = Double(elapsedTime.components.seconds) + Double(elapsedTime.components.attoseconds) * 1e-18
-            return energyChange / elapsedSeconds
+            let energyChangeInWattsHour = energyChange / 3600
+            return ComputePowerResult(energy: energyChangeInWattsHour, power: energyChange / elapsedSeconds)
         } else {
-            return .zero
+            return ComputePowerResult(energy: .zero, power: .zero)
         }
     }
 }

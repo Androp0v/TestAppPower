@@ -13,7 +13,7 @@ public typealias Power = Double
 public typealias Energy = Double
 
 /// A combined power measurement composed of measurements for different core types.
-public struct CombinedPower {
+public struct CombinedPower: Equatable, Hashable, AdditiveArithmetic {
     /// Power used by the performance cores.
     public let performance: Power
     /// Power used by the efficiency cores.
@@ -26,6 +26,20 @@ public struct CombinedPower {
     /// Zero power.
     public static var zero: CombinedPower {
         return CombinedPower(performance: .zero, efficiency: .zero)
+    }
+    
+    public static func + (lhs: CombinedPower, rhs: CombinedPower) -> CombinedPower {
+        return CombinedPower(
+            performance: lhs.performance + rhs.performance,
+            efficiency: lhs.efficiency + rhs.efficiency
+        )
+    }
+    
+    public static func - (lhs: CombinedPower, rhs: CombinedPower) -> CombinedPower {
+        return CombinedPower(
+            performance: lhs.performance - rhs.performance,
+            efficiency: lhs.efficiency - rhs.efficiency
+        )
     }
 }
 

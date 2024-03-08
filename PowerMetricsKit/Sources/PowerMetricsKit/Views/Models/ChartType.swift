@@ -10,6 +10,7 @@ import Foundation
 enum ChartType: String, CaseIterable {
     case coreType
     case thread
+    case callStack
     
     var displayName: String {
         switch self {
@@ -17,6 +18,8 @@ enum ChartType: String, CaseIterable {
             return "Per core type"
         case .thread:
             return "Per thread"
+        case .callStack:
+            return "Callstack"
         }
     }
 }

@@ -64,6 +64,8 @@ import SwiftUI
                         .padding(.bottom)
                 case .thread:
                     ThreadPowerChart(info: info, latestSampleTime: latestSampleTime)
+                case .callStack:
+                    CallStackView(info: info)
                 }
             }
         }
@@ -78,10 +80,6 @@ import SwiftUI
         .task {
             await sampleManager.startSampling(pid: pid)
         }
-        .sheet(isPresented: $showOptions) {
-            PowerWidgetOptionsView(chartType: $chartType)
-        }
-
     }
     
     // MARK: - Subviews
@@ -124,11 +122,14 @@ import SwiftUI
         .foregroundStyle(.blue)
         #endif
         .padding()
+        .popover(isPresented: $showOptions) {
+            PowerWidgetOptionsView(chartType: $chartType)
+        }
     }
     
     // MARK: - Formatters
     
-    func formatPower(power: Double) -> String {
+    func formatPower(power: Power) -> String {
         if power < 0.1 {
             let power = NSNumber(value: power * 1000)
             return (powerFormatter.string(from: power) ?? "?") + " mW"
@@ -138,7 +139,7 @@ import SwiftUI
         }
     }
     
-    func formatEnergy(energy: Double) -> String {
+    func formatEnergy(energy: Energy) -> String {
         if energy < 0.1 {
             let energy = NSNumber(value: energy * 1000)
             return (powerFormatter.string(from: energy) ?? "?") + " mWh"

@@ -20,9 +20,6 @@
 #include <dlfcn.h>
 #import <mach-o/dyld.h>
 
-// Bitmask to strip pointer authentication (PAC).
-#define PAC_STRIPPING_BITMASK 0x0000000FFFFFFFFF
-
 static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
     Dl_info info;
     if (dladdr(address, &info) != 0) {
@@ -39,7 +36,7 @@ static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
     }
 }
 
-static backtrace_t build_backtrace(uint64_t *addresses, int length) {
+static backtrace_t build_backtrace(uint64_t *addresses, int length, intptr_t aslr_slide) {
     
     backtrace_t backtrace;
     backtrace.addresses = malloc(length * sizeof(backtrace_address_t));
@@ -52,7 +49,7 @@ static backtrace_t build_backtrace(uint64_t *addresses, int length) {
             
             const char *p = strrchr(info.dli_fname, '/');
             // strcpy(address.name, p + 1);
-            address.address = addresses[i];
+            address.address = addresses[i] - aslr_slide;
             
             backtrace.addresses[i] = address;
         } else {
@@ -77,7 +74,7 @@ static backtrace_t backtracer(intptr_t aslr_slide) {
     printf("\n");
     #endif
     
-    return build_backtrace((uint64_t *) array, size);
+    return build_backtrace((uint64_t *) array, size, aslr_slide);
 }
 
 static intptr_t cached_aslr_slide = 0x0;
@@ -203,7 +200,7 @@ backtrace_t frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_a
         #if defined(PRINT_BACKTRACES)
         printf("\n");
         #endif
-        return build_backtrace(caller_addresses, valid_address_length);
+        return build_backtrace(caller_addresses, valid_address_length, aslr_slide);
     } else {
         #if defined(PRINT_BACKTRACES)
         printf("Image unknown \n\n");

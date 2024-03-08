@@ -16,6 +16,9 @@
 // Max number of frames in stack trace
 #define MAX_FRAME_DEPTH 128
 
+// Bitmask to strip pointer authentication (PAC).
+#define PAC_STRIPPING_BITMASK 0x0000000FFFFFFFFF
+
 typedef struct {
     /// Name of the associated library.
     // char name[64];
