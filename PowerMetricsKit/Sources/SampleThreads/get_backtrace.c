@@ -64,14 +64,19 @@ static backtrace_t build_backtrace(uint64_t *addresses, int length) {
 }
 
 static backtrace_t backtracer(intptr_t aslr_slide) {
-    printf("[Thread]\n");
+    
     void *array[MAX_FRAME_DEPTH];
     int size;
     size = backtrace(array, MAX_FRAME_DEPTH);
+    
+    #if defined(PRINT_BACKTRACES)
+    printf("[Thread]\n");
     for (int i = 0; i < size; i++) {
         print_backtrace(i, array[i], aslr_slide);
     }
     printf("\n");
+    #endif
+    
     return build_backtrace((uint64_t *) array, size);
 }
 
@@ -130,7 +135,9 @@ backtrace_t frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_a
     uint64_t next_frame_pointer;
     
     Dl_info info;
+    #if defined(PRINT_BACKTRACES)
     printf("[Thread]\n");
+    #endif
     if (dladdr(thread_state.__lr, &info) != 0) {
         // Let's walk the stack only for known images...
         while (true) {
@@ -189,12 +196,18 @@ backtrace_t frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_a
                 break;
             }
             valid_address_length += 1;
+            #if defined(PRINT_BACKTRACES)
             print_backtrace(i, caller_addresses[i], aslr_slide);
+            #endif
         }
+        #if defined(PRINT_BACKTRACES)
         printf("\n");
+        #endif
         return build_backtrace(caller_addresses, valid_address_length);
     } else {
+        #if defined(PRINT_BACKTRACES)
         printf("Image unknown \n\n");
+        #endif
         backtrace_t backtrace;
         backtrace.length = 0;
         return backtrace;
