@@ -14,8 +14,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "computePower(previousTime:currentTime:previousCounters:currentCounter:type:)"
             landmarkType = "7">
             <Locations>
@@ -301,8 +301,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
             <Locations>
@@ -500,8 +500,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "132"
-            endingLineNumber = "132"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
             landmarkName = "sampleThreads(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -845,74 +845,10 @@
             filePath = "PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "46"
-            endingLineNumber = "46"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
             landmarkName = "backtracer(aslr_slide)"
             landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F0E920C5-5928-4A49-8642-85E8D3DDA480"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
-            landmarkName = "backtracer(aslr_slide)"
-            landmarkType = "9">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "3C3231CD-A1C7-4148-B458-608ECBA5850F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "get_aslr_slide()"
-            landmarkType = "9">
-            <Locations>
-               <Location
-                  uuid = "3C3231CD-A1C7-4148-B458-608ECBA5850F - 225f1c2a5ebdd9d0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "get_aslr_slide"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "47"
-                  endingLineNumber = "47"
-                  offsetFromSymbolStart = "300">
-               </Location>
-               <Location
-                  uuid = "3C3231CD-A1C7-4148-B458-608ECBA5850F - 225f1c2a5ebdd9d0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "get_aslr_slide"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "47"
-                  endingLineNumber = "47"
-                  offsetFromSymbolStart = "292">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -925,13 +861,13 @@
             filePath = "PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "74"
-            endingLineNumber = "74"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
             landmarkName = "apply_offset(base_address, offset, result)"
             landmarkType = "9">
             <Locations>
                <Location
-                  uuid = "E95EEE73-7256-40F2-A6D5-D79B86A0746B - 84ca8916733196cd"
+                  uuid = "E95EEE73-7256-40F2-A6D5-D79B86A0746B - 84ca891673318dbb"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -941,12 +877,12 @@
                   urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "57"
-                  endingLineNumber = "57"
-                  offsetFromSymbolStart = "152">
+                  startingLineNumber = "99"
+                  endingLineNumber = "99"
+                  offsetFromSymbolStart = "168">
                </Location>
                <Location
-                  uuid = "E95EEE73-7256-40F2-A6D5-D79B86A0746B - 84ca891673319082"
+                  uuid = "E95EEE73-7256-40F2-A6D5-D79B86A0746B - 84ca891673318dbb"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -956,8 +892,8 @@
                   urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "74"
-                  endingLineNumber = "74"
+                  startingLineNumber = "99"
+                  endingLineNumber = "99"
                   offsetFromSymbolStart = "152">
                </Location>
             </Locations>
@@ -973,13 +909,13 @@
             filePath = "PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "apply_offset(base_address, offset, result)"
             landmarkType = "9">
             <Locations>
                <Location
-                  uuid = "3EC4F226-32C2-488C-8E4F-9460C030A244 - 84ca891673319693"
+                  uuid = "3EC4F226-32C2-488C-8E4F-9460C030A244 - 84ca891673318d3f"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -989,12 +925,12 @@
                   urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "59"
-                  endingLineNumber = "59"
-                  offsetFromSymbolStart = "276">
+                  startingLineNumber = "103"
+                  endingLineNumber = "103"
+                  offsetFromSymbolStart = "296">
                </Location>
                <Location
-                  uuid = "3EC4F226-32C2-488C-8E4F-9460C030A244 - 84ca891673319040"
+                  uuid = "3EC4F226-32C2-488C-8E4F-9460C030A244 - 84ca891673318d79"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
@@ -1004,8 +940,8 @@
                   urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/get_backtrace.c"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "76"
-                  endingLineNumber = "76"
+                  startingLineNumber = "101"
+                  endingLineNumber = "101"
                   offsetFromSymbolStart = "276">
                </Location>
             </Locations>
@@ -1025,6 +961,134 @@
             endingLineNumber = "35"
             landmarkName = "print_backtrace(line, address, aslr_slide)"
             landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "28EAB6DE-964F-4BF0-9DFC-8DACEF9A1327"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "sampleThreads(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "28EAB6DE-964F-4BF0-9DFC-8DACEF9A1327 - cd485dc2f1e2af3f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SampleThreadsManager.sampleThreads(Swift.Int32) -&gt; PowerMetricsKit.SampleThreadsResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "1408">
+               </Location>
+               <Location
+                  uuid = "28EAB6DE-964F-4BF0-9DFC-8DACEF9A1327 - cd485dc2f1e2af3f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SampleThreadsManager.sampleThreads(Swift.Int32) -&gt; PowerMetricsKit.SampleThreadsResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "2524">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "86C24014-2378-4BB9-9979-A635C6DCC53D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "194"
+            endingLineNumber = "194"
+            landmarkName = "sample_threads(pid)"
+            landmarkType = "9">
+            <Locations>
+               <Location
+                  uuid = "86C24014-2378-4BB9-9979-A635C6DCC53D - e5b206278b08a78a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "sample_threads"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "194"
+                  endingLineNumber = "194"
+                  offsetFromSymbolStart = "1020">
+               </Location>
+               <Location
+                  uuid = "86C24014-2378-4BB9-9979-A635C6DCC53D - e5b206278b08a78a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "sample_threads"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "194"
+                  endingLineNumber = "194"
+                  offsetFromSymbolStart = "988">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F309935D-86CB-4E93-9389-D9CC0CCF8DEF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "sampleThreads(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "304EC8BE-9570-418E-BA28-E43AB617E23F"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "106"
+            endingLineNumber = "106"
+            landmarkName = "sampleThreads(_:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

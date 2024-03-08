@@ -78,7 +78,7 @@ sample_threads_result sample_threads(int pid) {
         // TODO: Handle error...
     }
     
-    sampled_thread_info_t *counters_array = malloc(sizeof(sampled_thread_info_t) * n_threads);
+    sampled_thread_info_w_backtrace_t *counters_array = malloc(sizeof(sampled_thread_info_w_backtrace_t) * n_threads);
     
     // Loop over all the threads of the current process.
     for (int i = 0; i < n_threads; i++) {
@@ -99,7 +99,7 @@ sample_threads_result sample_threads(int pid) {
             // TODO: Handle error...
         }
         
-        counters_array[i].thread_id = th_info.thread_id;
+        counters_array[i].info.thread_id = th_info.thread_id;
         
         // Attempt to retrieve the thread name
         struct thread_extended_info th_extended_info;
@@ -109,9 +109,9 @@ sample_threads_result sample_threads(int pid) {
                                                          (thread_info_t)&th_extended_info,
                                                          &th_extended_info_count);
         if (extended_info_result == KERN_SUCCESS) {
-            strcpy(counters_array[i].pthread_name, th_extended_info.pth_name);
+            strcpy(counters_array[i].info.pthread_name, th_extended_info.pth_name);
         } else {
-            strcpy(counters_array[i].pthread_name, "");
+            strcpy(counters_array[i].info.pthread_name, "");
         }
         
         // Attempt to retrieve the libdispatch queue
@@ -125,9 +125,9 @@ sample_threads_result sample_threads(int pid) {
         dispatch_queue_t * _Nullable thread_queue = th_id_info.dispatch_qaddr;
         if (id_info_result == KERN_SUCCESS && thread_queue != NULL) {
             const char  * _Nullable queue_label = dispatch_queue_get_label(*thread_queue);
-            strcpy(counters_array[i].dispatch_queue_name, queue_label);
+            strcpy(counters_array[i].info.dispatch_queue_name, queue_label);
         } else {
-            strcpy(counters_array[i].dispatch_queue_name, "");
+            strcpy(counters_array[i].info.dispatch_queue_name, "");
         }
         
         // Retrieve power counters info
@@ -182,16 +182,16 @@ sample_threads_result sample_threads(int pid) {
         double e_energy = current_counters.ptc_counts[1].ptcd_energy_nj / 1e9;
         double e_time = convert_mach_time(current_counters.ptc_counts[1].ptcd_user_time_mach + current_counters.ptc_counts[1].ptcd_system_time_mach);
         
-        counters_array[i].performance.cycles = p_cycles;
-        counters_array[i].performance.energy = p_energy;
-        counters_array[i].performance.time = p_time;
+        counters_array[i].info.performance.cycles = p_cycles;
+        counters_array[i].info.performance.energy = p_energy;
+        counters_array[i].info.performance.time = p_time;
         
-        counters_array[i].efficiency.cycles = e_cycles;
-        counters_array[i].efficiency.energy = e_energy;
-        counters_array[i].efficiency.time = e_time;
+        counters_array[i].info.efficiency.cycles = e_cycles;
+        counters_array[i].info.efficiency.energy = e_energy;
+        counters_array[i].info.efficiency.time = e_time;
         
         // Backtrace
-        get_backtrace(thread);
+        counters_array[i].backtrace = get_backtrace(thread);
     }
     
     sample_threads_result result;

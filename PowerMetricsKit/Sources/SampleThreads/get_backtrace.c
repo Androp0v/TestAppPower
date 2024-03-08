@@ -6,6 +6,8 @@
 //
 
 #include "get_backtrace.h"
+
+#if defined(__aarch64__)
 #include <stdlib.h>
 #include <stdio.h>
 #include <execinfo.h>
@@ -20,8 +22,6 @@
 
 // Bitmask to strip pointer authentication (PAC).
 #define PAC_STRIPPING_BITMASK 0x0000000FFFFFFFFF
-// Max number of frames in stack trace
-#define MAX_FRAME_DEPTH 128
 
 static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
     Dl_info info;
@@ -39,7 +39,31 @@ static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
     }
 }
 
-static void backtracer(intptr_t aslr_slide) {
+static backtrace_t build_backtrace(uint64_t *addresses, int length) {
+    
+    backtrace_t backtrace;
+    backtrace.addresses = malloc(length * sizeof(backtrace_address_t));
+    backtrace.length = length;
+    
+    Dl_info info;
+    for (int i = 0; i < length; i++) {
+        backtrace_address_t address;
+        if (dladdr(addresses[i], &info) != 0) {
+            
+            const char *p = strrchr(info.dli_fname, '/');
+            // strcpy(address.name, p + 1);
+            address.address = addresses[i];
+            
+            backtrace.addresses[i] = address;
+        } else {
+            address.address = addresses[i];
+        }
+    }
+        
+    return backtrace;
+}
+
+static backtrace_t backtracer(intptr_t aslr_slide) {
     printf("[Thread]\n");
     void *array[MAX_FRAME_DEPTH];
     int size;
@@ -48,6 +72,7 @@ static void backtracer(intptr_t aslr_slide) {
         print_backtrace(i, array[i], aslr_slide);
     }
     printf("\n");
+    return build_backtrace((uint64_t *) array, size);
 }
 
 static intptr_t cached_aslr_slide = 0x0;
@@ -96,7 +121,7 @@ kern_return_t task_memcpy(mach_port_t task, mach_vm_address_t address, int64_t o
     return vm_read_overwrite(task, target, length, (pointer_t) dest, &read_size);
 }
 
-void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_t aslr_slide) {
+backtrace_t frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_t aslr_slide) {
     int depth = 0;
     uint64_t frame_pointer_addresses[MAX_FRAME_DEPTH] = { 0 };
     uint64_t caller_addresses[MAX_FRAME_DEPTH] = { 0 };
@@ -158,20 +183,28 @@ void frame_walk(mach_port_t task, arm_thread_state64_t thread_state, vm_address_
             current_frame_pointer = next_frame_pointer;
         }
         
+        int valid_address_length = 0;
         for (int i = 0; i < MAX_FRAME_DEPTH; i++) {
             if (frame_pointer_addresses[i] == 0x0) {
                 break;
             }
+            valid_address_length += 1;
             print_backtrace(i, caller_addresses[i], aslr_slide);
         }
         printf("\n");
+        return build_backtrace(caller_addresses, valid_address_length);
     } else {
-        printf("Image unknown \n");
+        printf("Image unknown \n\n");
+        backtrace_t backtrace;
+        backtrace.length = 0;
+        return backtrace;
     }
 }
+#endif
 
-void get_backtrace(thread_t thread) {
+backtrace_t get_backtrace(thread_t thread) {
     
+    #if defined(__aarch64__)
     thread_t current_thread = mach_thread_self();
     vm_address_t aslr_slide;
     if (cached_aslr_slide != 0) {
@@ -181,7 +214,7 @@ void get_backtrace(thread_t thread) {
     }
     
     if (current_thread == thread) {
-        backtracer(aslr_slide);
+        return backtracer(aslr_slide);
     } else {
         thread_suspend(thread);
 
@@ -191,8 +224,15 @@ void get_backtrace(thread_t thread) {
                                                              ARM_THREAD_STATE64,
                                                              (thread_state_t) &thread_state,
                                                              &state_count);
-        frame_walk(mach_task_self(), thread_state, aslr_slide);
+        backtrace_t backtrace = frame_walk(mach_task_self(), thread_state, aslr_slide);
         
         thread_resume(thread);
+        
+        return backtrace;
     }
+    #else
+    backtrace_t backtrace;
+    backtrace.length = 0;
+    return backtrace;
+    #endif
 }

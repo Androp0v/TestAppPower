@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "get_backtrace.h"
 
 typedef struct {
     /// Cycles executed by the thread.
@@ -34,8 +35,15 @@ typedef struct {
 } sampled_thread_info_t;
 
 typedef struct {
+    /// The energy sampling info.
+    sampled_thread_info_t info;
+    /// The backtrace, if any.
+    backtrace_t backtrace;
+} sampled_thread_info_w_backtrace_t;
+
+typedef struct {
     uint64_t thread_count;
-    sampled_thread_info_t *cpu_counters;
+    sampled_thread_info_w_backtrace_t *cpu_counters;
 } sample_threads_result;
 
 sample_threads_result sample_threads(int pid);

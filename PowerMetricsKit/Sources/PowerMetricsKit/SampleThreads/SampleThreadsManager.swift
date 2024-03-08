@@ -85,7 +85,22 @@ import SampleThreads
         // This points directly to the C array.
         let counters = UnsafeBufferPointer(start: result.cpu_counters, count: Int(result.thread_count))
         // This creates a Swift copy of the C array.
-        let rawThreadSamples = [sampled_thread_info_t](counters)
+        let rawThreadSamples = [sampled_thread_info_t](counters.map({ $0.info }))
+        // This creates a Swift copy of the backtrace.
+        let backtraces = [Backtrace](counters.map { counter in
+            let backtraceLength = counter.backtrace.length
+            let rawBacktrace = UnsafeBufferPointer(
+                start: counter.backtrace.addresses,
+                count: Int(backtraceLength)
+            )
+            let backtrace = Backtrace(addresses: [UInt64](rawBacktrace.map({ $0.address })))
+            if counter.backtrace.length != 0 {
+                // Free the memory allocated with malloc in get_backtrace.c, as we've
+                // created a copy for Swift code.
+                free(counter.backtrace.addresses)
+            }
+            return backtrace
+        })
         // Free the memory allocated with malloc in sample_threads.c, as we've created
         // a copy for Swift code.
         free(result.cpu_counters)
