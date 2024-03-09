@@ -42,6 +42,8 @@ import SampleThreads
     private var threadIDToCounter = [UInt64: Int]()
     /// The last value of the counter used to map thread IDs to a monotonously increasing counter.
     private var lastCounter: Int = 0
+    
+    private var symbolicator = SymbolicateBacktraces.shared
 
     // MARK: - Init
     

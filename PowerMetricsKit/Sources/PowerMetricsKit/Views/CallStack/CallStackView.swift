@@ -25,7 +25,9 @@ import SwiftUI
             HStack {
                 Text(formatEnergy(energy: energy))
                 Spacer()
-                Text("0x\(String(format: "%llx", backtraceAddress))")
+                Text("\(SymbolicateBacktraces.shared.symbolicatedInfo(for: backtraceAddress)?.displayName ?? "Unknown")")
+                    .lineLimit(1)
+                // Text("0x\(String(format: "%llx", backtraceAddress))")
             }
             .monospaced()
         }

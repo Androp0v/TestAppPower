@@ -18,6 +18,8 @@
 #include <mach/vm_map.h>
 #include <mach-o/loader.h>
 #include <dlfcn.h>
+#include <mach-o/dyld_images.h>
+
 #import <mach-o/dyld.h>
 
 static void print_backtrace(int line, uint64_t address, intptr_t aslr_slide) {
@@ -45,16 +47,8 @@ static backtrace_t build_backtrace(uint64_t *addresses, int length, intptr_t asl
     Dl_info info;
     for (int i = 0; i < length; i++) {
         backtrace_address_t address;
-        if (dladdr(addresses[i], &info) != 0) {
-            
-            const char *p = strrchr(info.dli_fname, '/');
-            // strcpy(address.name, p + 1);
-            address.address = addresses[i] - aslr_slide;
-            
-            backtrace.addresses[i] = address;
-        } else {
-            address.address = addresses[i];
-        }
+        address.address = addresses[i];
+        backtrace.addresses[i] = address;
     }
         
     return backtrace;
@@ -79,6 +73,20 @@ static backtrace_t backtracer(intptr_t aslr_slide) {
 
 static intptr_t cached_aslr_slide = 0x0;
 
+size_t size_of_image(const struct mach_header *header) {
+    size_t size = sizeof(*header); // Size of the header
+    size += header->sizeofcmds;    // Size of the load commands
+
+    struct load_command *lc = (struct load_command *) (header + 1);
+    for (uint32_t i = 0; i < header->ncmds; i++) {
+        if (lc->cmd == LC_SEGMENT_64) {
+            size += ((struct segment_command *) lc)->vmsize; // Size of segments
+        }
+        lc = (struct load_command *) ((char *) lc + lc->cmdsize);
+    }
+    return size;
+}
+
 intptr_t get_aslr_slide() {
     uint32_t numImages = _dyld_image_count();
     for (uint32_t i = 0; i < numImages; i++) {
@@ -90,8 +98,31 @@ intptr_t get_aslr_slide() {
             intptr_t slide = _dyld_get_image_vmaddr_slide(i);
             printf("ASLR Slide: %p \n", (void *)slide);
             cached_aslr_slide = slide;
+            printf("Size of image: %zu \n", size_of_image(header));
         }
     }
+    
+    struct task_dyld_info dyld_info;
+    mach_vm_address_t image_infos;
+    struct dyld_all_image_infos *infos;
+    
+    mach_msg_type_number_t count = TASK_DYLD_INFO_COUNT;
+    kern_return_t ret;
+    
+    ret = task_info(mach_task_self_,
+                    TASK_DYLD_INFO,
+                    (task_info_t)&dyld_info,
+                    &count);
+    
+    if (ret != KERN_SUCCESS) {
+        return NULL;
+    }
+    
+    image_infos = dyld_info.all_image_info_addr;
+    
+    infos = (struct dyld_all_image_infos *)image_infos;
+    return infos->dyldImageLoadAddress;
+    
     return 0;
 }
 

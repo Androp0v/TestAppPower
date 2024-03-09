@@ -313,6 +313,7 @@
 				CODE_SIGN_ENTITLEMENTS = TestAppPower/TestAppPower.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"TestAppPower/Preview Content\"";
 				DEVELOPMENT_TEAM = 4ND4CZC2FK;
 				ENABLE_HARDENED_RUNTIME = YES;
