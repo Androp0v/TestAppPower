@@ -73,20 +73,6 @@ static backtrace_t backtracer(intptr_t aslr_slide) {
 
 static intptr_t cached_aslr_slide = 0x0;
 
-size_t size_of_image(const struct mach_header *header) {
-    size_t size = sizeof(*header); // Size of the header
-    size += header->sizeofcmds;    // Size of the load commands
-
-    struct load_command *lc = (struct load_command *) (header + 1);
-    for (uint32_t i = 0; i < header->ncmds; i++) {
-        if (lc->cmd == LC_SEGMENT_64) {
-            size += ((struct segment_command *) lc)->vmsize; // Size of segments
-        }
-        lc = (struct load_command *) ((char *) lc + lc->cmdsize);
-    }
-    return size;
-}
-
 intptr_t get_aslr_slide() {
     uint32_t numImages = _dyld_image_count();
     for (uint32_t i = 0; i < numImages; i++) {
@@ -98,7 +84,6 @@ intptr_t get_aslr_slide() {
             intptr_t slide = _dyld_get_image_vmaddr_slide(i);
             printf("ASLR Slide: %p \n", (void *)slide);
             cached_aslr_slide = slide;
-            printf("Size of image: %zu \n", size_of_image(header));
         }
     }
     

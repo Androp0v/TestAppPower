@@ -10,6 +10,6 @@ import Foundation
 public typealias BacktraceAddress = UInt64
 
 public struct Backtrace: Hashable, Equatable {
-    public let addresses: [BacktraceAddress]
-    public let energy: Energy?
+    public var addresses: [BacktraceAddress]
+    public var energy: Energy?
 }

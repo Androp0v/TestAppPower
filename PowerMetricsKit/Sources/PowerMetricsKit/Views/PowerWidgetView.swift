@@ -18,6 +18,8 @@ import SwiftUI
     @AppStorage("chartType") var chartType: ChartType = .coreType
     @State var isResettingEnergy: Bool = false
     @State var showOptions: Bool = false
+    /// Selected backtrace in CallStackView, if any.
+    @State var selectedBacktrace: BacktraceInfo?
         
     var pidFormatter: NumberFormatter = {
         let numberFormatter = NumberFormatter()

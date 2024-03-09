@@ -15,9 +15,11 @@ struct DYLDInfo {
     let aslrSlide: intptr_t
 }
 
-struct SymbolicatedInfo {
+struct SymbolicatedInfo: Hashable {
     let imageName: String
     let addressInImage: UInt64
+    let symbolName: String
+    let addressInSymbol: UInt64
     
     var displayName: String {
         return "0x\(String(format: "%llx", addressInImage)), \(imageName)"
@@ -36,9 +38,13 @@ class SymbolicateBacktraces {
         if dladdr(addressPointer, &dlInfo) != 0 {
             let imageName = (String(cString: dlInfo.dli_fname) as NSString).lastPathComponent
             let addressInImage = address - (unsafeBitCast(dlInfo.dli_fbase, to: UInt64.self))
+            let symbolName = (String(cString: dlInfo.dli_sname) as NSString).lastPathComponent
+            let addressInSymbol = address - (unsafeBitCast(dlInfo.dli_saddr, to: UInt64.self))
             return SymbolicatedInfo(
                 imageName: imageName,
-                addressInImage: addressInImage
+                addressInImage: addressInImage,
+                symbolName: symbolName,
+                addressInSymbol: addressInSymbol
             )
         } else {
             // dladdr returns 0 on error
