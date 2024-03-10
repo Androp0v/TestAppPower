@@ -38,15 +38,11 @@ public final class SimpleBacktraceInfo {
 }
 
 public final class BacktraceInfo: Identifiable {
-    let address: BacktraceAddress
-    var energy: Energy
-    let info: SymbolicatedInfo?
-    var children: [BacktraceInfo]
-    
-    private var internalID = UUID()
-    public var id: String {
-        return internalID.uuidString + String(energy)
-    }
+    public let id = UUID()
+    public let address: BacktraceAddress
+    public var energy: Energy
+    public let info: SymbolicatedInfo?
+    public var children: [BacktraceInfo]
     
     init(address: BacktraceAddress, energy: Energy, info: SymbolicatedInfo?, children: [BacktraceInfo]) {
         self.address = address

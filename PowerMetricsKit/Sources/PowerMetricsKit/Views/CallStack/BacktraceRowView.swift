@@ -11,25 +11,15 @@ struct BacktraceRowView: View {
     
     let backtraceInfo: BacktraceInfo
     let energy: Energy
-    @Binding var expandedAddresses: [BacktraceAddress: Bool]
+    @Binding var expandedInfos: [BacktraceInfo]
     
     var isExpanded: Bool {
-        return expandedAddresses[backtraceInfo.address] == true
+        return expandedInfos.contains(where: { $0.id == backtraceInfo.id })
     }
     
     var body: some View {
         VStack(alignment: .leading) {
             backtraceRow(backtraceInfo: backtraceInfo)
-            if isExpanded {
-                ForEach(backtraceInfo.children.sorted(by: { $0.energy > $1.energy })) { children in
-                    BacktraceRowView(
-                        backtraceInfo: children,
-                        energy: children.energy,
-                        expandedAddresses: $expandedAddresses
-                    )
-                    .padding(.leading, 2)
-                }
-            }
         }
     }
     
@@ -37,10 +27,12 @@ struct BacktraceRowView: View {
         HStack {
             Button(
                 action: {
-                    if isExpanded {
-                        expandedAddresses[backtraceInfo.address] = false
-                    } else {
-                        expandedAddresses[backtraceInfo.address] = true
+                    withAnimation {
+                        if isExpanded {
+                            expandedInfos = expandedInfos.dropLast()
+                        } else {
+                            expandedInfos.append(backtraceInfo)
+                        }
                     }
                 },
                 label: {
@@ -51,6 +43,7 @@ struct BacktraceRowView: View {
                     )
                 }
             )
+            .buttonStyle(.plain)
             BacktraceRowContentView(
                 symbolInfo: backtraceInfo.info,
                 energy: backtraceInfo.energy

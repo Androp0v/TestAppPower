@@ -16,9 +16,11 @@ struct BacktraceRowContentView: View {
     var body: some View {
         HStack {
             Text(formatEnergy(energy: energy))
+                .scaledToFit()
+                .minimumScaleFactor(0.01)
                 .frame(width: 81, alignment: .leading)
             Text("\(symbolInfo?.symbolName ?? "Unknown")")
-                .frame(alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .monospaced()
         .lineLimit(1)

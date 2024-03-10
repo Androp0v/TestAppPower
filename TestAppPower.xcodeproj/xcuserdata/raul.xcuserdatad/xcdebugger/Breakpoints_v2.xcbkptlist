@@ -1432,6 +1432,21 @@
                   endingLineNumber = "32"
                   offsetFromSymbolStart = "4200">
                </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbeca8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "4264">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

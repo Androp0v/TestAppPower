@@ -10,17 +10,23 @@ import SwiftUI
 
 @MainActor struct CallStackView: View {
     
-    enum VisualizationMode {
+    enum VisualizationMode: String {
         case graph
         case flat
     }
     
     let symbolicator = SymbolicateBacktraces.shared
-    @State var expandedAddresses = [BacktraceAddress: Bool]()
-    @State var visualizationMode: VisualizationMode = .flat
+    @State var expandedInfos = [BacktraceInfo]()
+    @AppStorage("callstackVisualization") var visualizationMode: VisualizationMode = .graph
     
     var sortedGraphBacktraces: [BacktraceInfo] {
-        return symbolicator.backtraceGraph.nodes.sorted(by: { $0.energy > $1.energy })
+        if let lastExpanded = expandedInfos.last {
+            return lastExpanded.children
+                .sorted(by: { $0.energy > $1.energy })
+        } else {
+            return symbolicator.backtraceGraph.nodes
+                .sorted(by: { $0.energy > $1.energy })
+        }
     }
     var sortedFlatBacktraces: [SimpleBacktraceInfo] {
         return symbolicator.flatBacktraces.sorted(by: { $0.energy > $1.energy })
@@ -32,12 +38,33 @@ import SwiftUI
             
             TimelineView(.periodic(from: .now, by: 0.5)) { _ in
                 if visualizationMode == .graph {
-                    List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
-                        BacktraceRowView(
-                            backtraceInfo: backtraceInfo,
-                            energy: backtraceInfo.energy,
-                            expandedAddresses: $expandedAddresses
-                        )
+                    VStack(alignment: .leading, spacing: .zero) {
+                        if let lastExpanded = expandedInfos.last {
+                            BacktraceRowView(
+                                backtraceInfo: lastExpanded,
+                                energy: lastExpanded.energy,
+                                expandedInfos: $expandedInfos
+                            )
+                            #if os(macOS)
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 4)
+                            #else
+                            .padding(.vertical, 12)
+                            .padding(.horizontal, 12)
+                            #endif
+                            .background(.blue.opacity(0.3))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .padding(.top, 4)
+                        }
+
+                        List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
+                            BacktraceRowView(
+                                backtraceInfo: backtraceInfo,
+                                energy: backtraceInfo.energy,
+                                expandedInfos: $expandedInfos
+                            )
+                            .listRowBackground(Color.clear)
+                        }
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
@@ -47,6 +74,7 @@ import SwiftUI
                             symbolInfo: simpleBacktraceInfo.info,
                             energy: simpleBacktraceInfo.energy
                         )
+                        .listRowBackground(Color.clear)
                     }
                     .listStyle(.plain)
                     .scrollContentBackground(.hidden)
@@ -70,7 +98,9 @@ import SwiftUI
                     )
                 }
             )
+            #if os(macOS)
             .buttonStyle(.plain)
+            #endif
             .padding(.top, 8)
         }
         .padding()
