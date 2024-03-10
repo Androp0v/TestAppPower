@@ -29,14 +29,12 @@ struct PowerWidgetInfo {
         }
         return threadSamples.sorted(by: { $0.displayName < $1.displayName })
     }
-    var backtraceGraph: [BacktraceInfo]
     
     static let empty = PowerWidgetInfo(
         cpuPower: .zero,
         cpuEnergy: .zero,
         cpuMaxPower: .zero,
-        cpuPowerHistory: [SampleThreadsResult](), 
-        backtraceGraph: [BacktraceInfo]()
+        cpuPowerHistory: [SampleThreadsResult]()
     )
 }
 
@@ -57,15 +55,13 @@ struct PowerWidgetInfo {
             let cpuEnergy = sampleManager.totalEnergyUsage
             let cpuPowerHistory = sampleManager.history.samples
             let cpuMaxPower = sampleManager.history.maxPower
-            let backtraceGraph = SymbolicateBacktraces.shared.backtraceGraph
             
             Task(priority: .high) { @MainActor in
                 self.info = PowerWidgetInfo(
                     cpuPower: cpuPower,
                     cpuEnergy: cpuEnergy,
                     cpuMaxPower: cpuMaxPower,
-                    cpuPowerHistory: cpuPowerHistory,
-                    backtraceGraph: backtraceGraph
+                    cpuPowerHistory: cpuPowerHistory
                 )
             }
         }

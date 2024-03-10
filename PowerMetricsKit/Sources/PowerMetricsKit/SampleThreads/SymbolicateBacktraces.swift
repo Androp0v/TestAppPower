@@ -10,7 +10,7 @@ import SampleThreads
 
 public class SymbolicateBacktraces {
     
-    public var backtraceGraph = [BacktraceInfo]()
+    public var backtraceGraph = BacktraceGraph()
     public var flatBacktraces = [SimpleBacktraceInfo]()
     private var addressToBacktrace = [BacktraceAddress: BacktraceInfo]()
         
@@ -18,7 +18,6 @@ public class SymbolicateBacktraces {
     public static let shared = SymbolicateBacktraces()
     
     public func symbolicatedInfo(for address: UInt64) -> SymbolicatedInfo? {
-        
         var dlInfo = Dl_info()
         let addressPointer = UnsafeRawPointer(bitPattern: UInt(address))
         if dladdr(addressPointer, &dlInfo) != 0 {
@@ -38,6 +37,7 @@ public class SymbolicateBacktraces {
         }
     }
     
+    /*
     func createBacktraceInfo(for addresses: [BacktraceAddress]) -> BacktraceInfo {
         if let outermostAddress = addresses.last {
             if outermostAddress == .zero {
@@ -53,17 +53,31 @@ public class SymbolicateBacktraces {
             if addresses.count != 1 {
                 backtraceInfo.children = [createBacktraceInfo(for: addresses.dropLast())]
             }
-            if addressToBacktrace[outermostAddress] == nil {
-                addressToBacktrace[outermostAddress] = backtraceInfo
-            }
             return backtraceInfo
         } else {
             return BacktraceInfo(address: .zero, energy: .zero, info: nil, children: [])
         }
     }
     
+    private func addAddressesFromBacktraceInfo(_ backtraceInfo: BacktraceInfo?) {
+        var newChildren: BacktraceInfo? = backtraceInfo
+        while true {
+            guard let child = newChildren else {
+                break
+            }
+            if addressToBacktrace[child.address] == nil {
+                addressToBacktrace[child.address] = newChildren
+            }
+            newChildren = newChildren?.children.first
+        }
+    }
+    */
+    
     func addToBacktraceGraph(_ backtraces: [Backtrace]) {
-        
+        for backtrace in backtraces {
+            backtraceGraph.insertInGraph(newBacktrace: backtrace)
+        }
+        /*
         for backtrace in backtraces {
             guard let outermostAddress = backtrace.addresses.last else {
                 // Empty backtrace, move on...
@@ -83,15 +97,18 @@ public class SymbolicateBacktraces {
                         break
                     }
                     if existingChildrenLoop.isEmpty {
-                        // Existing backtrace doesn't contain this child
+                        // Existing backtrace doesn't contain any child
                         existingInfoLoop.children.append(newChildren)
+                        addAddressesFromBacktraceInfo(newChildren)
                         break
                     } else if existingChildrenLoop.contains(where: { $0.address == newChildren.address }) {
                         // Existing backtrace info contains the same children
                         existingChildrenLoop = existingChildrenLoop.flatMap({ $0.children })
                         newChildrenLoop = newChildren.children.first
                     } else {
-                        //
+                        // Existing backtrace doesn't contain this child
+                        existingInfoLoop.children.append(newChildren)
+                        addAddressesFromBacktraceInfo(newChildren)
                         break
                     }
                 }
@@ -105,6 +122,7 @@ public class SymbolicateBacktraces {
                 addressToBacktrace[outermostAddress] = newBacktraceInfo
             }
         }
+        */
         
         // Get the energy for every single memory address in all new backtraces
         for backtrace in backtraces {
@@ -113,13 +131,15 @@ public class SymbolicateBacktraces {
                 continue
             }
             // Add energies to backtrace graph
+            /*
             for address in backtrace.addresses {
                 guard let backtraceInfo = addressToBacktrace[address] else {
-                    print("Error: backtrace missing for address")
+                    print("Error: backtrace info missing for address")
                     continue
                 }
                 backtraceInfo.energy += energy
             }
+             */
             // Add energies to backtrace flatmap
             for address in backtrace.addresses {
                 if let existingInfo = flatBacktraces.first(where: { $0.address == address }) {

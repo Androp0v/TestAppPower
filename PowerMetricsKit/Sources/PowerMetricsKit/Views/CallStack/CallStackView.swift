@@ -19,6 +19,9 @@ import SwiftUI
     @State var expandedAddresses = [BacktraceAddress: Bool]()
     @State var visualizationMode: VisualizationMode = .flat
     
+    var sortedGraphBacktraces: [BacktraceInfo] {
+        return symbolicator.backtraceGraph.nodes.sorted(by: { $0.energy > $1.energy })
+    }
     var sortedFlatBacktraces: [SimpleBacktraceInfo] {
         return symbolicator.flatBacktraces.sorted(by: { $0.energy > $1.energy })
     }
@@ -27,7 +30,7 @@ import SwiftUI
         VStack(alignment: .leading, spacing: .zero) {
             TimelineView(.periodic(from: .now, by: 0.5)) { _ in
                 if visualizationMode == .graph {
-                    List(symbolicator.backtraceGraph, id: \.id) { backtraceInfo in
+                    List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
                         BacktraceRowView(
                             backtraceInfo: backtraceInfo,
                             energy: backtraceInfo.energy,

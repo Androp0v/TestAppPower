@@ -1209,8 +1209,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "29"
-            endingLineNumber = "29"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
             landmarkName = "symbolicatedInfo(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1225,8 +1225,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/Views/PowerWidgetViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "50"
-            endingLineNumber = "50"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
             landmarkName = "init()"
             landmarkType = "7">
             <Locations>
@@ -1275,8 +1275,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "44"
             endingLineNumber = "44"
-            landmarkName = "createBacktraceInfo(for:)"
-            landmarkType = "7">
+            landmarkName = "SymbolicateBacktraces"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1289,57 +1289,10 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "createBacktraceInfo(for:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "0E3BD8A2-90E0-41BF-B5C6-5D7DDE49BAAD - 67e4aac5e7d2fe43"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.createBacktraceInfo(for: Swift.Array&lt;Swift.UInt64&gt;) -&gt; PowerMetricsKit.BacktraceInfo"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "58"
-                  endingLineNumber = "58"
-                  offsetFromSymbolStart = "1020">
-               </Location>
-               <Location
-                  uuid = "0E3BD8A2-90E0-41BF-B5C6-5D7DDE49BAAD - 67e4aac5e7d2fe43"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.createBacktraceInfo(for: Swift.Array&lt;Swift.UInt64&gt;) -&gt; PowerMetricsKit.BacktraceInfo"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "58"
-                  endingLineNumber = "58"
-                  offsetFromSymbolStart = "880">
-               </Location>
-               <Location
-                  uuid = "0E3BD8A2-90E0-41BF-B5C6-5D7DDE49BAAD - 67e4aac5e7d2fee0"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.createBacktraceInfo(for: Swift.Array&lt;Swift.UInt64&gt;) -&gt; PowerMetricsKit.BacktraceInfo"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "61"
-                  endingLineNumber = "61"
-                  offsetFromSymbolStart = "1220">
-               </Location>
-            </Locations>
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "SymbolicateBacktraces"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1368,8 +1321,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "122"
-            endingLineNumber = "122"
+            startingLineNumber = "141"
+            endingLineNumber = "141"
             landmarkName = "addToBacktraceGraph(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1384,8 +1337,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "addToBacktraceGraph(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1400,8 +1353,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "addToBacktraceGraph(_:)"
             landmarkType = "7">
             <Locations>
@@ -1448,8 +1401,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "addToBacktraceGraph(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1464,9 +1417,402 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "117"
-            endingLineNumber = "117"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "addToBacktraceGraph(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7E86BC27-D3D7-4684-87B2-CE75FE4AB9EA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "109"
+            endingLineNumber = "109"
+            landmarkName = "addToBacktraceGraph(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
+            landmarkName = "addToBacktraceGraph(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e235"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "110"
+                  endingLineNumber = "110"
+                  offsetFromSymbolStart = "2016">
+               </Location>
+               <Location
+                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e022"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "168">
+               </Location>
+               <Location
+                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e022"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "125"
+                  endingLineNumber = "125"
+                  offsetFromSymbolStart = "356">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "findInsertionPoint(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbe298"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "48"
+                  endingLineNumber = "48"
+                  offsetFromSymbolStart = "3784">
+               </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbe2f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "3784">
+               </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbe2f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "3948">
+               </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbe2f9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "49"
+                  endingLineNumber = "49"
+                  offsetFromSymbolStart = "3996">
+               </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbeca8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "3996">
+               </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbeca8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "4200">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CC248F30-57FA-48D5-A68F-5BA3CF18499A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "insertInGraph(newBacktrace:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CC248F30-57FA-48D5-A68F-5BA3CF18499A - eb0c0eb27cd97d43"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.insertInGraph(newBacktrace: PowerMetricsKit.Backtrace) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "113"
+                  endingLineNumber = "113"
+                  offsetFromSymbolStart = "688">
+               </Location>
+               <Location
+                  uuid = "CC248F30-57FA-48D5-A68F-5BA3CF18499A - eb0c0eb27cd97d6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.insertInGraph(newBacktrace: PowerMetricsKit.Backtrace) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "784">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "EDF2728E-8868-430A-B2C2-42519E43F92C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "findInsertionPoint(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BF18CA24-27EF-42A0-8A85-8CC155C7479C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "65"
+            endingLineNumber = "65"
+            landmarkName = "findInsertionPoint(for:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BF18CA24-27EF-42A0-8A85-8CC155C7479C - 4d465336f0cbe6ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "2956">
+               </Location>
+               <Location
+                  uuid = "BF18CA24-27EF-42A0-8A85-8CC155C7479C - 4d465336f0cbe6ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "2568">
+               </Location>
+               <Location
+                  uuid = "BF18CA24-27EF-42A0-8A85-8CC155C7479C - 4d465336f0cbe6ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "2724">
+               </Location>
+               <Location
+                  uuid = "BF18CA24-27EF-42A0-8A85-8CC155C7479C - 4d465336f0cbe6ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "2828">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AAB80B86-ACC1-4345-BC5D-00225BC6612B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "94"
+            endingLineNumber = "94"
+            landmarkName = "insertInGraph(newBacktrace:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "AAB80B86-ACC1-4345-BC5D-00225BC6612B - eb0c0eb27cd97ec7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.insertInGraph(newBacktrace: PowerMetricsKit.Backtrace) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "109"
+                  endingLineNumber = "109"
+                  offsetFromSymbolStart = "708">
+               </Location>
+               <Location
+                  uuid = "AAB80B86-ACC1-4345-BC5D-00225BC6612B - eb0c0eb27cd97e26"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.insertInGraph(newBacktrace: PowerMetricsKit.Backtrace) -&gt; ()"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "108"
+                  endingLineNumber = "108"
+                  offsetFromSymbolStart = "1136">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "0652CCED-923E-4623-8ECF-1BEAB677869D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
+            landmarkName = "createBacktraceInfo(for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
