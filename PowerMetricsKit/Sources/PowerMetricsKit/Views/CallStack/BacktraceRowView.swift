@@ -21,7 +21,7 @@ struct BacktraceRowView: View {
         VStack(alignment: .leading) {
             backtraceRow(backtraceInfo: backtraceInfo)
             if isExpanded {
-                ForEach(backtraceInfo.children) { children in
+                ForEach(backtraceInfo.children.sorted(by: { $0.energy > $1.energy })) { children in
                     BacktraceRowView(
                         backtraceInfo: children,
                         energy: children.energy,

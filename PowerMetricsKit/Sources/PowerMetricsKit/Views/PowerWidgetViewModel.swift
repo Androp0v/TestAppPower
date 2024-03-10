@@ -68,8 +68,9 @@ struct PowerWidgetInfo {
     }
     
     func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: SampleThreadsManager.samplingTime, repeats: true) { timer in
+        let timer = Timer(timeInterval: SampleThreadsManager.samplingTime, repeats: true) { timer in
             self.update()
         }
+        RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
     }
 }

@@ -28,6 +28,8 @@ import SwiftUI
     
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
+            Divider()
+            
             TimelineView(.periodic(from: .now, by: 0.5)) { _ in
                 if visualizationMode == .graph {
                     List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
@@ -52,6 +54,7 @@ import SwiftUI
             }
             
             Divider()
+            
             Button(
                 action: {
                     if visualizationMode == .graph {

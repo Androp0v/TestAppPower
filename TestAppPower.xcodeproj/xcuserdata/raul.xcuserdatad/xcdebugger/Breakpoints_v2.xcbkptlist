@@ -1266,38 +1266,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "07C367E3-281C-444D-8E45-1968653DBD87"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
-            landmarkName = "SymbolicateBacktraces"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0E3BD8A2-90E0-41BF-B5C6-5D7DDE49BAAD"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "SymbolicateBacktraces"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "BBFB8D08-B0D6-4448-99C8-D9B66843479C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -1314,38 +1282,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D7DE9FAB-4A1B-4B58-B03E-CEAD657F51FD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "141"
-            endingLineNumber = "141"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D10EAB1E-9C4B-494F-9846-EDA4CB2EF7C2"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "95FA4DBE-C664-413C-8852-CBA5D0645298"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -1353,8 +1289,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "80"
-            endingLineNumber = "80"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
             landmarkName = "addToBacktraceGraph(_:)"
             landmarkType = "7">
             <Locations>
@@ -1387,117 +1323,6 @@
                   startingLineNumber = "64"
                   endingLineNumber = "64"
                   offsetFromSymbolStart = "392">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "CC97737F-A1D8-4644-9BDA-3585F866F9B1"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "140"
-            endingLineNumber = "140"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "0E454FE0-5C7D-4973-8C76-49C36B00A4E9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7E86BC27-D3D7-4684-87B2-CE75FE4AB9EA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "112"
-            endingLineNumber = "112"
-            landmarkName = "addToBacktraceGraph(_:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e235"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "110"
-                  endingLineNumber = "110"
-                  offsetFromSymbolStart = "2016">
-               </Location>
-               <Location
-                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e022"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "168">
-               </Location>
-               <Location
-                  uuid = "B1C2145C-188B-44A1-9F39-D1B96F056A2E - 9267893ea6d3e022"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "PowerMetricsKit.SymbolicateBacktraces.addToBacktraceGraph(Swift.Array&lt;PowerMetricsKit.Backtrace&gt;) -&gt; ()"
-                  moduleName = "TestAppPower"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SymbolicateBacktraces.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "125"
-                  endingLineNumber = "125"
-                  offsetFromSymbolStart = "356">
                </Location>
             </Locations>
          </BreakpointContent>
