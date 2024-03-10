@@ -1447,6 +1447,21 @@
                   endingLineNumber = "32"
                   offsetFromSymbolStart = "4264">
                </Location>
+               <Location
+                  uuid = "E6427AF4-E2E9-4C8F-80A7-A67DEF71BC34 - 4d465336f0cbeca8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.BacktraceGraph.findInsertionPoint(for: PowerMetricsKit.Backtrace) throws -&gt; PowerMetricsKit.BacktraceGraph.InsertionPointResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/TestAppPower/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "32"
+                  endingLineNumber = "32"
+                  offsetFromSymbolStart = "4440">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
@@ -1460,8 +1475,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
             landmarkName = "insertInGraph(newBacktrace:)"
             landmarkType = "7">
             <Locations>
@@ -1508,8 +1523,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "findInsertionPoint(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -1524,8 +1539,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
             landmarkName = "findInsertionPoint(for:)"
             landmarkType = "7">
             <Locations>
@@ -1602,8 +1617,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "98"
+            endingLineNumber = "98"
             landmarkName = "insertInGraph(newBacktrace:)"
             landmarkType = "7">
             <Locations>
@@ -1650,8 +1665,8 @@
             filePath = "PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/BacktraceGraph.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "124"
-            endingLineNumber = "124"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
             landmarkName = "createBacktraceInfo(for:)"
             landmarkType = "7">
          </BreakpointContent>

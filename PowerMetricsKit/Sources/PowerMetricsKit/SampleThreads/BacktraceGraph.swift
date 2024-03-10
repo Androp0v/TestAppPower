@@ -33,6 +33,10 @@ public final class BacktraceGraph {
             throw BacktraceGraphError.emptyBacktrace
         }
         if let existingInfo = nodes.first(where: { $0.address == outermostAddress }) {
+            
+            // Add the energy information from the new backtrace to the outermost node
+            existingInfo.energy += newBacktrace.energy ?? .zero
+            
             var insertionPoint = existingInfo
             var remainingAddresses = newBacktrace.addresses.dropLast()
             var nextAddress = remainingAddresses.last
@@ -48,8 +52,8 @@ public final class BacktraceGraph {
                         remainingAddresses: Array(remainingAddresses)
                     )
                 } else if let matchingChild = insertionPoint.children.first(where: { $0.address == nextAddress }) {
-                    // Add the energy information from the new backtrace
-                    insertionPoint.energy += newBacktrace.energy ?? .zero
+                    // Add the energy information from the new backtrace to the children
+                    matchingChild.energy += newBacktrace.energy ?? .zero
                     // Existing backtrace info contains a child with the same address
                     insertionPoint = matchingChild
                     remainingAddresses = remainingAddresses.dropLast()
