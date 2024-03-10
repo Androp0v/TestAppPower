@@ -18,36 +18,31 @@ struct BacktraceRowView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            backtraceRow(backtraceInfo: backtraceInfo)
-        }
-    }
-    
-    @ViewBuilder func backtraceRow(backtraceInfo: BacktraceInfo) -> some View {
-        HStack {
-            Button(
-                action: {
-                    withAnimation {
-                        if isExpanded {
-                            expandedInfos = expandedInfos.dropLast()
-                        } else {
-                            expandedInfos.append(backtraceInfo)
-                        }
+        Button(
+            action: {
+                withAnimation {
+                    if isExpanded {
+                        expandedInfos = expandedInfos.dropLast()
+                    } else {
+                        expandedInfos.append(backtraceInfo)
                     }
-                },
-                label: {
+                }
+            },
+            label: {
+                HStack {
                     Image(
                         systemName: isExpanded
                         ? "rectangle.compress.vertical"
                         : "rectangle.expand.vertical"
                     )
+                    BacktraceRowContentView(
+                        symbolInfo: backtraceInfo.info,
+                        energy: backtraceInfo.energy
+                    )
                 }
-            )
-            .buttonStyle(.plain)
-            BacktraceRowContentView(
-                symbolInfo: backtraceInfo.info,
-                energy: backtraceInfo.energy
-            )
-        }
+                .contentShape(Rectangle())
+            }
+        )
+        .buttonStyle(.plain)
     }
 }
