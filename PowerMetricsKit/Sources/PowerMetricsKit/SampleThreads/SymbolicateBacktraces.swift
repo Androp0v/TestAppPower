@@ -8,30 +8,16 @@
 import Foundation
 import SampleThreads
 
-struct DYLDInfo {
-    let index: Int
-    let name: String
-    let loadAddress: intptr_t
-    let aslrSlide: intptr_t
-}
-
-struct SymbolicatedInfo: Hashable {
-    let imageName: String
-    let addressInImage: UInt64
-    let symbolName: String
-    let addressInSymbol: UInt64
+public class SymbolicateBacktraces {
     
-    var displayName: String {
-        return "0x\(String(format: "%llx", addressInImage)), \(imageName)"
-    }
-}
-
-class SymbolicateBacktraces {
+    public var backtraceGraph = [BacktraceInfo]()
+    public var flatBacktraces = [SimpleBacktraceInfo]()
+    private var addressToBacktrace = [BacktraceAddress: BacktraceInfo]()
         
     private init() {}
     public static let shared = SymbolicateBacktraces()
     
-    func symbolicatedInfo(for address: UInt64) -> SymbolicatedInfo? {
+    public func symbolicatedInfo(for address: UInt64) -> SymbolicatedInfo? {
         
         var dlInfo = Dl_info()
         let addressPointer = UnsafeRawPointer(bitPattern: UInt(address))
@@ -49,6 +35,103 @@ class SymbolicateBacktraces {
         } else {
             // dladdr returns 0 on error
             return nil
+        }
+    }
+    
+    func createBacktraceInfo(for addresses: [BacktraceAddress]) -> BacktraceInfo {
+        if let outermostAddress = addresses.last {
+            if outermostAddress == .zero {
+                return createBacktraceInfo(for: addresses.dropLast())
+            }
+            let symbolicatedInfo = SymbolicateBacktraces.shared.symbolicatedInfo(for: outermostAddress)
+            let backtraceInfo = BacktraceInfo(
+                address: outermostAddress,
+                energy: .zero,
+                info: symbolicatedInfo,
+                children: []
+            )
+            if addresses.count != 1 {
+                backtraceInfo.children = [createBacktraceInfo(for: addresses.dropLast())]
+            }
+            if addressToBacktrace[outermostAddress] == nil {
+                addressToBacktrace[outermostAddress] = backtraceInfo
+            }
+            return backtraceInfo
+        } else {
+            return BacktraceInfo(address: .zero, energy: .zero, info: nil, children: [])
+        }
+    }
+    
+    func addToBacktraceGraph(_ backtraces: [Backtrace]) {
+        
+        for backtrace in backtraces {
+            guard let outermostAddress = backtrace.addresses.last else {
+                // Empty backtrace, move on...
+                continue
+            }
+            if let existingInfo = addressToBacktrace[outermostAddress] {
+                let newBacktraceInfo = createBacktraceInfo(
+                    for: backtrace.addresses
+                )
+                var existingInfoLoop = existingInfo
+                var existingChildrenLoop = existingInfoLoop.children
+                var newInfoLoop = newBacktraceInfo
+                var newChildrenLoop = newBacktraceInfo.children.first
+                while true {
+                    guard let newChildren = newChildrenLoop else {
+                        // No more children in the backtrace
+                        break
+                    }
+                    if existingChildrenLoop.isEmpty {
+                        // Existing backtrace doesn't contain this child
+                        existingInfoLoop.children.append(newChildren)
+                        break
+                    } else if existingChildrenLoop.contains(where: { $0.address == newChildren.address }) {
+                        // Existing backtrace info contains the same children
+                        existingChildrenLoop = existingChildrenLoop.flatMap({ $0.children })
+                        newChildrenLoop = newChildren.children.first
+                    } else {
+                        //
+                        break
+                    }
+                }
+                addressToBacktrace[outermostAddress] = newBacktraceInfo
+            } else {
+                // Doesn't exist, must be a new top-level backtrace
+                let newBacktraceInfo = createBacktraceInfo(
+                    for: backtrace.addresses
+                )
+                backtraceGraph.append(newBacktraceInfo)
+                addressToBacktrace[outermostAddress] = newBacktraceInfo
+            }
+        }
+        
+        // Get the energy for every single memory address in all new backtraces
+        for backtrace in backtraces {
+            guard let energy = backtrace.energy else {
+                // Backtrace doesn't contain any energy information...
+                continue
+            }
+            // Add energies to backtrace graph
+            for address in backtrace.addresses {
+                guard let backtraceInfo = addressToBacktrace[address] else {
+                    print("Error: backtrace missing for address")
+                    continue
+                }
+                backtraceInfo.energy += energy
+            }
+            // Add energies to backtrace flatmap
+            for address in backtrace.addresses {
+                if let existingInfo = flatBacktraces.first(where: { $0.address == address }) {
+                    existingInfo.energy += energy
+                } else {
+                    flatBacktraces.append(SimpleBacktraceInfo(
+                        address: address,
+                        energy: energy,
+                        info: symbolicatedInfo(for: address)
+                    ))
+                }
+            }
         }
     }
 }

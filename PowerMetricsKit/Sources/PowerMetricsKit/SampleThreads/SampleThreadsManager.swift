@@ -29,8 +29,6 @@ import SampleThreads
     public private(set) var totalEnergyUsage: Energy = 0
     /// Historic power figures for the app.
     public private(set) var history = SampledResultsHistory(numerOfStoredSamples: SampleThreadsManager.numberOfStoredSamples)
-    /// All the collected backtraces.
-    public private(set) var backtraces = [Backtrace]()
     
     // MARK: - Private properties
     
@@ -188,9 +186,10 @@ import SampleThreads
         self.totalEnergyUsage += sampleResult.allThreadsPower.total * Self.samplingTime / 3600
         
         // Add power info to existing backtraces
-        self.backtraces.append(contentsOf: zip(backtraces, threadEnergyChanges).map { (backtrace, energy) in
+        let backtracesWithPower = zip(backtraces, threadEnergyChanges).map { (backtrace, energy) in
             return Backtrace(addresses: backtrace.addresses, energy: energy)
-        })
+        }
+        SymbolicateBacktraces.shared.addToBacktraceGraph(backtracesWithPower)
         
         return sampleResult
     }

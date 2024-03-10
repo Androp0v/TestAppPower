@@ -13,7 +13,7 @@ import SwiftUI
     
     let pid = ProcessInfo.processInfo.processIdentifier
     let sampleManager = SampleThreadsManager.shared
-    let viewModel = PowerWidgetViewModel()
+    @State var viewModel = PowerWidgetViewModel()
     
     @AppStorage("chartType") var chartType: ChartType = .coreType
     @State var isResettingEnergy: Bool = false
@@ -44,31 +44,28 @@ import SwiftUI
                 .font(.largeTitle)
                 .padding(.bottom, 4)
                 .padding(.horizontal)
-            TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 
-                let info = viewModel.getLatest(sampleManager: sampleManager)
-                let latestSampleTime = info.cpuPowerHistory.last?.time ?? Date.now
-                
-                Text("CPU power: \(formatPower(power: info.cpuPower))")
-                    .monospaced()
-                    .padding(.horizontal)
-                HStack(spacing: 4) {
-                    Text("Total energy used: \(formatEnergy(energy: info.cpuEnergy))")
-                        .monospaced()
-                    resetEnergyButton
-                }
+            let latestSampleTime = viewModel.info.cpuPowerHistory.last?.time ?? Date.now
+            
+            Text("CPU power: \(formatPower(power: viewModel.info.cpuPower))")
+                .monospaced()
                 .padding(.horizontal)
-                
-                switch chartType {
-                case .coreType:
-                    CoreTypePowerChart(info: info, latestSampleTime: latestSampleTime)
-                        .padding(.horizontal)
-                        .padding(.bottom)
-                case .thread:
-                    ThreadPowerChart(info: info, latestSampleTime: latestSampleTime)
-                case .callStack:
-                    CallStackView(info: info)
-                }
+            HStack(spacing: 4) {
+                Text("Total energy used: \(formatEnergy(energy: viewModel.info.cpuEnergy))")
+                    .monospaced()
+                resetEnergyButton
+            }
+            .padding(.horizontal)
+            
+            switch chartType {
+            case .coreType:
+                CoreTypePowerChart(info: viewModel.info, latestSampleTime: latestSampleTime)
+                    .padding(.horizontal)
+                    .padding(.bottom)
+            case .thread:
+                ThreadPowerChart(info: viewModel.info, latestSampleTime: latestSampleTime)
+            case .callStack:
+                CallStackView()
             }
         }
         .padding(.top)

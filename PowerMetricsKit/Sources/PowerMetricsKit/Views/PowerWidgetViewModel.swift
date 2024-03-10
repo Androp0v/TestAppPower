@@ -29,43 +29,51 @@ struct PowerWidgetInfo {
         }
         return threadSamples.sorted(by: { $0.displayName < $1.displayName })
     }
-    var backtraces: [Backtrace]
+    var backtraceGraph: [BacktraceInfo]
     
     static let empty = PowerWidgetInfo(
         cpuPower: .zero,
         cpuEnergy: .zero,
         cpuMaxPower: .zero,
         cpuPowerHistory: [SampleThreadsResult](), 
-        backtraces: [Backtrace]()
+        backtraceGraph: [BacktraceInfo]()
     )
 }
 
 /// Class to bridge the `SampleThreadsManager` to the UI.
-@MainActor class PowerWidgetViewModel {
+@Observable class PowerWidgetViewModel {
     
-    var powerWidgetInfo: PowerWidgetInfo = .empty
+    var info: PowerWidgetInfo = .empty
     var threadColors = [String: Color]()
     
-    init() {}
+    init() {
+        startTimer()
+    }
     
-    func getLatest(sampleManager: SampleThreadsManager) -> PowerWidgetInfo {
+    func update() {
         Task(priority: .high) { @SampleThreadsActor in
+            let sampleManager = SampleThreadsManager.shared
             let cpuPower = sampleManager.history.samples.last?.allThreadsPower.total ?? .zero
             let cpuEnergy = sampleManager.totalEnergyUsage
             let cpuPowerHistory = sampleManager.history.samples
             let cpuMaxPower = sampleManager.history.maxPower
-            let backtraces = sampleManager.backtraces
+            let backtraceGraph = SymbolicateBacktraces.shared.backtraceGraph
             
             Task(priority: .high) { @MainActor in
-                self.powerWidgetInfo = PowerWidgetInfo(
+                self.info = PowerWidgetInfo(
                     cpuPower: cpuPower,
                     cpuEnergy: cpuEnergy,
                     cpuMaxPower: cpuMaxPower,
                     cpuPowerHistory: cpuPowerHistory,
-                    backtraces: backtraces
+                    backtraceGraph: backtraceGraph
                 )
             }
         }
-        return powerWidgetInfo
+    }
+    
+    func startTimer() {
+        Timer.scheduledTimer(withTimeInterval: SampleThreadsManager.samplingTime, repeats: true) { timer in
+            self.update()
+        }
     }
 }

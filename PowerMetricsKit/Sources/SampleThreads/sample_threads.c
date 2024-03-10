@@ -124,6 +124,7 @@ sample_threads_result sample_threads(int pid) {
         
         dispatch_queue_t * _Nullable thread_queue = th_id_info.dispatch_qaddr;
         if (id_info_result == KERN_SUCCESS && thread_queue != NULL) {
+            // TODO: This crashes sometimes, need to investigate why
             const char  * _Nullable queue_label = dispatch_queue_get_label(*thread_queue);
             strcpy(counters_array[i].info.dispatch_queue_name, queue_label);
         } else {
