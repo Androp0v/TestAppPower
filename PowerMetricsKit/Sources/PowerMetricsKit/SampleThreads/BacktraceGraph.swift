@@ -16,7 +16,7 @@ public final class BacktraceGraph {
             // precondition(addressToBacktrace.keys.contains(insertionPoint.address))
             insertionPoint.children.append(newInfo)
         } else {
-            print("New info not in graph, adding it as root element")
+            // print("New info not in graph, adding it as root element")
             nodes.append(newInfo)
         }
     }
@@ -29,7 +29,7 @@ public final class BacktraceGraph {
     private func findInsertionPoint(for newBacktrace: Backtrace) throws -> InsertionPointResult {
         guard let outermostAddress = newBacktrace.addresses.last else {
             // Empty backtrace, move on...
-            print("Attempted to insert empty backtrace")
+            // print("Attempted to insert empty backtrace")
             throw BacktraceGraphError.emptyBacktrace
         }
         if let existingInfo = nodes.first(where: { $0.address == outermostAddress }) {
@@ -46,7 +46,7 @@ public final class BacktraceGraph {
                     throw BacktraceGraphError.backtraceFullyContainedInGraph
                 } else if insertionPoint.children.isEmpty {
                     // Existing backtrace doesn't contain any child
-                    print("Existing backtrace doesn't contain any other child")
+                    // print("Existing backtrace doesn't contain any other child")
                     return InsertionPointResult(
                         insertionPoint: insertionPoint,
                         remainingAddresses: Array(remainingAddresses)
@@ -60,12 +60,14 @@ public final class BacktraceGraph {
                     nextAddress = remainingAddresses.last
                 } else {
                     // Existing backtrace doesn't contain this child in particular
+                    /*
                     print(
                         """
                         Insertion point \(insertionPoint.info?.symbolName ?? "UNKNOWN") does not contain child \
                         \(SymbolicateBacktraces.shared.symbolicatedInfo(for: nextAddress ?? .zero)?.symbolName ?? "UNKNOWN")
                         """
                     )
+                     */
                     return InsertionPointResult(
                         insertionPoint: insertionPoint,
                         remainingAddresses: Array(remainingAddresses)
@@ -74,7 +76,7 @@ public final class BacktraceGraph {
             }
         } else {
             // Doesn't exist, must be a new top-level backtrace
-            print("Insertion point not found, possible top-level element")
+            // print("Insertion point not found, possible top-level element")
             return InsertionPointResult(
                 insertionPoint: nil,
                 remainingAddresses: newBacktrace.addresses
@@ -87,7 +89,7 @@ public final class BacktraceGraph {
         newBacktrace = sanitizedBacktrace(&newBacktrace)
         guard newBacktrace.addresses.last != nil else {
             // Empty backtrace, move on...
-            print("Attempted to insert empty backtrace")
+            // print("Attempted to insert empty backtrace")
             return
         }
         do {

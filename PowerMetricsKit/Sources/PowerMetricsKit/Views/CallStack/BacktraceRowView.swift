@@ -12,6 +12,7 @@ struct BacktraceRowView: View {
     let backtraceInfo: BacktraceInfo
     let energy: Energy
     @Binding var expandedInfos: [BacktraceInfo]
+    @Binding var showFullInfo: Bool
     
     var isExpanded: Bool {
         return expandedInfos.contains(where: { $0.id == backtraceInfo.id })
@@ -26,6 +27,7 @@ struct BacktraceRowView: View {
                     } else {
                         expandedInfos.append(backtraceInfo)
                     }
+                    showFullInfo = false
                 }
             },
             label: {

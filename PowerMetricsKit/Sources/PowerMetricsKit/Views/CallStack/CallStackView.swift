@@ -17,6 +17,7 @@ import SwiftUI
     
     let symbolicator = SymbolicateBacktraces.shared
     @State var expandedInfos = [BacktraceInfo]()
+    @State var showFullInfo: Bool = false
     @AppStorage("callstackVisualization") var visualizationMode: VisualizationMode = .graph
     
     var sortedGraphBacktraces: [BacktraceInfo] {
@@ -36,15 +37,21 @@ import SwiftUI
         VStack(alignment: .leading, spacing: .zero) {
             Divider()
             
-            TimelineView(.periodic(from: .now, by: 0.5)) { _ in
+            TimelineView(.periodic(from: .now, by: SampleThreadsManager.samplingTime)) { _ in
                 if visualizationMode == .graph {
                     VStack(alignment: .leading, spacing: .zero) {
                         if let lastExpanded = expandedInfos.last {
-                            BacktraceRowView(
-                                backtraceInfo: lastExpanded,
-                                energy: lastExpanded.energy,
-                                expandedInfos: $expandedInfos
-                            )
+                            VStack {
+                                BacktraceRowView(
+                                    backtraceInfo: lastExpanded,
+                                    energy: lastExpanded.energy,
+                                    expandedInfos: $expandedInfos, 
+                                    showFullInfo: $showFullInfo
+                                )
+                                if showFullInfo {
+                                    BacktraceInfoView(backtraceInfo: lastExpanded)
+                                }
+                            }
                             #if os(macOS)
                             .padding(.vertical, 4)
                             .padding(.horizontal, 4)
@@ -57,13 +64,16 @@ import SwiftUI
                             .padding(.top, 4)
                         }
 
-                        List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
-                            BacktraceRowView(
-                                backtraceInfo: backtraceInfo,
-                                energy: backtraceInfo.energy,
-                                expandedInfos: $expandedInfos
-                            )
-                            .listRowBackground(Color.clear)
+                        if !showFullInfo {
+                            List(sortedGraphBacktraces, id: \.id) { backtraceInfo in
+                                BacktraceRowView(
+                                    backtraceInfo: backtraceInfo,
+                                    energy: backtraceInfo.energy,
+                                    expandedInfos: $expandedInfos, 
+                                    showFullInfo: $showFullInfo
+                                )
+                                .listRowBackground(Color.clear)
+                            }
                         }
                     }
                     .listStyle(.plain)
@@ -83,24 +93,44 @@ import SwiftUI
             
             Divider()
             
-            Button(
-                action: {
-                    if visualizationMode == .graph {
-                        visualizationMode = .flat
-                    } else {
-                        visualizationMode = .graph
+            HStack {
+                Button(
+                    action: {
+                        if visualizationMode == .graph {
+                            visualizationMode = .flat
+                        } else {
+                            visualizationMode = .graph
+                        }
+                    },
+                    label: {
+                        Image(systemName: visualizationMode == .flat
+                              ? "list.bullet.indent"
+                              : "list.bullet"
+                        )
                     }
-                },
-                label: {
-                    Image(systemName: visualizationMode == .flat
-                          ? "list.bullet.indent"
-                          : "list.bullet"
-                    )
-                }
-            )
-            #if os(macOS)
-            .buttonStyle(.plain)
-            #endif
+                )
+                #if os(macOS)
+                .buttonStyle(.plain)
+                #endif
+                
+                Button(
+                    action: {
+                        withAnimation {
+                            showFullInfo.toggle()
+                        }
+                    },
+                    label: {
+                        Image(systemName: showFullInfo
+                              ? "eye.circle.fill"
+                              : "eye.circle"
+                        )
+                    }
+                )
+                #if os(macOS)
+                .buttonStyle(.plain)
+                #endif
+                .disabled(visualizationMode == .flat || expandedInfos.isEmpty)
+            }
             .padding(.top, 8)
         }
         .padding()

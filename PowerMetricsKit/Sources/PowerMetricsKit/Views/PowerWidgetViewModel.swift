@@ -45,10 +45,10 @@ struct PowerWidgetInfo {
     var threadColors = [String: Color]()
     
     init() {
-        startTimer()
+        periodicRefresh()
     }
     
-    func update() {
+    @objc func update() {
         Task(priority: .high) { @SampleThreadsActor in
             let sampleManager = SampleThreadsManager.shared
             let cpuPower = sampleManager.history.samples.last?.allThreadsPower.total ?? .zero
@@ -67,10 +67,22 @@ struct PowerWidgetInfo {
         }
     }
     
-    func startTimer() {
+    func periodicRefresh() {
+        #if os(macOS)
         let timer = Timer(timeInterval: SampleThreadsManager.samplingTime, repeats: true) { timer in
             self.update()
         }
-        RunLoop.main.add(timer, forMode: RunLoop.Mode.common)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
+        #else
+        let displayLink = CADisplayLink(
+            target: self,
+            selector: #selector(update)
+        )
+        displayLink.preferredFrameRateRange = .init(
+            minimum: Float(1 / SampleThreadsManager.samplingTime),
+            maximum: Float(1 / SampleThreadsManager.samplingTime)
+        )
+        displayLink.add(to: .current, forMode: .common)
+        #endif
     }
 }
