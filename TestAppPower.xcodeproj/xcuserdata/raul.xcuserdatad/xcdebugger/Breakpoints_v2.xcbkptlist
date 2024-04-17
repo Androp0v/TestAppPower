@@ -1702,5 +1702,133 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F2596C52-6E7D-4B1A-8DFA-5C82B052C760"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "sampleThreads(_:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F2596C52-6E7D-4B1A-8DFA-5C82B052C760 - 40c19ff7bea61438"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "PowerMetricsKit.SampleThreadsManager.sampleThreads(Swift.Int32) -&gt; PowerMetricsKit.SampleThreadsResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "12864">
+               </Location>
+               <Location
+                  uuid = "F2596C52-6E7D-4B1A-8DFA-5C82B052C760 - d91dc5590ae84d0c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (Swift.UnsafePointer&lt;(Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8, Swift.Int8)&gt;) -&gt; Swift.Optional&lt;Swift.String&gt; in PowerMetricsKit.SampleThreadsManager.sampleThreads(Swift.Int32) -&gt; PowerMetricsKit.SampleThreadsResult"
+                  moduleName = "TestAppPower"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/raul/Developer/PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "116"
+                  endingLineNumber = "116"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "402299EF-9D9A-46EC-A99E-638A21029225"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "sample_threads(pid, retrieve_dispatch_queue_names, retrieve_backtraces)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "87565197-D24A-480A-B11E-16F0EE411302"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "132"
+            endingLineNumber = "132"
+            landmarkName = "sample_threads(pid, retrieve_dispatch_queue_names, retrieve_backtraces)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DD793975-CFD3-4B5B-AABE-24C7DE5F6BE1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/SampleThreads/sample_threads.c"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "sample_threads(pid, retrieve_dispatch_queue_names, retrieve_backtraces)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F4046AA4-91CE-40B9-A1F2-4C4863FC9D1E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/PowerMetricsKit/SampleThreads/SampleThreadsManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "115"
+            endingLineNumber = "115"
+            landmarkName = "sampleThreads(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AC6D54C4-730A-488A-AB41-82B5CE681A68"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../PowerMetricsKit/Sources/PowerMetricsKit/Views/Charts/ThreadPowerChart/ThreadPowerRow.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
