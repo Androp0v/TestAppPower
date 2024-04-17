@@ -13,7 +13,7 @@
 		C433FC402B542FE200BA3BEF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C433FC3F2B542FE200BA3BEF /* Preview Assets.xcassets */; };
 		C433FC6E2B5D34BE00BA3BEF /* SimulationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */; };
 		C433FC722B5D364100BA3BEF /* SimulationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C433FC712B5D364100BA3BEF /* SimulationManager.swift */; };
-		C4A3B7012B6E908200FE3562 /* PowerMetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = C4A3B7002B6E908200FE3562 /* PowerMetricsKit */; };
+		C47EF92E2BB71F9500C707B1 /* PowerMetricsKit in Frameworks */ = {isa = PBXBuildFile; productRef = C47EF92D2BB71F9500C707B1 /* PowerMetricsKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +28,8 @@
 		C433FC6C2B5C2CBC00BA3BEF /* libproc.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libproc.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS17.2.sdk/usr/lib/libproc.tbd; sourceTree = DEVELOPER_DIR; };
 		C433FC6D2B5D34BE00BA3BEF /* SimulationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationView.swift; sourceTree = "<group>"; };
 		C433FC712B5D364100BA3BEF /* SimulationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationManager.swift; sourceTree = "<group>"; };
+		C4940AED2BD043FD00E4C1DC /* TestAppPower.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TestAppPower.md; sourceTree = "<group>"; };
 		C4A3B6FD2B6B924B00FE3562 /* Images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Images; sourceTree = "<group>"; };
-		C4A3B6FE2B6E8E0800FE3562 /* PowerMetricsKit */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = PowerMetricsKit; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,7 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4A3B7012B6E908200FE3562 /* PowerMetricsKit in Frameworks */,
+				C47EF92E2BB71F9500C707B1 /* PowerMetricsKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,10 +47,10 @@
 		C433FC2B2B542FE100BA3BEF = {
 			isa = PBXGroup;
 			children = (
+				C4940AED2BD043FD00E4C1DC /* TestAppPower.md */,
 				C402F6C02B647E9200724FB5 /* README.md */,
 				C4A3B6FD2B6B924B00FE3562 /* Images */,
 				C433FC362B542FE100BA3BEF /* TestAppPower */,
-				C4A3B6FE2B6E8E0800FE3562 /* PowerMetricsKit */,
 				C433FC352B542FE100BA3BEF /* Products */,
 				C433FC6B2B5C2CBB00BA3BEF /* Frameworks */,
 			);
@@ -120,7 +120,7 @@
 			);
 			name = TestAppPower;
 			packageProductDependencies = (
-				C4A3B7002B6E908200FE3562 /* PowerMetricsKit */,
+				C47EF92D2BB71F9500C707B1 /* PowerMetricsKit */,
 			);
 			productName = TestAppPower;
 			productReference = C433FC342B542FE100BA3BEF /* TestAppPower.app */;
@@ -152,7 +152,7 @@
 			);
 			mainGroup = C433FC2B2B542FE100BA3BEF;
 			packageReferences = (
-				C4A3B6FF2B6E908200FE3562 /* XCLocalSwiftPackageReference "PowerMetricsKit" */,
+				C47EF92C2BB71F9500C707B1 /* XCLocalSwiftPackageReference "../PowerMetricsKit" */,
 			);
 			productRefGroup = C433FC352B542FE100BA3BEF /* Products */;
 			projectDirPath = "";
@@ -313,6 +313,7 @@
 				CODE_SIGN_ENTITLEMENTS = TestAppPower/TestAppPower.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"TestAppPower/Preview Content\"";
 				DEVELOPMENT_TEAM = 4ND4CZC2FK;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -411,14 +412,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		C4A3B6FF2B6E908200FE3562 /* XCLocalSwiftPackageReference "PowerMetricsKit" */ = {
+		C47EF92C2BB71F9500C707B1 /* XCLocalSwiftPackageReference "../PowerMetricsKit" */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = PowerMetricsKit;
+			relativePath = ../PowerMetricsKit;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C4A3B7002B6E908200FE3562 /* PowerMetricsKit */ = {
+		C47EF92D2BB71F9500C707B1 /* PowerMetricsKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = PowerMetricsKit;
 		};
