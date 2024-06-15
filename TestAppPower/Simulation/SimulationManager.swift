@@ -12,41 +12,56 @@ import simd
 /// power consumption (being pretty is a nice bonus).
 ///
 /// Based on Lorenz attractors, best described in Strogatz's _Nonlinear Dynamics and Chaos_, Part 3.
-class SimulationManager {
-    
-    var runningTaskGroup: TaskGroup<Void>?
-    
-    var lastSavedIteration: Int = 0
-    var plottablePositions: Array<simd_double3>.SubSequence {
-        if lastSavedIteration < 1_000 {
-            return savedPositions.prefix(lastSavedIteration)
-        } else {
-            return savedPositions[(lastSavedIteration - 1_000)..<lastSavedIteration]
-        }
-    }
-    private var savedPositions: [simd_double3] = [simd_double3](repeating: .zero, count: 100_000)
-    private var particlePositions: [simd_double3]
+actor SimulationManager {
     
     let sigma: Double
     let r: Double
     let b: Double
     let particleCount: Int
     
+    var runningTaskGroup: TaskGroup<Void>?
+    
+    @MainActor var lastSavedIteration: Int = 0
+    @MainActor var plottablePositions: Array<simd_double3>.SubSequence {
+        if lastSavedIteration < 1_000 {
+            return savedPositions.prefix(lastSavedIteration)
+        } else {
+            return savedPositions[(lastSavedIteration - 1_000)..<lastSavedIteration]
+        }
+    }
+    @MainActor private var savedPositions: [simd_double3] = [simd_double3](repeating: .zero, count: 100_000)
+    private var initialPositions: [simd_double3]
+    
     init(sigma: Double, r: Double, b: Double, particleCount: Int) {
         self.sigma = sigma
         self.r = r
         self.b = b
         self.particleCount = particleCount
-        self.particlePositions = [simd_double3](repeating: .zero, count: particleCount)
+        self.initialPositions = [simd_double3](repeating: .zero, count: particleCount)
         
-        initParticlePositions()
+        // Initial particle positions
+        let originalPosition = simd_double3(x: -9.1, y: -9.02, z: 22.13)
+        for index in 0..<particleCount {
+            initialPositions[index] = originalPosition + simd_double3.random(in: 0..<0.1)
+        }
+    }
+    
+    @MainActor private func resetSavedPositions() {
+        self.lastSavedIteration = 0
+        self.savedPositions = [simd_double3](repeating: .zero, count: 100_000)
+    }
+    
+    @MainActor private func addSavedPosition(_ newPosition: simd_double3) {
+        self.savedPositions[self.lastSavedIteration] = newPosition
+        self.lastSavedIteration += 1
     }
     
     /// Start the simulation.
     func simulate() async {
         
-        self.lastSavedIteration = 0
-        self.savedPositions = [simd_double3](repeating: .zero, count: 100_000)
+        await resetSavedPositions()
+        let particleCount = self.particleCount
+        let savedPositionsCount = await self.savedPositions.count
         
         #if DEBUG
         let stepsPerSavedPosition: Int = 1_000
@@ -58,10 +73,10 @@ class SimulationManager {
         await withTaskGroup(of: Void.self) { group in
             runningTaskGroup = group
             for particleIndex in 0..<particleCount {
-                let initialPosition = self.particlePositions[particleIndex]
+                let initialPosition = self.initialPositions[particleIndex]
                 group.addTask(priority: .medium) {
                     var nextPosition = initialPosition
-                    for iteration in 0..<(self.savedPositions.count * stepsPerSavedPosition) {
+                    for iteration in 0..<(savedPositionsCount * stepsPerSavedPosition) {
                         if Task.isCancelled {
                             return
                         }
@@ -73,8 +88,7 @@ class SimulationManager {
                             if Task.isCancelled {
                                 return
                             }
-                            self.savedPositions[self.lastSavedIteration] = nextPosition
-                            self.lastSavedIteration += 1
+                            await self.addSavedPosition(nextPosition)
                         }
                         
                         if iteration % 1_000 == 0 {
@@ -84,7 +98,7 @@ class SimulationManager {
                             await Task.yield()
                         }
                     }
-                    print("Final position for particle \(particleIndex): \(self.particlePositions[particleIndex])")
+                    await print("Final position for particle \(particleIndex): \(self.initialPositions[particleIndex])")
                 }
             }
             
@@ -98,15 +112,8 @@ class SimulationManager {
         runningTaskGroup = nil
     }
     
-    func initParticlePositions() {
-        let originalPosition = simd_double3(x: -9.1, y: -9.02, z: 22.13)
-        for index in 0..<particleCount {
-            particlePositions[index] = originalPosition + simd_double3.random(in: 0..<0.1)
-        }
-    }
-    
     /// A simplistic ODE solver.
-    func eulerStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
+    nonisolated func eulerStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
         var newPosition = position
         newPosition.x += stepSize * xDerivative(position: position)
         newPosition.y += stepSize * yDerivative(position: position)
@@ -115,7 +122,7 @@ class SimulationManager {
     }
     
     /// An acceptable ODE solver.
-    func rungeKuttaStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
+    nonisolated func rungeKuttaStep(_ position: simd_double3, stepSize: Double) -> simd_double3 {
         let k1 = stepSize * derivative(position: position)
         let k2 = stepSize * derivative(position: position + k1 / 2)
         let k3 = stepSize * derivative(position: position + k2 / 2)
@@ -124,7 +131,7 @@ class SimulationManager {
         return position + temp / 6.0
     }
     
-    func derivative(position: simd_double3) -> simd_double3 {
+    nonisolated func derivative(position: simd_double3) -> simd_double3 {
         var derivative = position
         derivative.x = xDerivative(position: position)
         derivative.y = yDerivative(position: position)
@@ -133,15 +140,15 @@ class SimulationManager {
     }
     
     /// Derivative function of x using Lorentz's equations.
-    func xDerivative(position: simd_double3) -> Double {
+    nonisolated func xDerivative(position: simd_double3) -> Double {
         return sigma * (position.y - position.x)
     }
     /// Derivative function of y using Lorentz's equations.
-    func yDerivative(position: simd_double3) -> Double {
+    nonisolated func yDerivative(position: simd_double3) -> Double {
         return r * position.x - position.y - position.x * position.z
     }
     /// Derivative function of z using Lorentz's equations.
-    func zDerivative(position: simd_double3) -> Double {
+    nonisolated func zDerivative(position: simd_double3) -> Double {
         return position.x * position.y - b * position.z
     }
 }

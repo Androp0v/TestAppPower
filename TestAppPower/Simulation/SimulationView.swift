@@ -81,7 +81,9 @@ struct SimulationView: View {
                             }
                         }
                     } else {
-                        simulationManager.stopSimulation()
+                        Task {
+                            await simulationManager.stopSimulation()
+                        }
                         withAnimation {
                             isRunning = false
                         }
